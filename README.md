@@ -1,10 +1,10 @@
 
-<<<<<<< HEAD
+
 We use a parallel finite element library called hiperlife (High Performance Library for Finite Elements) (https://zenodo.org/doi/10.5281/zenodo.14927572), which serves as the core numerical engine for the simulations presented in this study. This library depends on other open-source libraries. The library is openly distributed to the community and is available online at {https://gitlab.com/hiperlife/hiperlife}. The aim of this library is to provide a computational framework to address problems of cell and tissue mechanobiology for a wide range of cases and users, with special focus on curved surfaces. The hiperlife is written in C++, uses the Message Passing Interface (MPI) paradigm for parallelism, and is built on top of several packages of the Trilinos Project. 
-=======
+
 We use a parallel finite element library called hiperlife (High Performance Library for Finite Elements) (https://zenodo.org/doi/10.5281/zenodo.14927572), which serves as the core numerical engine for the simulations presented in this study. This library depends on other open-source libraries. The library is openly distributed to the community and is available online at {https://gitlab.com/hiperlife/hiperlife}. The aim of this library is to provide a computational framework to address problems of cell and tissue mechanobiology for a wide range of cases and users, with special focus on curved surfaces. The hiperlife is written in C++, uses the Message Passing Interface (MPI) paradigm for parallelism, and is built on top of several packages of the Trilinos Project. The installation of the hiperlife libraries can be carried out by following the guidelines provided at: {https://gitlab.com/hiperlife/hiperlife/-/blob/dev/INSTALL.md}. Prior to following the instructions for installation, it is necessary to clone the libraries via  Linux command {{git clone git@gitlab.com:hiperlife/hiperlife.git}} or download from {https://gitlab.com/hiperlife/hiperlife}.
 Installation takes approximately 1 hour on a Dell XPS 13 equipped with an Intel Core i7 8th Gen processor running Ubuntu 22.04.
->>>>>>> 94a7c0c9ce9434b6d58336cb1afb9abb97deeb29
+
 
 STEP 1: {Installation of hiperlife}
 
@@ -47,7 +47,7 @@ Note that /home/ubuntu/ is the home directory in our case.
 
 STEP 3: {Running Simulations}
 
-To execute a simulation, we create a dedicated folder {run_simulation} that contains the mesh files and the configuration files. Meshes are provided in VTK format (or i .txt format for the vertex model simulation) and typically correspond to epithelial footprints with prescribed geometries. 
+To execute a simulation, we create a dedicated folder {run_simulation} that contains the mesh files and the configuration files. Meshes are provided in VTK format (or in .txt format for the vertex model simulation) and typically correspond to epithelial footprints with prescribed geometries. 
 
 The simulation parameters, including references to the mesh files, are specified in a configuration file named {config.cfg}. This file allows the user to set model parameters, time-stepping controls, solver tolerances, and material constants.
 
