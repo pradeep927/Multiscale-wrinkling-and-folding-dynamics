@@ -63,16 +63,19 @@ CMAKE_BINARY_DIR = /home/ubuntu/mechanics_of_epithelial_domes/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: vertex_model/all
 all: active_gel_bilayer_shell/all
 all: shell_model/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
+preinstall: vertex_model/preinstall
 preinstall: active_gel_bilayer_shell/preinstall
 preinstall: shell_model/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: vertex_model/clean
 clean: active_gel_bilayer_shell/clean
 clean: shell_model/clean
 .PHONY : clean
@@ -106,6 +109,47 @@ shell_model/preinstall:
 # Recursive "clean" directory target.
 shell_model/clean: shell_model/CMakeFiles/hlshell_model.dir/clean
 .PHONY : shell_model/clean
+
+#=============================================================================
+# Directory level rules for directory vertex_model
+
+# Recursive "all" directory target.
+vertex_model/all: vertex_model/CMakeFiles/hlvertex_model.dir/all
+.PHONY : vertex_model/all
+
+# Recursive "preinstall" directory target.
+vertex_model/preinstall:
+.PHONY : vertex_model/preinstall
+
+# Recursive "clean" directory target.
+vertex_model/clean: vertex_model/CMakeFiles/hlvertex_model.dir/clean
+.PHONY : vertex_model/clean
+
+#=============================================================================
+# Target rules for target vertex_model/CMakeFiles/hlvertex_model.dir
+
+# All Build rule for target.
+vertex_model/CMakeFiles/hlvertex_model.dir/all:
+	$(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/depend
+	$(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles --progress-num=7,8,9 "Built target hlvertex_model"
+.PHONY : vertex_model/CMakeFiles/hlvertex_model.dir/all
+
+# Build rule for subdir invocation for target.
+vertex_model/CMakeFiles/hlvertex_model.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vertex_model/CMakeFiles/hlvertex_model.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles 0
+.PHONY : vertex_model/CMakeFiles/hlvertex_model.dir/rule
+
+# Convenience name for target.
+hlvertex_model: vertex_model/CMakeFiles/hlvertex_model.dir/rule
+.PHONY : hlvertex_model
+
+# clean rule for target.
+vertex_model/CMakeFiles/hlvertex_model.dir/clean:
+	$(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/clean
+.PHONY : vertex_model/CMakeFiles/hlvertex_model.dir/clean
 
 #=============================================================================
 # Target rules for target active_gel_bilayer_shell/CMakeFiles/hlactive_gel_bilayer_shell.dir

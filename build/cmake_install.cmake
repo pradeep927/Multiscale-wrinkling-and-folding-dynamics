@@ -44,6 +44,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("/home/ubuntu/mechanics_of_epithelial_domes/build/vertex_model/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("/home/ubuntu/mechanics_of_epithelial_domes/build/active_gel_bilayer_shell/cmake_install.cmake")
 endif()
 

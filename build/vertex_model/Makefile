@@ -132,14 +132,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles /home/ubuntu/mechanics_of_epithelial_domes/build//CMakeFiles/progress.marks
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles /home/ubuntu/mechanics_of_epithelial_domes/build/vertex_model//CMakeFiles/progress.marks
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vertex_model/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 clean
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vertex_model/clean
 .PHONY : clean
 
 # The main clean target
@@ -148,57 +148,80 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vertex_model/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vertex_model/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named hlvertex_model
+# Convenience name for target.
+vertex_model/CMakeFiles/hlvertex_model.dir/rule:
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vertex_model/CMakeFiles/hlvertex_model.dir/rule
+.PHONY : vertex_model/CMakeFiles/hlvertex_model.dir/rule
 
-# Build rule for target.
-hlvertex_model: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hlvertex_model
+# Convenience name for target.
+hlvertex_model: vertex_model/CMakeFiles/hlvertex_model.dir/rule
 .PHONY : hlvertex_model
 
 # fast build rule for target.
 hlvertex_model/fast:
-	$(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/build
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/build
 .PHONY : hlvertex_model/fast
 
-#=============================================================================
-# Target rules for targets named hlactive_gel_bilayer_shell
+AuxVXDomes.o: AuxVXDomes.cpp.o
+.PHONY : AuxVXDomes.o
 
-# Build rule for target.
-hlactive_gel_bilayer_shell: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hlactive_gel_bilayer_shell
-.PHONY : hlactive_gel_bilayer_shell
+# target to build an object file
+AuxVXDomes.cpp.o:
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/AuxVXDomes.cpp.o
+.PHONY : AuxVXDomes.cpp.o
 
-# fast build rule for target.
-hlactive_gel_bilayer_shell/fast:
-	$(MAKE) $(MAKESILENT) -f active_gel_bilayer_shell/CMakeFiles/hlactive_gel_bilayer_shell.dir/build.make active_gel_bilayer_shell/CMakeFiles/hlactive_gel_bilayer_shell.dir/build
-.PHONY : hlactive_gel_bilayer_shell/fast
+AuxVXDomes.i: AuxVXDomes.cpp.i
+.PHONY : AuxVXDomes.i
 
-#=============================================================================
-# Target rules for targets named hlshell_model
+# target to preprocess a source file
+AuxVXDomes.cpp.i:
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/AuxVXDomes.cpp.i
+.PHONY : AuxVXDomes.cpp.i
 
-# Build rule for target.
-hlshell_model: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hlshell_model
-.PHONY : hlshell_model
+AuxVXDomes.s: AuxVXDomes.cpp.s
+.PHONY : AuxVXDomes.s
 
-# fast build rule for target.
-hlshell_model/fast:
-	$(MAKE) $(MAKESILENT) -f shell_model/CMakeFiles/hlshell_model.dir/build.make shell_model/CMakeFiles/hlshell_model.dir/build
-.PHONY : hlshell_model/fast
+# target to generate assembly for a file
+AuxVXDomes.cpp.s:
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/AuxVXDomes.cpp.s
+.PHONY : AuxVXDomes.cpp.s
+
+VXDomes.o: VXDomes.cpp.o
+.PHONY : VXDomes.o
+
+# target to build an object file
+VXDomes.cpp.o:
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/VXDomes.cpp.o
+.PHONY : VXDomes.cpp.o
+
+VXDomes.i: VXDomes.cpp.i
+.PHONY : VXDomes.i
+
+# target to preprocess a source file
+VXDomes.cpp.i:
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/VXDomes.cpp.i
+.PHONY : VXDomes.cpp.i
+
+VXDomes.s: VXDomes.cpp.s
+.PHONY : VXDomes.s
+
+# target to generate assembly for a file
+VXDomes.cpp.s:
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(MAKE) $(MAKESILENT) -f vertex_model/CMakeFiles/hlvertex_model.dir/build.make vertex_model/CMakeFiles/hlvertex_model.dir/VXDomes.cpp.s
+.PHONY : VXDomes.cpp.s
 
 # Help Target
 help:
@@ -212,9 +235,13 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... hlactive_gel_bilayer_shell"
-	@echo "... hlshell_model"
 	@echo "... hlvertex_model"
+	@echo "... AuxVXDomes.o"
+	@echo "... AuxVXDomes.i"
+	@echo "... AuxVXDomes.s"
+	@echo "... VXDomes.o"
+	@echo "... VXDomes.i"
+	@echo "... VXDomes.s"
 .PHONY : help
 
 
@@ -226,6 +253,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/ubuntu/mechanics_of_epithelial_domes/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
