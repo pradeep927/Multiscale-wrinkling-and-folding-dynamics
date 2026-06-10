@@ -14,7 +14,7 @@
 #include "hl_LocMongeParam.h"
 #include "hl_StructMeshGenerator.h"
 #include "hl_BasicMeshGenerator.h"
-#include "hl_UnstructVtkMeshGenerator.h"
+//#include "hl_UnstructVtkMeshGenerator.h"
 #include "hl_MeshLoader.h"
 
 #include <iostream>
