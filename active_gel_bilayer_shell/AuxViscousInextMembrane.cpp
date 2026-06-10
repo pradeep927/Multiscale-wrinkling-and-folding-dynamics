@@ -66,6 +66,9 @@ void LS(hiperlife::FillStructure& fillStr)
  double thick = fillStr.getRealParameter(MembParams::thick);
  double Kconf = fillStr.getRealParameter(MembParams::Kconf) * deltat;
 
+int vnstep=    fillStr.getIntParameter(MembParams::vnstep);
+ int gap=   fillStr.getIntParameter(MembParams::gap);
+
 
     double gamma = fillStr.getRealParameter(MembParams::gamma)* deltat;
     int tens_start = fillStr.getIntParameter(MembParams::tens_start);
@@ -87,10 +90,12 @@ void LS(hiperlife::FillStructure& fillStr)
     double a12= fillStr.getRealParameter(MembParams::a12);
     double a33= fillStr.getRealParameter(MembParams::a33);
     double kap1= fillStr.getRealParameter(MembParams::kap1);
-    double width_kap   = fillStr.getRealParameter(MembParams::width_kap);
 
      double force=fillStr.getRealParameter(MembParams::force)*deltat;
+
     double fric_fact = fillStr.getRealParameter(MembParams::fric_fact);
+
+
     double fric2 = fillStr.getRealParameter(MembParams::fric2);
     double height_in = fillStr.getRealParameter(MembParams::height_in);
     int choice = fillStr.getIntParameter(MembParams::choice);
@@ -106,7 +111,7 @@ void LS(hiperlife::FillStructure& fillStr)
 
     double tens_factor   = fillStr.getRealParameter(MembParams::tens_factor);
     double spring= fillStr.getRealParameter(MembParams::spring);
-    int fric_start = fillStr.getIntParameter(MembParams::gap_step);;
+    int fric_start = vnstep+gap;;
 
 
     double crypt=fillStr.getRealParameter(MembParams::crypt);
@@ -2207,7 +2212,7 @@ auxiliary_a[87]  =jacC;
  int time_target    = fillStr.getIntParameter(MembParams::time_target);
 
     double young   = fillStr.getRealParameter(MembParams::young)* deltat;;
-    double nu   = fillStr.getRealParameter(MembParams::nu);
+    double nu   = fillStr.getRealParameter(MembParams::poisson);
 
     int timestep =fillStr.getIntParameter(MembParams::timestep);//timestep
     

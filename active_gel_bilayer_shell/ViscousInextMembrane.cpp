@@ -252,7 +252,7 @@ paramStr->setRealParameter(MembParams::R, R);
 paramStr->setRealParameter(MembParams::kappa, kappa);
 paramStr->setRealParameter(MembParams::bbn, bbn);
 paramStr->setRealParameter(MembParams::width, width);
-paramStr->setRealParameter(MembParams::control_fric, control_fric);
+paramStr->setIntParameter(MembParams::control_fric, control_fric);
 
 paramStr->setRealParameter(MembParams::apical, apical);
 paramStr->setRealParameter(MembParams::basal, basal);
@@ -269,7 +269,9 @@ paramStr->setIntParameter(MembParams::case_sphere, case_sphere);
 paramStr->setRealParameter(MembParams::height_in, height_in);
 
 paramStr->setRealParameter(MembParams::Kconf, Kconf);
-paramStr->setRealParameter(MembParams::gap_step, vnstep + gap);
+paramStr->setIntParameter(MembParams::vnstep,  vnstep);
+    paramStr->setIntParameter(MembParams::gap,  gap);
+
 
 paramStr->setRealParameter(MembParams::f0, f0);
 paramStr->setRealParameter(MembParams::g_ratio, g_ratio);
@@ -291,6 +293,9 @@ paramStr->setRealParameter(MembParams::kap1, kap1);
 
 paramStr->setRealParameter(MembParams::gamma_minus, gamma_minus);
 paramStr->setRealParameter(MembParams::gamma_plus, gamma_plus);
+
+    paramStr->setRealParameter(MembParams::gamma_minus_ref, gamma_minus);
+    paramStr->setRealParameter(MembParams::gamma_plus_ref, gamma_plus);
 paramStr->setRealParameter(MembParams::gamma_l, gamma_l);
 
 paramStr->setRealParameter(MembParams::forward_new, forward_new);

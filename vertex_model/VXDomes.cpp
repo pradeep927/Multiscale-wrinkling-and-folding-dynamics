@@ -511,7 +511,7 @@ int main(int argc, char *argv[])
         timerstep.printTesting(prefix);
         if( tissuemesh.myRank() == 0 )
         {
-            cout << "Simulation time (min) : " << timer.printAccumTime("total")/60.0 << endl;
+            cout << "Simulation time (min) : " << timer.getAccumulatedTime("total")/60.0 << endl;
             cout << "-------------"<< endl;
             cout << endl;
         }
@@ -524,7 +524,7 @@ int main(int argc, char *argv[])
     if( tissuemesh.myRank() == 0 )
     {
         cout << "-----------------------------------------------------------------"    << endl;
-        cout << "Total simulation time (min) : " << timer.printAccumTime("total")/60.0 << endl;
+        cout << "Total simulation time (min) : " << timer.getAccumulatedTime("total")/60.0 << endl;
         cout << endl;
     }
 

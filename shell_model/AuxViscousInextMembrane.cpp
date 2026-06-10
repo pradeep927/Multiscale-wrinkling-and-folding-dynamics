@@ -82,15 +82,15 @@ void LS(hiperlife::FillStructure& fillStr)
     double spring= fillStr.getRealParameter(MembParams::spring);
     int fric_start = fillStr.getIntParameter(MembParams::gap_step);
 
-    double alpha=fillStr.getIntParameter(MembParams::alpha) ;
+    double alpha=fillStr.getRealParameter(MembParams::alpha) ;
     double gamma_minus=fillStr.getRealParameter(MembParams::gamma_minus) * deltat;
     double gamma_plus=fillStr.getRealParameter(MembParams::gamma_plus) * deltat;
     double fact_elastic=fillStr.getRealParameter(MembParams::fact_elastic);
 
 
 
- double lambda   = fillStr.getIntParameter(MembParams::lambda)*deltat;
- double mu   = fillStr.getIntParameter(MembParams::mu)*deltat;
+ double lambda   = fillStr.getRealParameter(MembParams::lambda)*deltat;
+ double mu   = fillStr.getRealParameter(MembParams::mu)*deltat;
 
 
 

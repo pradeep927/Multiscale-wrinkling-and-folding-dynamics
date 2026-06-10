@@ -106,6 +106,8 @@ struct MembParams
         gap_step,
         control_fric,
         vn_gap,
+        vnstep,
+        gap,
         timeStep,
         timestep,
         case_sphere,
