@@ -67,6 +67,7 @@ set(APPS_INSTALL_DIR ${CMAKE_CURRENT_LIST_DIR}/bin/)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/vertex_model)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/active_gel_bilayer_shell)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/shell_model)
+#add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/shell_model1)
 #Add applications that depend on vtk and/or gmsh here: viscous_inext
 #if(VTK_FOUND AND GMSH_LIB)
 

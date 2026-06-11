@@ -1,16 +1,14 @@
 
 
-//#include "Amesos.h"
-
-
 /// hiperlife headers
 #include "hl_FillStructure.h"
 #include "hl_Geometry.h"
 #include "hl_SurfLagrParam.h"
 #include "hl_Tensor.h"
-//#include "hl_LinearSolver_Direct_Amesos2.h"
 #include <hl_LinearSolver_Direct_MUMPS.h>
 #include <fstream>
+
+
 
 /// Header to auxiliary functions
 #include "AuxViscousInextMembrane.h"
@@ -51,59 +49,110 @@ void LS(hiperlife::FillStructure& fillStr)
     tensor<double, 1> F = gDOFs(range(1, 3));
     tensor<double, 1> L = gDOFs(range(4, 6));
 
-    //[1.4] Parameters
-    double deltat = fillStr.getRealParameter(MembParams::deltat);
-    double fric = fillStr.getRealParameter(MembParams::fric);
-    double factor = fillStr.getRealParameter(MembParams::factor);
+  // [1.4] Parameters
 
-    double thick = fillStr.getRealParameter(MembParams::thick);
-    double Kconf = fillStr.getRealParameter(MembParams::Kconf) * deltat;
-    int timestep = fillStr.getIntParameter(MembParams::timestep);//timestep
+double deltat = fillStr.getRealParameter(MembParams::deltat);
+double fric = fillStr.getRealParameter(MembParams::fric);
+double young = fillStr.getRealParameter(MembParams::young) * deltat;
+double factor = fillStr.getRealParameter(MembParams::factor);
 
- double R    = fillStr.getRealParameter(MembParams::R);
- double width   = fillStr.getRealParameter(MembParams::width);
+double nu = fillStr.getRealParameter(MembParams::poisson);
+double thick = fillStr.getRealParameter(MembParams::thick);
 
+double Kconf =fillStr.getRealParameter(MembParams::Kconf) * deltat;
 
+double gamma =fillStr.getRealParameter(MembParams::gamma) * deltat;
 
+int tens_start =fillStr.getIntParameter(MembParams::tens_start);
 
-     double force=fillStr.getRealParameter(MembParams::force)*deltat;
-    double fric_fact = fillStr.getRealParameter(MembParams::fric_fact);
+int timestep =fillStr.getIntParameter(MembParams::timestep);
 
-    double fric2 = fillStr.getRealParameter(MembParams::fric2);
-    double height_in = fillStr.getRealParameter(MembParams::height_in);
-    int control_fric =  fillStr.getIntParameter(MembParams::control_fric);
+int case_sphere =fillStr.getIntParameter(MembParams::case_sphere);
 
+double R = fillStr.getRealParameter(MembParams::R);
 
-    double Lagrangian{};
+double width =fillStr.getRealParameter(MembParams::width);
 
-    double kspr= fillStr.getRealParameter(MembParams::kspr) * deltat;
-    double sp_gap= fillStr.getRealParameter(MembParams::sp_gap);
+double kappa =fillStr.getRealParameter(MembParams::kappa) * deltat;
 
-    double spring= fillStr.getRealParameter(MembParams::spring);
-    int fric_start = fillStr.getIntParameter(MembParams::gap_step);
+double aap =fillStr.getRealParameter(MembParams::aap);
 
-    double alpha=fillStr.getRealParameter(MembParams::alpha) ;
-    double gamma_minus=fillStr.getRealParameter(MembParams::gamma_minus) * deltat;
-    double gamma_plus=fillStr.getRealParameter(MembParams::gamma_plus) * deltat;
-    double fact_elastic=fillStr.getRealParameter(MembParams::fact_elastic);
+double bbn =fillStr.getRealParameter(MembParams::bbn);
 
+double fric3 =fillStr.getRealParameter(MembParams::fric3);
 
+double apical =fillStr.getRealParameter(MembParams::apical);
 
- double lambda   = fillStr.getRealParameter(MembParams::lambda)*deltat;
- double mu   = fillStr.getRealParameter(MembParams::mu)*deltat;
+double basal =fillStr.getRealParameter(MembParams::basal);
 
+double a11 =fillStr.getRealParameter(MembParams::a11);
 
+double a12 =fillStr.getRealParameter(MembParams::a12);
 
+double a33 =fillStr.getRealParameter(MembParams::a33);
 
+double kap1 =fillStr.getRealParameter(MembParams::kap1);
+
+double width_kap =fillStr.getRealParameter(MembParams::width_kap);
+
+double force =fillStr.getRealParameter(MembParams::force) * deltat;
+
+double fric_fact =fillStr.getRealParameter(MembParams::fric_fact);
+
+double fric2 =fillStr.getRealParameter(MembParams::fric2);
+
+double height_in =fillStr.getRealParameter(MembParams::height_in);
+
+int choice =fillStr.getIntParameter(MembParams::choice);
+
+double Xmax =fillStr.getRealParameter(MembParams::Xmax);
+
+int control_fric =fillStr.getIntParameter(MembParams::control_fric);
+
+double f0 =fillStr.getRealParameter(MembParams::f0);
+
+double g_ratio =fillStr.getRealParameter(MembParams::g_ratio);
+
+double kspr =fillStr.getRealParameter(MembParams::kspr) * deltat;
+
+double sp_gap =fillStr.getRealParameter(MembParams::sp_gap);
+
+double tens_factor = fillStr.getRealParameter(MembParams::tens_factor);
+
+double spring = fillStr.getRealParameter(MembParams::spring);
+
+int fric_start = fillStr.getIntParameter(MembParams::fric_start);
+
+double alpha =fillStr.getRealParameter(MembParams::alpha);
+
+double gamma_minus = fillStr.getRealParameter(MembParams::gamma_minus)* deltat;
+
+double gamma_plus =fillStr.getRealParameter(MembParams::gamma_plus)* deltat;
+
+double gamma_l =fillStr.getRealParameter(MembParams::gamma_l)* deltat;
+
+double fact_elastic =fillStr.getRealParameter(MembParams::fact_elastic);
+
+double pn =fillStr.getRealParameter(MembParams::pn);
+
+double lambda =fillStr.getRealParameter(MembParams::lambda)* deltat;
+
+double mu =fillStr.getRealParameter(MembParams::mu)* deltat;
+
+double gamma_plus_ref =fillStr.getRealParameter(MembParams::gamma_plus_ref)* deltat;
+
+double gamma_minus_ref =fillStr.getRealParameter(MembParams::gamma_minus_ref)* deltat;
+
+     double Lagrangian{};
 
 
     //OUTPUTS
-    tensor<double, 2,false> Bp(fillStr.Bk(0).data(), eNN, numDOFs);
-    tensor<double, 1,false> Bg(fillStr.Bk(1).data(), g_numDOFs);
+    tensor<double, 2, false> Bp(fillStr.Bk(0).data(), eNN, numDOFs);
+    tensor<double, 1, false> Bg(fillStr.Bk(1).data(), g_numDOFs);
 
-    tensor<double, 4,false> App(fillStr.Ak(0, 0).data(), eNN, numDOFs, eNN, numDOFs);
-    tensor<double, 3,false> Apg(fillStr.Ak(0, 1).data(), eNN, numDOFs, g_numDOFs);
-    tensor<double, 3,false> Agp(fillStr.Ak(1, 0).data(), g_numDOFs, eNN, numDOFs);
+    tensor<double, 4, false> App(fillStr.Ak(0, 0).data(), eNN, numDOFs, eNN, numDOFs);
+    tensor<double, 3, false> Apg(fillStr.Ak(0, 1).data(), eNN, numDOFs, g_numDOFs);
+    tensor<double, 3, false> Agp(fillStr.Ak(1, 0).data(), g_numDOFs, eNN, numDOFs);
 
      double eps=0.0000001;
     //------------------------------------------------------------------
@@ -195,6 +244,15 @@ void LS(hiperlife::FillStructure& fillStr)
    double kspr_out=kspr/1.0;
     double rad=sqrt(xR(0)*xR(0)+xR(1)*xR(1));
 
+    //if(rad<R-sp_gap)
+
+
+       // kspr=0.0;
+     // kspr=kspr*(0.5-0.5* tanh(width * (1.01*R - rad)));
+
+
+   
+    //double rad=sqrt(xR(0)*xR(0)+xR(1)*xR(1));
 
     if(rad<R-sp_gap)
     {
@@ -354,11 +412,11 @@ void LS(hiperlife::FillStructure& fillStr)
 
     //GN=GN*0.0;
 
+//cout<<"GN:"<<GN<<":curva:"<<curvatureR<<endl;
 
-
-      /*GP=imetricR;
+      GP=imetricR;
      GP0=imetricR;
-       GN=curvatureR;*/
+       GN=curvatureR;
 
     tensor<double, 2> iGP = GP.inv(); //G_AB
     tensor<double, 2> iGN = GN.inv();
@@ -481,9 +539,7 @@ void LS(hiperlife::FillStructure& fillStr)
  double mu_ela=1.5797*deltat*fact_elastic ;
  double lambda_ela=1.2147*fact_elastic*deltat;
 
- //VISCO-ELAST
-
- //IC ENERGY
+ //VISCO-ELASTIC ENERGY
  double E_small                     = (0.5*lambda_ela*log(I3_SR_ref)*log(I3_SR_ref)-mu_ela*log(I3_SR_ref)+0.5*mu_ela*(I1_ref-2) )*jacPRR;
 
  //apical
@@ -608,6 +664,8 @@ void LS(hiperlife::FillStructure& fillStr)
 
 
 
+
+
     double Efric                        = 0.5*fric*jac_n*product(x-x_n,x-x_n,{{0,0}});
     Lagrangian+=Efric;
 
@@ -689,8 +747,10 @@ void LS(hiperlife::FillStructure& fillStr)
 
 
 
-       double gamma=0.5*(gamma_plus+gamma_minus);
+        gamma=0.5*(gamma_plus+gamma_minus);
         Lagrangian +=0.0;
+
+
 
        // double power1=-0.5*gamma*product(iGP,(GP-GP0),{{0,0},{1,1}})/(deltat*deltat)*jac;
 
@@ -727,6 +787,7 @@ void LS(hiperlife::FillStructure& fillStr)
 
 
 
+
     Agp = Apg.transpose({2,0,1});
 
 
@@ -751,6 +812,8 @@ void LS(hiperlife::FillStructure& fillStr)
     fillStr.addToGlobalIntegral("area", jac);
     fillStr.addToGlobalIntegral("volume", (1.0/3.0) * jac*xnormal);
 
+
+
      fillStr.addToGlobalIntegral("P_tension1",power1);
 
     //This is to pass info to the other problem
@@ -769,11 +832,6 @@ void LS(hiperlife::FillStructure& fillStr)
 
 
     delWP_delGP=0.5*(lambda*log(I3_SR)-mu)/I3*delI3_delGP+0.5*mu*delI1_delGP;
-
-
-
-
-
     delWN_delGN=-1*product(BIG_C,bend_str,{{0,0},{1,1}})*const_bend*0.0;
 
  tensor<double,2> delI1_delC(pDim,pDim);//del j+ /del G ^bR
@@ -892,7 +950,7 @@ auxiliary_a[50]  =power1;
 }
 
 
- void LS_ReacDif(hiperlife::FillStructure& fillStr)
+void LS_ReacDif(hiperlife::FillStructure& fillStr)
 {
     using namespace hiperlife;
     using namespace hiperlife::Tensor;
@@ -926,33 +984,51 @@ auxiliary_a[50]  =power1;
     // --------------------------------------------
     // [1] Model parameters
     // --------------------------------------------
-    //[1.4] Parameters
-    double deltat = fillStr.getRealParameter(MembParams::deltat);
-    double fric2    = fillStr.getRealParameter(MembParams::fric2);
-    int time_target    = fillStr.getIntParameter(MembParams::time_target);
-    double fric3    =  fillStr.getRealParameter(MembParams::fric3);
+ // [1] Model parameters
+// --------------------------------------------
+// [1.4] Parameters
 
+double deltat =fillStr.getRealParameter(MembParams::deltat);
 
+double fric =fillStr.getRealParameter(MembParams::fric);
 
+double fric2 =fillStr.getRealParameter(MembParams::fric2);
 
-    int timestep = fillStr.getIntParameter(MembParams::timestep);//timestep
+int time_target =fillStr.getIntParameter(MembParams::time_target);
 
+double fric3 =fillStr.getRealParameter(MembParams::fric3);
 
+double factor =fillStr.getRealParameter(MembParams::factor);
 
-    double alpha=1.0;
-    double forward_new= fillStr.getRealParameter(MembParams::forward_new);
+// double young =
+//     fillStr.getRealParameter(MembParams::young)*deltat;
 
-     double lambda   = fillStr.getRealParameter(MembParams::lambda)*deltat;
-    double mu   =fillStr.getRealParameter(MembParams::mu) *deltat;
+double nu =fillStr.getRealParameter(MembParams::poisson);
 
+double thick =fillStr.getRealParameter(MembParams::thick);
 
+double force1 =fillStr.getRealParameter(MembParams::force)* deltat;
 
+double Kconf =fillStr.getRealParameter(MembParams::Kconf)* deltat;
 
- double gamma_minus=fillStr.getRealParameter(MembParams::gamma_minus) * deltat;
- double gamma_plus=fillStr.getRealParameter(MembParams::gamma_plus) * deltat;
+double gamma =0.0;
 
- double gamma=0.5*(gamma_minus+gamma_plus);
+int timestep =fillStr.getIntParameter(MembParams::timestep);
 
+// double alpha =
+//     fillStr.getRealParameter(MembParams::alpha);
+
+double alpha =1.0;
+
+double fric_fact =fillStr.getRealParameter(MembParams::fric_fact);
+
+double forward_new =fillStr.getRealParameter(MembParams::forward_new);
+
+double height_in =fillStr.getRealParameter(MembParams::height_in);
+
+double lambda =fillStr.getRealParameter(MembParams::lambda)* deltat;
+
+double mu =fillStr.getRealParameter(MembParams::mu)* deltat;
 
     //double mu=0.5*young/(1+nu) ;
     //double lambda=mu ;
@@ -981,6 +1057,7 @@ auxiliary_a[50]  =power1;
     double jacR= auxiliary_a[19];
     double jac= auxiliary_a[20];
       double const_bend= auxiliary_a[55];
+
 
 //[5.0] Tangent modulus 4th order
     tensor<double,2> a0(pDim,pDim);//INVERSE METRIC TENSOR
@@ -1013,10 +1090,7 @@ auxiliary_a[50]  =power1;
 
 
     // membrane and bending strains
-
-
-
-
+ 
     //SUPG
     double G11P0{1.0}, G12P0{0.0},G22P0{1.0}, G11N0{1.0}, G12N0{0},G22N0{1.0} , G11P{1.0}, G12P{0.0},G22P{1.0}, G11N{1.0}, G12N{0},G22N{1.0};
 
@@ -1491,7 +1565,7 @@ auxiliary_a[50]  =power1;
 
 
     // Global integrals
-  //  fillStr->addToGlobalIntegral("totBonds",jacR);
+  //  fillStr.addToGlobalIntegral("totBonds",jacR);
 
  auxiliary_b[9] =diss11/jacPRR;
  auxiliary_b[10] =diss22/jacPRR;
@@ -1508,7 +1582,7 @@ auxiliary_a[50]  =power1;
 
 
 
-void LS_ED(hiperlife::FillStructure & fillStr)
+void LS_ED(hiperlife::FillStructure& fillStr)
 {
     using namespace hiperlife;
     using namespace hiperlife::Tensor;
@@ -1523,7 +1597,7 @@ void LS_ED(hiperlife::FillStructure & fillStr)
     int nDim    = subFill.nDim;
     int pDim    = subFill.pDim;
     int eNN     = subFill.eNN;
-
+double deltat =fillStr.getRealParameter(MembParams::deltat);
     //Coordinates and degrees of freedom
     tensor<double,2,false> nborCoords(subFill.nborCoords.data(),eNN,nDim);
    // tensor<double,2> nborDOFs0(subFill.nborDOFs0.data(),eNN,numDOFs);

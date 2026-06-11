@@ -17,19 +17,18 @@
 #include "hl_HiPerProblem.h"
 #include "hl_ConsistencyCheck.h"
 #include <hl_LoadBalance.h>
-//#include <hl_LinearSolver_Direct_Amesos2.h>
 #include <hl_NonlinearSolver_NewtonRaphson.h>
 #include <hl_MeshLoader.h>
 #include <hl_ConfigFile.h>
 #include <hl_LinearSolver_Direct_MUMPS.h>
 #include <hl_LocMongeParam.h>
-
 // Header to auxiliary functions
 #include "hl_Parser.h"
 #include "hl_ParamStructure.h"
 #include "hl_Core.h"
-
+// Header to auxiliary functions
 #include "AuxViscousInextMembrane.h"
+
 
 
 int main (int argc, char *argv[])
@@ -43,7 +42,7 @@ int main (int argc, char *argv[])
 
     // **************************************************************//
     // *****                 INITIALIZATION                     *****//
-    // **************************************************************//
+      // **************************************************************//
     hiperlife::Init(argc, argv);
     const int myRank = hiperlife::MyRank();
 
@@ -103,7 +102,7 @@ int main (int argc, char *argv[])
 
     }
     int spring{0};
-    double mu{7.8372}, lambda{16.6482}, fric{0.01},Xmax{1.0},Ymax{1.0},forward_new{0.0},kspr{0.0},fric3{0.02},stretching{0.0}, young{25.0}, poisson{0.25},my_work{1.0},gamma_minus{1.0},gamma_sigma{2.0},gamma_del{0.0},floating{0.0},gamma_plus{1.0},force{0.0},Kconf{0.0},gamma_l{1.0},f0{0.9},g_ratio{0.8},v_target{0.667},vstep{0.0}, v_r_step{0.0},coeff{0.0},ang{0.0},tens_factor{0.0},out_choice{0.0};
+    double mu{7.8372}, lambda{16.6482}, fric{0.01},Xmax{1.0},Ymax{1.0},forward_new{0.0},kspr{0.0},fric3{0.02},stretching{0.0}, young{25.0}, poisson{0.25},my_work{1.0},gamma_minus{1.0},gamma_sigma{2.0},gamma_del{0.0},floating{0.0},gamma_plus{1.0},force{0.0},Kconf{0.0},gamma_l{1.0}, gamma{0.0},f0{0.9},g_ratio{0.8},v_target{0.667},vstep{0.0}, v_r_step{0.0},coeff{0.0},ang{0.0},tens_factor{0.0},out_choice{0.0};
     {
         config.readInto(fric, "fric");
         config.readInto(young, "young");
@@ -114,6 +113,7 @@ int main (int argc, char *argv[])
         config.readInto(poisson, "poisson");
         config.readInto(force, "force");
         config.readInto(Kconf, "Kconf");
+        config.readInto(gamma, "gamma");
         config.readInto(ang, "ang");
         config.readInto(gamma_del, "gamma_del");
 
@@ -204,9 +204,11 @@ int main (int argc, char *argv[])
         gamma_plus= gamma_l*(gamma_sigma-gamma_del)/2;
         gamma_minus=gamma_l*(gamma_sigma+gamma_del)/2;
 
+        gamma=0.5*(gamma_plus+gamma_minus);
 
 
         f0=2*gamma_sigma*f0_factor;
+
 
 
     //Numerical parameters
@@ -232,19 +234,28 @@ int main (int argc, char *argv[])
         double r0_tri=0.18;//0.2, for trg_r2: q=2.1,r0=0.18,r=0.45, r_out=0.72; trg_r1: r0=0.2,q=1.7,r=0.5,r_out=0.8; trg_r11: r0=0.18,q=1.7,r3=0.45,r_out=0.72; tr_r1: r0=0.2,q=1.7,r=0.35, r_out=0.5;
         double r_tri=0.45;//0.35
         double q_tri=1.7;
- SmartPtr<ParamStructure> paramStr = CreateParamStructure<MembParams>();
+
+
+
+    //Set structure
+   // Set structure
+SmartPtr<ParamStructure> paramStr =CreateParamStructure<MembParams>();
 
 paramStr->setRealParameter(MembParams::deltat, deltat);
 paramStr->setRealParameter(MembParams::fric, fric);
+
 paramStr->setRealParameter(MembParams::young, young);
 paramStr->setRealParameter(MembParams::poisson, poisson);
 paramStr->setRealParameter(MembParams::thick, thick);
+
 paramStr->setRealParameter(MembParams::force, force);
+paramStr->setRealParameter(MembParams::gamma, gamma);
 
 paramStr->setIntParameter(MembParams::tens_start, tens_start);
 
 paramStr->setRealParameter(MembParams::fric_fact, fric_fact);
 paramStr->setRealParameter(MembParams::fric2, fric2);
+
 paramStr->setRealParameter(MembParams::pn, pn);
 paramStr->setRealParameter(MembParams::fric3, fric3);
 
@@ -254,53 +265,65 @@ paramStr->setRealParameter(MembParams::kappa, kappa);
 paramStr->setRealParameter(MembParams::bbn, bbn);
 paramStr->setRealParameter(MembParams::width, width);
 
-paramStr->setIntParameter(MembParams::control_fric, control_fric);
+paramStr->setIntParameter(MembParams::control_fric,control_fric);
 
 paramStr->setRealParameter(MembParams::apical, apical);
 paramStr->setRealParameter(MembParams::basal, basal);
 
-paramStr->setIntParameter(MembParams::time_target, time_target);
+
 paramStr->setRealParameter(MembParams::spring, spring);
 
-paramStr->setRealParameter(MembParams::tens_factor, tens_factor);
-paramStr->setRealParameter(MembParams::fact_elastic, fact_elastic);
+paramStr->setRealParameter(MembParams::tens_factor,tens_factor);
 
-paramStr->setIntParameter(MembParams::case_sphere, case_sphere);
+paramStr->setRealParameter(MembParams::fact_elastic,fact_elastic);
 
-paramStr->setRealParameter(MembParams::height_in, height_in);
-paramStr->setRealParameter(MembParams::Kconf, Kconf);
+paramStr->setIntParameter(MembParams::case_sphere,case_sphere);
+
+paramStr->setRealParameter(MembParams::height_in,height_in);
+
+paramStr->setRealParameter(MembParams::Kconf,Kconf);
+
+paramStr->setIntParameter(MembParams::time_target,time_target);
+paramStr->setIntParameter(MembParams::fric_start,vnstep + gap);
+
 
 paramStr->setRealParameter(MembParams::f0, f0);
-paramStr->setRealParameter(MembParams::g_ratio, g_ratio);
-paramStr->setRealParameter(MembParams::bc_const, bc_const);
+paramStr->setRealParameter(MembParams::g_ratio,g_ratio);
+
+paramStr->setRealParameter(MembParams::bc_const,bc_const);
 
 paramStr->setRealParameter(MembParams::mu, mu);
-paramStr->setRealParameter(MembParams::lambda, lambda);
+paramStr->setRealParameter(MembParams::lambda,lambda);
 
-paramStr->setRealParameter(MembParams::kspr, kspr);
-paramStr->setRealParameter(MembParams::sp_gap, sp_gap);
+paramStr->setRealParameter(MembParams::kspr,kspr);
+
+paramStr->setRealParameter(MembParams::sp_gap,sp_gap);
 
 paramStr->setRealParameter(MembParams::a11, a11);
 paramStr->setRealParameter(MembParams::a12, a12);
 paramStr->setRealParameter(MembParams::a33, a33);
-paramStr->setRealParameter(MembParams::kap1, kap1);
 
-paramStr->setRealParameter(MembParams::alpha, alpha);
+paramStr->setRealParameter(MembParams::kap1,kap1);
 
-paramStr->setRealParameter(MembParams::gamma_minus, gamma_minus);
-paramStr->setRealParameter(MembParams::gamma_plus, gamma_plus);
-paramStr->setRealParameter(MembParams::gamma_l, gamma_l);
+paramStr->setRealParameter(MembParams::alpha,alpha);
 
-paramStr->setRealParameter(MembParams::forward_new, forward_new);
+paramStr->setRealParameter(MembParams::gamma_minus,gamma_minus);
 
-paramStr->setIntParameter(MembParams::choice, choice);
- paramStr->setIntParameter(MembParams::gap_step, vnstep+gap);
+paramStr->setRealParameter(MembParams::gamma_plus,gamma_plus);
 
-paramStr->setRealParameter(MembParams::Xmax, Xmax);
+paramStr->setRealParameter(MembParams::gamma_l,gamma_l);
 
-paramStr->setRealParameter(MembParams::k_p, k_p);
-paramStr->setRealParameter(MembParams::k_d, k_d);
-double gamma=0.5*(gamma_minus+gamma_plus);
+paramStr->setRealParameter(MembParams::forward_new,forward_new);
+
+paramStr->setIntParameter(MembParams::choice,choice);
+
+paramStr->setRealParameter(MembParams::Xmax,Xmax);
+
+paramStr->setRealParameter(MembParams::k_p,k_p);
+
+paramStr->setRealParameter(MembParams::k_d,k_d);
+
+
         //Output
         if (myRank == 0)
         {
@@ -308,15 +331,12 @@ double gamma=0.5*(gamma_minus+gamma_plus);
             cout << "Radius:   " << R << endl;
             cout << "thickness " <<height_in << endl;
 
-
-            cout<<"gamma: "<<paramStr->getRealParameter(MembParams::gamma_minus)<<"g+: "<<paramStr->getRealParameter(MembParams::gamma_plus)<<endl;
             cout << endl;
             cout << "elastic parameters: lambda  " << lambda << "elastic parameters: mu  " << mu <<endl;
 
             cout << "friction:   " << fric << endl;
             cout << "friction 3: curvature viscoelasticity:   " << fric3  << "time: curvature viscoelasticity:   " << fric3/10 << endl;
             cout << "Total  volume reduction  step " << v_rn_step<< endl;
-            cout << "tension: " << gamma<< endl;
 
             cout << "young:    " << young << endl;
             cout << "poisson: " << poisson<< endl;
@@ -334,11 +354,12 @@ double gamma=0.5*(gamma_minus+gamma_plus);
             cout << "mesh refinement 1:yes " <<mesh_refine<< endl;
 
             cout << "Consistency check:  " << ConsCheck << endl;
-            cout << "Friction control step:  " << vnstep+gap+control_fric<<" width: "<<width<< endl;
+            cout << "Friction control step:  " <<  vnstep+gap+control_fric<<" width: "<<width<< endl;
 
             cout << "Confinement potential:  " << Kconf<< endl;
 
 
+            cout << "Surface tension:  " << gamma<< endl;
             cout << "Tension factor:  " << tens_factor<< "  :tension plus :"  <<   gamma_plus<<  " : tension minus: " <<   gamma_minus<<endl;
             cout << "Surface tension lateral:  " << gamma_l<< " :gamma_sigma:  " << gamma_sigma<<" :Surface tension delta:  " << gamma_del<<endl;
 
@@ -353,8 +374,8 @@ double gamma=0.5*(gamma_minus+gamma_plus);
 
             cout << "visco_elastic time:  " <<2*fric2*(1+ poisson)/young << endl;
             cout << endl;
-        }
 
+         }
 
     //bool  ConsCheck = false;
 
@@ -630,86 +651,7 @@ else
                 }
 
 
-            if (spring==0.5)
-            {
 
-                if (choice ==10)
-                {
-                    if (sqrt(x*x+y*y) > R-sp_gap)
-                    {
-                        // boundary condition
-
-                        posDHand->setConstraint(0, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(1, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(2, i, hiperlife::IndexType::Local, 0.0);
-
-
-                    }
-                }
-
-                if (choice ==11)
-                {
-                    // boundary condition
-
-                    if (x< (0+sp_gap) || x>(Xmax-sp_gap) )
-                    {
-                        // boundary condition
-
-                        posDHand->setConstraint(0, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(1, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(2, i, hiperlife::IndexType::Local, 0.0);
-                        //posDHand->setConstraint(3, i, hiperlife::IndexType::Local, 0.0);
-                        // posDHand->setConstraint(4, i, hiperlife::IndexType::Local, 0.0);
-                        // posDHand->setConstraint(5, i, hiperlife::IndexType::Local, 0.0);
-                        // posDHand->setConstraint(6, i, hiperlife::IndexType::Local, 0.0);
-
-                    }
-                }
-
-
-                if (choice ==12)  // choice 1 clamp
-                {
-                    if (x< (0+sp_gap) || x>(Xmax-sp_gap) )
-                    {
-                        // boundary condition
-
-                        posDHand->setConstraint(0, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(1, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(2, i, hiperlife::IndexType::Local, 0.0);
-                        //posDHand->setConstraint(3, i, hiperlife::IndexType::Local, 0.0);
-                        // posDHand->setConstraint(4, i, hiperlife::IndexType::Local, 0.0);
-                        // posDHand->setConstraint(5, i, hiperlife::IndexType::Local, 0.0);
-                        // posDHand->setConstraint(6, i, hiperlife::IndexType::Local, 0.0);
-
-                    }
-
-		        if (y< (0+sp_gap) || y>(1-sp_gap) )
-                    {
-                        // boundary condition
-
-                        posDHand->setConstraint(0, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(1, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(2, i, hiperlife::IndexType::Local, 0.0);
-                        //posDHand->setConstraint(3, i, hiperlife::IndexType::Local, 0.0);
-                        // posDHand->setConstraint(4, i, hiperlife::IndexType::Local, 0.0);
-                        // posDHand->setConstraint(5, i, hiperlife::IndexType::Local, 0.0);
-                        // posDHand->setConstraint(6, i, hiperlife::IndexType::Local, 0.0);
-
-                    }
-
-                }
-
-
-                    if (choice ==100 && crease > 0)
-                    {
-                        // boundary condition
-
-                        posDHand->setConstraint(0, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(1, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(2, i, hiperlife::IndexType::Local, 0.0);
-                    }
-
-            }
 
         }
             /*posDHand->setConstraint(6,0.0);
@@ -892,8 +834,8 @@ return 0; */
     SmartPtr<HiPerProblem> hiperProbl = Create<HiPerProblem>();
     try
     {
-        // Set paramStructure
-        hiperProbl->setParameterStructure(paramStr);
+        // Set UserStructure
+        hiperProbl->setParameterStructure(paramStr);;
         hiperProbl->setConsistencyCheckDelta(1.E-8);
         hiperProbl->setConsistencyCheckTolerance(1.E-4);
 
@@ -928,7 +870,7 @@ return 0; */
     // create visco problem
 
     SmartPtr<HiPerProblem> viscoProbl= Create<HiPerProblem>();
-    viscoProbl->setParameterStructure(paramStr);
+    viscoProbl->setParameterStructure(paramStr);;
     viscoProbl->setDOFsHandlers({viscoDHand});
     viscoProbl->setIntegration("Integ", {"viscoDHand"});
     viscoProbl->setCubatureGauss("Integ", gPts);
@@ -939,7 +881,7 @@ return 0; */
     // create ENERGY problem
 
     SmartPtr<HiPerProblem> ENProbl= Create<HiPerProblem>();
-    ENProbl->setParameterStructure(paramStr);
+    ENProbl->setParameterStructure(paramStr);;
     ENProbl->setDOFsHandlers({EDHand});
     ENProbl->setIntegration("Integ", {"EDHand"});
     ENProbl->setCubatureGauss("Integ", gPts);
@@ -1027,17 +969,13 @@ return 0; */
 
  if(choice==2000)
      {
-             base_area= 3.141*R*R;
+     base_area= 3.141*R*R;
+ }
 
-
-    }
-
-if(choice==10)
+ if(choice==10)
      {
-             base_area= 3.141*R*R;
-
-
-    }
+     base_area= 3.141*R*R;
+ }
 
     v_target=v_target/hiperProbl->globalIntegral("area_n")*base_area*0.999;
     if (myRank == 0)
@@ -1163,14 +1101,13 @@ double a_res=a0-base_area;
         }
 
         paramStr->setRealParameter(MembParams::factor,factor);
+        paramStr->setRealParameter(MembParams::vol_inc,vol_inc);
         paramStr->setRealParameter(MembParams::force,force1);
 
 
-         if (myRank == 0)
-           cout<< "factor: "<<  paramStr->getRealParameter(MembParams::factor)<<endl;
 
-        paramStr->setRealParameter(MembParams::vol_inc,vol_inc);
         paramStr->setIntParameter(MembParams::timestep,timeStep);
+
 
 
         if (deltat<0.000001)
@@ -1181,6 +1118,27 @@ double a_res=a0-base_area;
         }
 
 
+
+        if (timeStep > fric_start+control_fric) {
+            for (int i = 0; i< posDHand->mesh->loc_nPts();i++)
+            {
+
+                double x0 = posDHand->nodeDOFs0->getValue(0,i,IndexType::Local);
+                double y0 = posDHand->nodeDOFs0->getValue(1,i,IndexType::Local);
+                double z0 = posDHand->nodeDOFs0->getValue(2,i,IndexType::Local);
+
+               if (z0<1*thick)
+                   {
+                   posDHand->setConstraint(0, i, hiperlife::IndexType::Local, 0.0);
+                   posDHand->setConstraint(1, i, hiperlife::IndexType::Local, 0.0);
+                   posDHand->setConstraint(2, i, hiperlife::IndexType::Local, 0.0);
+               }
+
+            }
+
+            posDHand->UpdateGhosts();
+
+        }
 
         // Prepare for solver
         posDHand->nodeDOFs->setValue(posDHand->nodeDOFs0);

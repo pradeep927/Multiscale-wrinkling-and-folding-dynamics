@@ -107,7 +107,7 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 CMAKE_EXPORT_COMPILE_COMMANDS:UNINITIALIZED=YES
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=/home/ubuntu/shell_models_continuum/source_compiled
+CMAKE_INSTALL_PREFIX:PATH=/home/ubuntu/mechanics_of_epithelial_domes/source_compiled
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=/usr/bin/ld

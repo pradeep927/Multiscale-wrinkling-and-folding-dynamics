@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/ubuntu/shell_models_continuum/source_compiled")
+  set(CMAKE_INSTALL_PREFIX "/home/ubuntu/mechanics_of_epithelial_domes/source_compiled")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -43,29 +43,29 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/home/ubuntu/shell_models_continuum/source_compiled/bin/hlvertex_model" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/ubuntu/shell_models_continuum/source_compiled/bin/hlvertex_model")
+  if(EXISTS "$ENV{DESTDIR}/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlvertex_model" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlvertex_model")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/home/ubuntu/shell_models_continuum/source_compiled/bin/hlvertex_model"
+         FILE "$ENV{DESTDIR}/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlvertex_model"
          RPATH "/home/ubuntu/local/hiperlife/lib:/home/ubuntu/local/hiperlife/third-party/Mumps/lib:/usr/lib/x86_64-linux-gnu/lapack:/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/openmpi/lib:/home/ubuntu/local/hiperlife/third-party/Gmsh/lib:/home/ubuntu/local/hiperlife/third-party/Trilinos/lib:/home/ubuntu/local/hiperlife/third-party/vtk/lib")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/ubuntu/shell_models_continuum/source_compiled/bin/hlvertex_model")
+   "/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlvertex_model")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/home/ubuntu/shell_models_continuum/source_compiled/bin" TYPE EXECUTABLE FILES "/home/ubuntu/mechanics_of_epithelial_domes/build/vertex_model/hlvertex_model")
-  if(EXISTS "$ENV{DESTDIR}/home/ubuntu/shell_models_continuum/source_compiled/bin/hlvertex_model" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/ubuntu/shell_models_continuum/source_compiled/bin/hlvertex_model")
+  file(INSTALL DESTINATION "/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin" TYPE EXECUTABLE FILES "/home/ubuntu/mechanics_of_epithelial_domes/build/vertex_model/hlvertex_model")
+  if(EXISTS "$ENV{DESTDIR}/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlvertex_model" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlvertex_model")
     file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}/home/ubuntu/shell_models_continuum/source_compiled/bin/hlvertex_model"
+         FILE "$ENV{DESTDIR}/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlvertex_model"
          OLD_RPATH "/home/ubuntu/local/hiperlife/lib:/home/ubuntu/local/hiperlife/third-party/Mumps/lib:/usr/lib/x86_64-linux-gnu/lapack:/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/openmpi/lib:/home/ubuntu/local/hiperlife/third-party/Gmsh/lib:/home/ubuntu/local/hiperlife/third-party/Trilinos/lib:/home/ubuntu/local/hiperlife/third-party/vtk/lib:"
          NEW_RPATH "/home/ubuntu/local/hiperlife/lib:/home/ubuntu/local/hiperlife/third-party/Mumps/lib:/usr/lib/x86_64-linux-gnu/lapack:/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/openmpi/lib:/home/ubuntu/local/hiperlife/third-party/Gmsh/lib:/home/ubuntu/local/hiperlife/third-party/Trilinos/lib:/home/ubuntu/local/hiperlife/third-party/vtk/lib")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/ubuntu/shell_models_continuum/source_compiled/bin/hlvertex_model")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlvertex_model")
     endif()
   endif()
 endif()
