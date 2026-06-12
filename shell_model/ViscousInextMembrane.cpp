@@ -269,10 +269,8 @@ paramStr->setIntParameter(MembParams::control_fric,control_fric);
 
 paramStr->setRealParameter(MembParams::apical, apical);
 paramStr->setRealParameter(MembParams::basal, basal);
-
-
+paramStr->setIntParameter(MembParams::time_target,time_target);
 paramStr->setRealParameter(MembParams::spring, spring);
-
 paramStr->setRealParameter(MembParams::tens_factor,tens_factor);
 
 paramStr->setRealParameter(MembParams::fact_elastic,fact_elastic);
@@ -283,7 +281,6 @@ paramStr->setRealParameter(MembParams::height_in,height_in);
 
 paramStr->setRealParameter(MembParams::Kconf,Kconf);
 
-paramStr->setIntParameter(MembParams::time_target,time_target);
 paramStr->setIntParameter(MembParams::fric_start,vnstep + gap);
 
 
@@ -376,6 +373,8 @@ paramStr->setRealParameter(MembParams::k_d,k_d);
             cout << endl;
 
          }
+
+
 
     //bool  ConsCheck = false;
 
@@ -972,10 +971,7 @@ return 0; */
      base_area= 3.141*R*R;
  }
 
- if(choice==10)
-     {
-     base_area= 3.141*R*R;
- }
+
 
     v_target=v_target/hiperProbl->globalIntegral("area_n")*base_area*0.999;
     if (myRank == 0)
@@ -1055,7 +1051,7 @@ double a_res=a0-base_area;
         // reduce volume in decreaments
         if(timeStep<vnstep)
         {
-            factor=(timeStep+1.0)/vnstep*v_target;
+            factor1=(timeStep+1.0)/vnstep*v_target;
             force1=(timeStep+1.0)/vnstep*force;
 
 
@@ -1088,7 +1084,7 @@ double a_res=a0-base_area;
         {
             if (v_r_step<v_cont*v_rn_step)
             {
-                factor=(1-(v_r_step+1.0)/v_rn_step)*v_target;
+                factor1=(1-(v_r_step+1.0)/v_rn_step)*v_target;
                // factor=factor*exp(coeff*deltat*v_r_step);
                 v_r_step=v_r_step+1;
                 if (myRank == 0)
@@ -1100,7 +1096,7 @@ double a_res=a0-base_area;
 
         }
 
-        paramStr->setRealParameter(MembParams::factor,factor);
+        paramStr->setRealParameter(MembParams::factor,factor1);
         paramStr->setRealParameter(MembParams::vol_inc,vol_inc);
         paramStr->setRealParameter(MembParams::force,force1);
 

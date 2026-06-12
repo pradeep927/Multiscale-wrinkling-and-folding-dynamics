@@ -28,10 +28,10 @@ The CXX compiler identification is GNU, found in "/home/ubuntu/mechanics_of_epit
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_f8d37/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f8d37.dir/build.make CMakeFiles/cmTC_f8d37.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_6c0c2/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_6c0c2.dir/build.make CMakeFiles/cmTC_6c0c2.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc   -march=native -O3    -v -o CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c
+Building C object CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc   -march=native -O3    -v -o CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
@@ -41,8 +41,8 @@ Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~2
 Thread model: posix
 Supported LTO compression algorithms: zlib zstd
 gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) 
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_f8d37.dir/'
- /usr/lib/gcc/x86_64-linux-gnu/11/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c -march=skylake -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512cd -mno-avx512er -mno-avx512pf -mno-avx512vbmi -mno-avx512ifma -mno-avx5124vnniw -mno-avx5124fmaps -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mno-vpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mno-clwb -mno-clzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mno-mwaitx -mno-pconfig -mno-pku -mno-prefetchwt1 -mprfchw -mno-ptwrite -mno-rdpid -mrdrnd -mrdseed -mno-rtm -mno-serialize -msgx -mno-sha -mno-shstk -mno-tbm -mno-tsxldtrk -mno-vaes -mno-waitpkg -mno-wbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno-kl -mno-widekl -mno-avxvnni --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake -quiet -dumpdir CMakeFiles/cmTC_f8d37.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -O3 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/cceiEDQC.s
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_6c0c2.dir/'
+ /usr/lib/gcc/x86_64-linux-gnu/11/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c -march=skylake -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512cd -mno-avx512er -mno-avx512pf -mno-avx512vbmi -mno-avx512ifma -mno-avx5124vnniw -mno-avx5124fmaps -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mno-vpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mno-clwb -mno-clzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mno-mwaitx -mno-pconfig -mno-pku -mno-prefetchwt1 -mprfchw -mno-ptwrite -mno-rdpid -mrdrnd -mrdseed -mno-rtm -mno-serialize -msgx -mno-sha -mno-shstk -mno-tbm -mno-tsxldtrk -mno-vaes -mno-waitpkg -mno-wbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno-kl -mno-widekl -mno-avxvnni --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake -quiet -dumpdir CMakeFiles/cmTC_6c0c2.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -O3 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccWN8y71.s
 GNU C17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)
 	compiled by GNU C version 11.4.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
 
@@ -62,15 +62,15 @@ GNU C17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 Compiler executable checksum: 46ebede1f5b795a957a1e85cb61af9d8
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_f8d37.dir/'
- as -v --64 -o CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o /tmp/cceiEDQC.s
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_6c0c2.dir/'
+ as -v --64 -o CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o /tmp/ccWN8y71.s
 GNU assembler version 2.38 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.38
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.'
-Linking C executable cmTC_f8d37
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f8d37.dir/link.txt --verbose=1
-/usr/bin/cc -march=native -O3   -v CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o -o cmTC_f8d37 
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.'
+Linking C executable cmTC_6c0c2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6c0c2.dir/link.txt --verbose=1
+/usr/bin/cc -march=native -O3   -v CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o -o cmTC_6c0c2 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper
@@ -83,9 +83,9 @@ Supported LTO compression algorithms: zlib zstd
 gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_f8d37' '-dumpdir' 'cmTC_f8d37.'
- /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccOGHWOQ.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_f8d37 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_f8d37' '-dumpdir' 'cmTC_f8d37.'
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_6c0c2' '-dumpdir' 'cmTC_6c0c2.'
+ /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccivnf4h.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_6c0c2 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_6c0c2' '-dumpdir' 'cmTC_6c0c2.'
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 
@@ -109,10 +109,10 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_f8d37/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f8d37.dir/build.make CMakeFiles/cmTC_f8d37.dir/build]
+  ignore line: [Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_6c0c2/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_6c0c2.dir/build.make CMakeFiles/cmTC_6c0c2.dir/build]
   ignore line: [gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc   -march=native -O3    -v -o CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c]
+  ignore line: [Building C object CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc   -march=native -O3    -v -o CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
@@ -122,8 +122,8 @@ Parsed C implicit link information from above output:
   ignore line: [Thread model: posix]
   ignore line: [Supported LTO compression algorithms: zlib zstd]
   ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_f8d37.dir/']
-  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/11/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c -march=skylake -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512cd -mno-avx512er -mno-avx512pf -mno-avx512vbmi -mno-avx512ifma -mno-avx5124vnniw -mno-avx5124fmaps -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mno-vpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mno-clwb -mno-clzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mno-mwaitx -mno-pconfig -mno-pku -mno-prefetchwt1 -mprfchw -mno-ptwrite -mno-rdpid -mrdrnd -mrdseed -mno-rtm -mno-serialize -msgx -mno-sha -mno-shstk -mno-tbm -mno-tsxldtrk -mno-vaes -mno-waitpkg -mno-wbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno-kl -mno-widekl -mno-avxvnni --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake -quiet -dumpdir CMakeFiles/cmTC_f8d37.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -O3 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/cceiEDQC.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_6c0c2.dir/']
+  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/11/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c -march=skylake -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512cd -mno-avx512er -mno-avx512pf -mno-avx512vbmi -mno-avx512ifma -mno-avx5124vnniw -mno-avx5124fmaps -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mno-vpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mno-clwb -mno-clzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mno-mwaitx -mno-pconfig -mno-pku -mno-prefetchwt1 -mprfchw -mno-ptwrite -mno-rdpid -mrdrnd -mrdseed -mno-rtm -mno-serialize -msgx -mno-sha -mno-shstk -mno-tbm -mno-tsxldtrk -mno-vaes -mno-waitpkg -mno-wbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno-kl -mno-widekl -mno-avxvnni --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake -quiet -dumpdir CMakeFiles/cmTC_6c0c2.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -O3 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccWN8y71.s]
   ignore line: [GNU C17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)]
   ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.1  MPFR version 4.1.0  MPC version 1.2.1  isl version isl-0.24-GMP]
   ignore line: []
@@ -143,15 +143,15 @@ Parsed C implicit link information from above output:
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
   ignore line: [Compiler executable checksum: 46ebede1f5b795a957a1e85cb61af9d8]
-  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_f8d37.dir/']
-  ignore line: [ as -v --64 -o CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o /tmp/cceiEDQC.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_6c0c2.dir/']
+  ignore line: [ as -v --64 -o CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o /tmp/ccWN8y71.s]
   ignore line: [GNU assembler version 2.38 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.38]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.']
-  ignore line: [Linking C executable cmTC_f8d37]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f8d37.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc -march=native -O3   -v CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o -o cmTC_f8d37 ]
+  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o' '-c' '-dumpdir' 'CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.']
+  ignore line: [Linking C executable cmTC_6c0c2]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6c0c2.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc -march=native -O3   -v CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o -o cmTC_6c0c2 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper]
@@ -164,13 +164,13 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_f8d37' '-dumpdir' 'cmTC_f8d37.']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccOGHWOQ.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_f8d37 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_6c0c2' '-dumpdir' 'cmTC_6c0c2.']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccivnf4h.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_6c0c2 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccOGHWOQ.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccivnf4h.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -188,7 +188,7 @@ Parsed C implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_f8d37] ==> ignore
+    arg [cmTC_6c0c2] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o]
@@ -200,7 +200,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/11/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../..]
-    arg [CMakeFiles/cmTC_f8d37.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_6c0c2.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--push-state] ==> ignore
     arg [--as-needed] ==> ignore
@@ -234,10 +234,10 @@ Parsed C implicit link information from above output:
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_c53cd/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_c53cd.dir/build.make CMakeFiles/cmTC_c53cd.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_7a039/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_7a039.dir/build.make CMakeFiles/cmTC_7a039.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++   -march=native -O3    -v -o CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp
+Building CXX object CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++   -march=native -O3    -v -o CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
@@ -247,8 +247,8 @@ Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~2
 Thread model: posix
 Supported LTO compression algorithms: zlib zstd
 gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) 
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_c53cd.dir/'
- /usr/lib/gcc/x86_64-linux-gnu/11/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp -march=skylake -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512cd -mno-avx512er -mno-avx512pf -mno-avx512vbmi -mno-avx512ifma -mno-avx5124vnniw -mno-avx5124fmaps -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mno-vpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mno-clwb -mno-clzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mno-mwaitx -mno-pconfig -mno-pku -mno-prefetchwt1 -mprfchw -mno-ptwrite -mno-rdpid -mrdrnd -mrdseed -mno-rtm -mno-serialize -msgx -mno-sha -mno-shstk -mno-tbm -mno-tsxldtrk -mno-vaes -mno-waitpkg -mno-wbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno-kl -mno-widekl -mno-avxvnni --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake -quiet -dumpdir CMakeFiles/cmTC_c53cd.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -O3 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/cc2TVg9j.s
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_7a039.dir/'
+ /usr/lib/gcc/x86_64-linux-gnu/11/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp -march=skylake -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512cd -mno-avx512er -mno-avx512pf -mno-avx512vbmi -mno-avx512ifma -mno-avx5124vnniw -mno-avx5124fmaps -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mno-vpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mno-clwb -mno-clzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mno-mwaitx -mno-pconfig -mno-pku -mno-prefetchwt1 -mprfchw -mno-ptwrite -mno-rdpid -mrdrnd -mrdseed -mno-rtm -mno-serialize -msgx -mno-sha -mno-shstk -mno-tbm -mno-tsxldtrk -mno-vaes -mno-waitpkg -mno-wbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno-kl -mno-widekl -mno-avxvnni --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake -quiet -dumpdir CMakeFiles/cmTC_7a039.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -O3 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccPt11nL.s
 GNU C++17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)
 	compiled by GNU C version 11.4.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
 
@@ -272,15 +272,15 @@ GNU C++17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 Compiler executable checksum: ac7fa628ee459f217e6fdb88b3db0bde
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_c53cd.dir/'
- as -v --64 -o CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o /tmp/cc2TVg9j.s
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_7a039.dir/'
+ as -v --64 -o CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccPt11nL.s
 GNU assembler version 2.38 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.38
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.'
-Linking CXX executable cmTC_c53cd
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c53cd.dir/link.txt --verbose=1
-/usr/bin/c++ -march=native -O3   -v CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_c53cd 
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.'
+Linking CXX executable cmTC_7a039
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7a039.dir/link.txt --verbose=1
+/usr/bin/c++ -march=native -O3   -v CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_7a039 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper
@@ -293,9 +293,9 @@ Supported LTO compression algorithms: zlib zstd
 gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_c53cd' '-shared-libgcc' '-dumpdir' 'cmTC_c53cd.'
- /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccGweGNq.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_c53cd /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_c53cd' '-shared-libgcc' '-dumpdir' 'cmTC_c53cd.'
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_7a039' '-shared-libgcc' '-dumpdir' 'cmTC_7a039.'
+ /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccaeMdwu.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_7a039 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_7a039' '-shared-libgcc' '-dumpdir' 'cmTC_7a039.'
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 
@@ -325,10 +325,10 @@ Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_c53cd/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_c53cd.dir/build.make CMakeFiles/cmTC_c53cd.dir/build]
+  ignore line: [Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_7a039/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_7a039.dir/build.make CMakeFiles/cmTC_7a039.dir/build]
   ignore line: [gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++   -march=native -O3    -v -o CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Building CXX object CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++   -march=native -O3    -v -o CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
@@ -338,8 +338,8 @@ Parsed CXX implicit link information from above output:
   ignore line: [Thread model: posix]
   ignore line: [Supported LTO compression algorithms: zlib zstd]
   ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_c53cd.dir/']
-  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/11/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp -march=skylake -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512cd -mno-avx512er -mno-avx512pf -mno-avx512vbmi -mno-avx512ifma -mno-avx5124vnniw -mno-avx5124fmaps -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mno-vpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mno-clwb -mno-clzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mno-mwaitx -mno-pconfig -mno-pku -mno-prefetchwt1 -mprfchw -mno-ptwrite -mno-rdpid -mrdrnd -mrdseed -mno-rtm -mno-serialize -msgx -mno-sha -mno-shstk -mno-tbm -mno-tsxldtrk -mno-vaes -mno-waitpkg -mno-wbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno-kl -mno-widekl -mno-avxvnni --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake -quiet -dumpdir CMakeFiles/cmTC_c53cd.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -O3 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/cc2TVg9j.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_7a039.dir/']
+  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/11/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp -march=skylake -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512cd -mno-avx512er -mno-avx512pf -mno-avx512vbmi -mno-avx512ifma -mno-avx5124vnniw -mno-avx5124fmaps -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mno-vpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mno-clwb -mno-clzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mno-mwaitx -mno-pconfig -mno-pku -mno-prefetchwt1 -mprfchw -mno-ptwrite -mno-rdpid -mrdrnd -mrdseed -mno-rtm -mno-serialize -msgx -mno-sha -mno-shstk -mno-tbm -mno-tsxldtrk -mno-vaes -mno-waitpkg -mno-wbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno-kl -mno-widekl -mno-avxvnni --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake -quiet -dumpdir CMakeFiles/cmTC_7a039.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -O3 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccPt11nL.s]
   ignore line: [GNU C++17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)]
   ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.1  MPFR version 4.1.0  MPC version 1.2.1  isl version isl-0.24-GMP]
   ignore line: []
@@ -363,15 +363,15 @@ Parsed CXX implicit link information from above output:
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
   ignore line: [Compiler executable checksum: ac7fa628ee459f217e6fdb88b3db0bde]
-  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_c53cd.dir/']
-  ignore line: [ as -v --64 -o CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o /tmp/cc2TVg9j.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_7a039.dir/']
+  ignore line: [ as -v --64 -o CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccPt11nL.s]
   ignore line: [GNU assembler version 2.38 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.38]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.']
-  ignore line: [Linking CXX executable cmTC_c53cd]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c53cd.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++ -march=native -O3   -v CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_c53cd ]
+  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.']
+  ignore line: [Linking CXX executable cmTC_7a039]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7a039.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++ -march=native -O3   -v CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_7a039 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper]
@@ -384,13 +384,13 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_c53cd' '-shared-libgcc' '-dumpdir' 'cmTC_c53cd.']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccGweGNq.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_c53cd /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-march=native' '-O3' '-v' '-o' 'cmTC_7a039' '-shared-libgcc' '-dumpdir' 'cmTC_7a039.']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccaeMdwu.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_7a039 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccGweGNq.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccaeMdwu.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -408,7 +408,7 @@ Parsed CXX implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_c53cd] ==> ignore
+    arg [cmTC_7a039] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o]
@@ -420,7 +420,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/11/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../..]
-    arg [CMakeFiles/cmTC_c53cd.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_7a039.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -450,13 +450,13 @@ Parsed CXX implicit link information from above output:
 Determining if the include file pthread.h exists passed with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_81852/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_81852.dir/build.make CMakeFiles/cmTC_81852.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_10c15/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_10c15.dir/build.make CMakeFiles/cmTC_10c15.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_81852.dir/CheckIncludeFile.c.o
-/usr/bin/cc   -march=native -O3  -o CMakeFiles/cmTC_81852.dir/CheckIncludeFile.c.o -c /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_81852
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_81852.dir/link.txt --verbose=1
-/usr/bin/cc -march=native -O3  CMakeFiles/cmTC_81852.dir/CheckIncludeFile.c.o -o cmTC_81852 
+Building C object CMakeFiles/cmTC_10c15.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -march=native -O3  -o CMakeFiles/cmTC_10c15.dir/CheckIncludeFile.c.o -c /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_10c15
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_10c15.dir/link.txt --verbose=1
+/usr/bin/cc -march=native -O3  CMakeFiles/cmTC_10c15.dir/CheckIncludeFile.c.o -o cmTC_10c15 
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 
@@ -464,13 +464,13 @@ gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CM
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD succeeded with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_2d8dc/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_2d8dc.dir/build.make CMakeFiles/cmTC_2d8dc.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_ed4f7/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_ed4f7.dir/build.make CMakeFiles/cmTC_ed4f7.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_2d8dc.dir/src.c.o
-/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD  -march=native -O3  -o CMakeFiles/cmTC_2d8dc.dir/src.c.o -c /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_2d8dc
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2d8dc.dir/link.txt --verbose=1
-/usr/bin/cc -march=native -O3  CMakeFiles/cmTC_2d8dc.dir/src.c.o -o cmTC_2d8dc 
+Building C object CMakeFiles/cmTC_ed4f7.dir/src.c.o
+/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD  -march=native -O3  -o CMakeFiles/cmTC_ed4f7.dir/src.c.o -c /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_ed4f7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ed4f7.dir/link.txt --verbose=1
+/usr/bin/cc -march=native -O3  CMakeFiles/cmTC_ed4f7.dir/src.c.o -o cmTC_ed4f7 
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 
@@ -498,13 +498,13 @@ int main(void)
 Determining if the function XOpenDisplay exists in the /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so passed with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_9b0fc/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_9b0fc.dir/build.make CMakeFiles/cmTC_9b0fc.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_deb13/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_deb13.dir/build.make CMakeFiles/cmTC_deb13.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9b0fc.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=XOpenDisplay -o CMakeFiles/cmTC_9b0fc.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
-Linking C executable cmTC_9b0fc
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9b0fc.dir/link.txt --verbose=1
-/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=XOpenDisplay CMakeFiles/cmTC_9b0fc.dir/CheckFunctionExists.c.o -o cmTC_9b0fc  /usr/lib/x86_64-linux-gnu/libX11.so /usr/lib/x86_64-linux-gnu/libXext.so 
+Building C object CMakeFiles/cmTC_deb13.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=XOpenDisplay -o CMakeFiles/cmTC_deb13.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_deb13
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_deb13.dir/link.txt --verbose=1
+/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=XOpenDisplay CMakeFiles/cmTC_deb13.dir/CheckFunctionExists.c.o -o cmTC_deb13  /usr/lib/x86_64-linux-gnu/libX11.so /usr/lib/x86_64-linux-gnu/libXext.so 
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 
@@ -512,13 +512,13 @@ gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CM
 Determining if the function gethostbyname exists passed with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_8a1cc/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_8a1cc.dir/build.make CMakeFiles/cmTC_8a1cc.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_d04d6/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_d04d6.dir/build.make CMakeFiles/cmTC_d04d6.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_8a1cc.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=gethostbyname -o CMakeFiles/cmTC_8a1cc.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
-Linking C executable cmTC_8a1cc
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8a1cc.dir/link.txt --verbose=1
-/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=gethostbyname CMakeFiles/cmTC_8a1cc.dir/CheckFunctionExists.c.o -o cmTC_8a1cc 
+Building C object CMakeFiles/cmTC_d04d6.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=gethostbyname -o CMakeFiles/cmTC_d04d6.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d04d6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d04d6.dir/link.txt --verbose=1
+/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=gethostbyname CMakeFiles/cmTC_d04d6.dir/CheckFunctionExists.c.o -o cmTC_d04d6 
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 
@@ -526,13 +526,13 @@ gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CM
 Determining if the function connect exists passed with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_8d610/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_8d610.dir/build.make CMakeFiles/cmTC_8d610.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_1c73a/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_1c73a.dir/build.make CMakeFiles/cmTC_1c73a.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_8d610.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=connect -o CMakeFiles/cmTC_8d610.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
-Linking C executable cmTC_8d610
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8d610.dir/link.txt --verbose=1
-/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=connect CMakeFiles/cmTC_8d610.dir/CheckFunctionExists.c.o -o cmTC_8d610 
+Building C object CMakeFiles/cmTC_1c73a.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=connect -o CMakeFiles/cmTC_1c73a.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1c73a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1c73a.dir/link.txt --verbose=1
+/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=connect CMakeFiles/cmTC_1c73a.dir/CheckFunctionExists.c.o -o cmTC_1c73a 
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 
@@ -540,13 +540,13 @@ gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CM
 Determining if the function remove exists passed with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_1fb78/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_1fb78.dir/build.make CMakeFiles/cmTC_1fb78.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_aeae8/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_aeae8.dir/build.make CMakeFiles/cmTC_aeae8.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1fb78.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=remove -o CMakeFiles/cmTC_1fb78.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
-Linking C executable cmTC_1fb78
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1fb78.dir/link.txt --verbose=1
-/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=remove CMakeFiles/cmTC_1fb78.dir/CheckFunctionExists.c.o -o cmTC_1fb78 
+Building C object CMakeFiles/cmTC_aeae8.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=remove -o CMakeFiles/cmTC_aeae8.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_aeae8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aeae8.dir/link.txt --verbose=1
+/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=remove CMakeFiles/cmTC_aeae8.dir/CheckFunctionExists.c.o -o cmTC_aeae8 
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 
@@ -554,13 +554,13 @@ gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CM
 Determining if the function shmat exists passed with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_2c050/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_2c050.dir/build.make CMakeFiles/cmTC_2c050.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_b4985/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_b4985.dir/build.make CMakeFiles/cmTC_b4985.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_2c050.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=shmat -o CMakeFiles/cmTC_2c050.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
-Linking C executable cmTC_2c050
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c050.dir/link.txt --verbose=1
-/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=shmat CMakeFiles/cmTC_2c050.dir/CheckFunctionExists.c.o -o cmTC_2c050 
+Building C object CMakeFiles/cmTC_b4985.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=shmat -o CMakeFiles/cmTC_b4985.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b4985
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b4985.dir/link.txt --verbose=1
+/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=shmat CMakeFiles/cmTC_b4985.dir/CheckFunctionExists.c.o -o cmTC_b4985 
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 
@@ -568,13 +568,13 @@ gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CM
 Determining if the function IceConnectionNumber exists in the ICE passed with the following output:
 Change Dir: /home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_0fbe3/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_0fbe3.dir/build.make CMakeFiles/cmTC_0fbe3.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_680ed/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_680ed.dir/build.make CMakeFiles/cmTC_680ed.dir/build
 gmake[1]: Entering directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_0fbe3.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=IceConnectionNumber -o CMakeFiles/cmTC_0fbe3.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
-Linking C executable cmTC_0fbe3
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0fbe3.dir/link.txt --verbose=1
-/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=IceConnectionNumber CMakeFiles/cmTC_0fbe3.dir/CheckFunctionExists.c.o -o cmTC_0fbe3  -lICE 
+Building C object CMakeFiles/cmTC_680ed.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -march=native -O3 -DCHECK_FUNCTION_EXISTS=IceConnectionNumber -o CMakeFiles/cmTC_680ed.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_680ed
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_680ed.dir/link.txt --verbose=1
+/usr/bin/cc -march=native -O3 -DCHECK_FUNCTION_EXISTS=IceConnectionNumber CMakeFiles/cmTC_680ed.dir/CheckFunctionExists.c.o -o cmTC_680ed  -lICE 
 gmake[1]: Leaving directory '/home/ubuntu/mechanics_of_epithelial_domes/build/CMakeFiles/CMakeTmp'
 
 

@@ -146,6 +146,9 @@ double gamma_minus_ref =fillStr.getRealParameter(MembParams::gamma_minus_ref)* d
      double Lagrangian{};
 
 
+
+
+
     //OUTPUTS
     tensor<double, 2, false> Bp(fillStr.Bk(0).data(), eNN, numDOFs);
     tensor<double, 1, false> Bg(fillStr.Bk(1).data(), g_numDOFs);
@@ -755,10 +758,10 @@ double gamma_minus_ref =fillStr.getRealParameter(MembParams::gamma_minus_ref)* d
        // double power1=-0.5*gamma*product(iGP,(GP-GP0),{{0,0},{1,1}})/(deltat*deltat)*jac;
 
     //double power1=-0.5*gamma*product(iGP,(GP-GP0),{{0,0},{1,1}})*jac/(deltat*deltat);
+
       double power1=gamma*(jac-jac_n)*1.0/(deltat*deltat);
 
        double E_tens1=0.0;
-
 
        // Bp(all, range(0, 2)) += -0.5*gamma*product(iGP,(GP-GP0),{{0,0},{1,1}})*d_jac;
        // App(all, range(0, 2), all, range(0, 2)) +=-0.5*gamma*product(iGP,(GP-GP0),{{0,0},{1,1}})*dd_jac;
@@ -811,7 +814,6 @@ double gamma_minus_ref =fillStr.getRealParameter(MembParams::gamma_minus_ref)* d
     fillStr.addToGlobalIntegral("area_n", jacR);
     fillStr.addToGlobalIntegral("area", jac);
     fillStr.addToGlobalIntegral("volume", (1.0/3.0) * jac*xnormal);
-
 
 
      fillStr.addToGlobalIntegral("P_tension1",power1);

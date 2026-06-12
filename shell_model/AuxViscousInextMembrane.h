@@ -123,7 +123,6 @@ struct MembParams
         vnstep,
         gap,
 
-        timeStep,
         timestep,
 
         case_sphere,   // dparam[7]
@@ -189,7 +188,7 @@ struct MembParams
         {"k_p",0.8333},
         {"k_d",0.8333},
 
-        {"factor",1.0},
+        {"factor",0.0},
         {"vol_inc",1.0},
         {"tens1",1.0},
 
