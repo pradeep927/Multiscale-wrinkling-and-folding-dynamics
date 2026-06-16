@@ -49,44 +49,43 @@ int main(int argc, char *argv[])
     // ---------------------------------------------------------------------------
 
     // Initializing set of parameters
-    int    gPts;
-    double deltat;
-    int nCells;
-    double kp;
-    double kd;
-    double ConcInit;
-    double bvisc;
-    double lame1;
-    double lame2;
-    double activA;
-    double activB;
-    double activL;
-    double eta_f;
-    double contact_force_coefficient; // Contact force coefficient
-    double decrease_lateral_coefficient; // Multiply by 1.0 by default // 0.1 to decrease lateral elasticity moduli to improve numerical convergence when inflation is fast
+    int    gPts = 3;
+    double deltat = 0.001;
+    int nCells = 0;
+    double kp = 1.0;
+    double kd = 1.0;
+    double ConcInit = 0.03;
+    double bvisc = 0.5;
+    double lame1 = 1.0;
+    double lame2 = 1.0;
+    double activA = 1.0;
+    double activB = 1.0;
+    double activL = 0.5;
+    double eta_f = 1e-8;
+    double contact_force_coefficient = 0.01; // Contact force coefficient
+    double decrease_lateral_coefficient = 1.0; // Multiply by 1.0 by default // 0.1 to decrease lateral elasticity moduli to improve numerical convergence when inflation is fast
 
     // Buckling simulation parameters
-    double tcycle;
-    double tequi;
-    double inflation_begin;
-    double inflation_duration;
-    double deflation_duration;
-    double deflation_begin;
-    double totalTime;
-    double deltat_max;
-    double deflation_mag;
-    double inflation_mag;
+    double tcycle = 900;
+    double tequi = 1.0;
+    double inflation_begin      = 0.0;
+    double inflation_duration   = 10.0;
+    double inflation_mag        = 1.0;
+    double deflation_begin      = 15.0;
+    double deflation_duration   = 0.3;
+    double deflation_mag        = 0.50000;
+    double totalTime = 30.0;
+    double deltat_max = 1.0;
 
-    int    MAXITER;
-    int    nIterChange;
+    int    MAXITER = 10;
+    int    nIterChange = 5;
 
-    double SOLTOL;
-    double RESTOL;
-    int    nResSteps;
+    double SOLTOL = 1e-8;
+    double RESTOL = 1e-8;
 
     // dome volume increase dynamics
-    double domeInflrate;
-    double domeDeflrate;
+    double domeInflrate = 1506.844;
+    double domeDeflrate = -50228.1;
 
     // Model parameters and solver options are read from a configuration file
     if (argc > 1)
@@ -130,7 +129,6 @@ int main(int argc, char *argv[])
         config.readInto(MAXITER, "MAXITER");
         config.readInto(SOLTOL, "SOLTOL");
         config.readInto(RESTOL, "RESTOL");
-        config.readInto(nResSteps, "nResSteps");
         config.readInto(nIterChange, "nIterChange");
 
         // Dome inflation parameters
@@ -511,7 +509,7 @@ int main(int argc, char *argv[])
         timerstep.printTesting(prefix);
         if( tissuemesh.myRank() == 0 )
         {
-            cout << "Simulation time (min) : " << timer.getAccumulatedTime("total")/60.0 << endl;
+            cout << "Simulation time (min) : " << timer.printAccumTime("total")/60.0 << endl;
             cout << "-------------"<< endl;
             cout << endl;
         }
@@ -524,7 +522,7 @@ int main(int argc, char *argv[])
     if( tissuemesh.myRank() == 0 )
     {
         cout << "-----------------------------------------------------------------"    << endl;
-        cout << "Total simulation time (min) : " << timer.getAccumulatedTime("total")/60.0 << endl;
+        cout << "Total simulation time (min) : " << timer.printAccumTime("total")/60.0 << endl;
         cout << endl;
     }
 
