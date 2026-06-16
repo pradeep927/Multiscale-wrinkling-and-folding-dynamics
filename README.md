@@ -9,13 +9,21 @@ Distributed under the GNU GENERAL PUBLIC LICENSE. See [LICENSE](LICENSE) for det
 
 ## Hiperlife [[3](#References)]
 
-We use a parallel finite element library called hiperlife (High Performance Library for Finite Elements) (https://zenodo.org/doi/10.5281/zenodo.14927572), which serves as the core numerical engine for the simulations presented in this study. This library depends on other open-source libraries. The library is openly distributed to the community and is available online at {https://gitlab.com/hiperlife/hiperlife}. The aim of this library is to provide a computational framework to address problems of cell and tissue mechanobiology for a wide range of cases and users, with special focus on curved surfaces. The hiperlife is written in C++, uses the Message Passing Interface (MPI) paradigm for parallelism, and is built on top of several packages of the Trilinos Project. The installation of the hiperlife libraries can be carried out by following the guidelines provided at: {https://gitlab.com/hiperlife/hiperlife/-/blob/dev/INSTALL.md}. Prior to following the instructions for installation, it is necessary to clone the libraries via  Linux command {{git clone git@gitlab.com:hiperlife/hiperlife.git}} or download from {https://gitlab.com/hiperlife/hiperlife}.
+We use a parallel finite element library called hiperlife (High Performance Library for Finite Elements) (https://zenodo.org/doi/10.5281/zenodo.14927572), which serves as the core numerical engine for the simulations presented in this study. This library depends on other open-source libraries. The library is openly distributed to the community and is available online at https://gitlab.com/hiperlife/hiperlife. The aim of this library is to provide a computational framework to address problems of cell and tissue mechanobiology for a wide range of cases and users, with special focus on curved surfaces. The hiperlife is written in C++, uses the Message Passing Interface (MPI) paradigm for parallelism, and is built on top of several packages of the Trilinos Project. The installation of the hiperlife libraries can be carried out by following the guidelines provided at: https://gitlab.com/hiperlife/hiperlife/-/blob/dev/INSTALL.md. Prior to following the instructions for installation, it is necessary to clone the libraries via  Linux command 
+```bash
+git clone git@gitlab.com:hiperlife/hiperlife.git
+``` 
+or download from https://gitlab.com/hiperlife/hiperlife.
 Installation of hiperlife takes time (up to several hours) due to some dependencies 
 
 
 ## STEP 1: Installation of hiperlife
 
-The installation of the hiperlife libraries can be carried out by following the guidelines provided at: {https://gitlab.com/hiperlife/hiperlife/-/blob/dev/INSTALL.md?ref_type=heads}. Prior to following the instructions for installation, it is necessary to clone the libraries via  Linux command {{git clone git@gitlab.com:hiperlife/hiperlife.git}} or download the hiperlife repository from {https://gitlab.com/hiperlife/hiperlife} by clicking the dropdown icon with the name "code".
+The installation of the hiperlife libraries can be carried out by following the guidelines provided at: https://gitlab.com/hiperlife/hiperlife/-/blob/dev/INSTALL.md?ref_type=heads. Prior to following the instructions for installation, it is necessary to clone the libraries via  Linux command 
+```bash
+git clone git@gitlab.com:hiperlife/hiperlife.git
+``` 
+or download the hiperlife repository from https://gitlab.com/hiperlife/hiperlife by clicking the dropdown icon with the name "code".
 
 ## STEP 2: Code Organization and Project Setup
 
@@ -25,7 +33,7 @@ The folder shell_model implements the phenomenological continuum shell model use
 The folder vertex_model implements a curved-surface epithelial vertex model in which the tissue is represented as a network of polygonal cells connected through shared cell-cell interfaces. The model incorporates the mechanical contributions of cell area elasticity, perimeter contractility, and junctional tension and is used to investigate epithelial tissue mechanics, morphogenesis, and topological rearrangements. The formulation is designed to operate on curved epithelial geometries and provides a complementary discrete description of tissue mechanics that can be directly compared with the continuum shell-based approaches developed in this work.
 
 
-Each application resides in its own folder and contains a local CMakeLists.txt file that defines the corresponding executable and model-specific source files. The code used in this study is openly available at https://github.com/pradeep927/mechanics_of_epithelial_domes.
+Each application resides in its own folder and contains a local CMakeLists.txt file that defines the corresponding executable and model-specific source files. The code used in this study is openly available at https://github.com/pradeep927/Multiscale-wrinkling-and-folding-dynamics.
 
 The build system relies on CMake to configure and manage the compilation. Two additional files are located in the project root directory: cmake.project.ubuntu.20.04.sh, a shell script that automates the configuration process on Ubuntu systems, and userConfig.cmake, a configuration file where the paths to hiperlife, Trilinos, and other required dependencies are specified.
 
