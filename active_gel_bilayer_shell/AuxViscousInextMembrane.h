@@ -34,14 +34,6 @@ using namespace hiperlife;
 using Teuchos::rcp;
 using Teuchos::RCP;
 
-
-
-
-
-
-
-
-
 struct MembParams
 {
     enum RealParameters
@@ -83,7 +75,6 @@ struct MembParams
         fric3,
         apical,
         basal,
-        spring,
         forward_new,
         Xmax,
         k_p,
@@ -99,37 +90,35 @@ struct MembParams
         ang,
         ang_old
     };
+
     enum IntParameters
     {
         tens_start,
         fric_start,
         gap_step,
+        spring,
         control_fric,
         vn_gap,
         vnstep,
         gap,
-        timeStep,
         timestep,
         case_sphere,
         choice,
         time_target
     };
+
     HL_PARAMETER_LIST DefaultValues
   {
                         {"deltat", 0.0001},
                         {"fric", 0.1},
                         {"young", 1.0},
-
                         {"poisson", 0.25},
                         {"force", 0.0},
                         {"thick", 0.01},
-
-                        {"tens_start", -10000},
                         {"fric_fact",1.0},
                         {"fric2",1.0},
                         {"aap",1.0},
-                        {"R",10.0},
-
+                        {"R",1.0},
                         {"kappa",0.0},
                         {"bbn",0.0},
                         {"width",0.0},
@@ -147,13 +136,25 @@ struct MembParams
                         {"a33", 1.0},
                         {"kap1", 1.0},
                         {"crypt", 1.0},
+                        {"gamma",1.0},
                         {"gamma_minus", 1.0},
                         {"gamma_plus", 1.0},
                         {"gamma_l", 1.0},
-                        {"factor", 1.0},
+                        {"factor", 0.0},
                         {"vol_inc", 1.0},
                         {"tens1", 1.0},
-                       {"fact_elastic", 1.0}
+                       {"fact_elastic", 1.0},
+                        {"gap_step",100},
+                      {"control_fric",6000},
+                      {"vn_gap",400},
+                       {"vnstep",500},
+                        {"gap",5000},
+                        {"timestep",0},
+                         {"case_sphere",0},
+                         {"choice",100},
+                         {"spring",0},
+                        {"tens_start",-10000}
+
 
                     };
 };

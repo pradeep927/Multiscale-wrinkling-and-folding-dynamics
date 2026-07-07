@@ -1,8 +1,5 @@
 
 
-#include "Amesos.h"
-
-
 /// hiperlife headers
 #include "hl_FillStructure.h"
 #include "hl_Geometry.h"
@@ -11,6 +8,7 @@
 //#include "hl_LinearSolver_Direct_Amesos2.h"
 #include <hl_LinearSolver_Direct_MUMPS.h>
 #include <fstream>
+#include "hl_Parser.h"
 
 /// Header to auxiliary functions
 #include "AuxViscousInextMembrane.h"
@@ -33,20 +31,20 @@ void LS(hiperlife::FillStructure& fillStr)
     int numAuxF = subFill.numAuxF;
 
 
-    tensor<double, 2,false> nborDOFs0(subFill.nborDOFs0.data(), eNN, numDOFs);
-    tensor<double, 2,false> nborDOFs(subFill.nborDOFs.data(), eNN, numDOFs);
-    tensor<double, 2,false> nborCoords(subFill.nborCoords.data(), eNN, nDim);
-    tensor<double,2,false> nborAuxF(subFill.nborAuxF.data(),eNN,numAuxF);
+    wrapper<double, 2> nborDOFs0(subFill.nborDOFs0.data(), eNN, numDOFs);
+    wrapper<double, 2> nborDOFs(subFill.nborDOFs.data(), eNN, numDOFs);
+    wrapper<double, 2> nborCoords(subFill.nborCoords.data(), eNN, nDim);
+    wrapper<double,2> nborAuxF(subFill.nborAuxF.data(),eNN,numAuxF);
 
-    tensor<double, 1,false> bf(subFill.nborBFs(), eNN);
-    tensor<double, 2,false> Dbf(subFill.nborBFsGrads(), eNN, pDim);
-    tensor<double, 3,false> DDbf(subFill.nborBFsHess(), eNN, pDim, pDim);
+    wrapper<double, 1> bf(subFill.nborBFs(), eNN);
+    wrapper<double, 2> Dbf(subFill.nborBFsGrads(), eNN, pDim);
+    wrapper<double, 3> DDbf(subFill.nborBFsHess(), eNN, pDim, pDim);
 
     //[1.3] Global constraints
     auto &g_subFill = (fillStr)["gloDHand"];
     int g_numDOFs = g_subFill.numDOFs;
 
-    tensor<double, 1,false> gDOFs(g_subFill.nborDOFs.data(), g_numDOFs);
+    wrapper<double, 1> gDOFs(g_subFill.nborDOFs.data(), g_numDOFs);
     double pressure = gDOFs(0);
     tensor<double, 1> F = gDOFs(range(1, 3));
     tensor<double, 1> L = gDOFs(range(4, 6));
@@ -61,7 +59,7 @@ void LS(hiperlife::FillStructure& fillStr)
 
 
 
-    double nu = fillStr.getRealParameter(MembParams::nu);
+    double nu = fillStr.getRealParameter(MembParams::poisson);
 
  double thick = fillStr.getRealParameter(MembParams::thick);
  double Kconf = fillStr.getRealParameter(MembParams::Kconf) * deltat;
@@ -110,8 +108,8 @@ int vnstep=    fillStr.getIntParameter(MembParams::vnstep);
     double sp_gap= fillStr.getRealParameter(MembParams::sp_gap) ;
 
     double tens_factor   = fillStr.getRealParameter(MembParams::tens_factor);
-    double spring= fillStr.getRealParameter(MembParams::spring);
-    int fric_start = vnstep+gap;;
+    int spring= fillStr.getIntParameter(MembParams::spring);
+    int fric_start = fillStr.getIntParameter(MembParams::fric_start);
 
 
     double crypt=fillStr.getRealParameter(MembParams::crypt);
@@ -127,12 +125,12 @@ int vnstep=    fillStr.getIntParameter(MembParams::vnstep);
 
     int numDOFs1=3;
     //OUTPUTS
-    tensor<double, 2,false> Bp(fillStr.Bk(0).data(), eNN, numDOFs);
-    tensor<double, 1,false> Bg(fillStr.Bk(1).data(), g_numDOFs);
+    wrapper<double, 2> Bp(fillStr.Bk(0).data(), eNN, numDOFs);
+    wrapper<double, 1> Bg(fillStr.Bk(1).data(), g_numDOFs);
 
-    tensor<double, 4,false> App(fillStr.Ak(0, 0).data(), eNN, numDOFs, eNN, numDOFs);
-    tensor<double, 3,false> Apg(fillStr.Ak(0, 1).data(), eNN, numDOFs, g_numDOFs);
-    tensor<double, 3,false> Agp(fillStr.Ak(1, 0).data(), g_numDOFs, eNN, numDOFs);
+    wrapper<double, 4> App(fillStr.Ak(0, 0).data(), eNN, numDOFs, eNN, numDOFs);
+    wrapper<double, 3> Apg(fillStr.Ak(0, 1).data(), eNN, numDOFs, g_numDOFs);
+    wrapper<double, 3> Agp(fillStr.Ak(1, 0).data(), g_numDOFs, eNN, numDOFs);
 
 
     //------------------------------------------------------------------
@@ -201,7 +199,7 @@ int vnstep=    fillStr.getIntParameter(MembParams::vnstep);
         //double fact=0.5+0.5* tanh(width * (1.4*height_in - x_n(2)));
 
  double arg = width * (1.05 * height_in - x_n(2)); //1.05
-double fact = 0.5 + 0.5 * std::tanh(arg);
+ double fact = 0.5 + 0.5 * std::tanh(arg);
 
 
         double kspr_in=kspr*fact;
@@ -2031,7 +2029,7 @@ tensor<double,1> M3(pDim);
 
     double* auxiliary_a = &fillStr.paramStr->a_aux[(subFill.loc_elemID*subFill.cubaInfo.iPts+subFill.kPt)*88];
 
-      auxiliary_a[0]  = x(0);
+    auxiliary_a[0]  = x(0);
     auxiliary_a[1]  = x(1);
     auxiliary_a[2]  = x(2);
 
@@ -2189,18 +2187,18 @@ auxiliary_a[87]  =jacC;
     int eNN     = subFill.eNN;
 
     //Coordinates and degrees of freedom
-    tensor<double,2,false> nborCoords(subFill.nborCoords.data(),eNN,nDim);
-    tensor<double,2,false> nborDOFs0(subFill.nborDOFs0.data(),eNN,numDOFs);
-    tensor<double,2,false> nborDOFs(subFill.nborDOFs.data(),eNN,numDOFs);
+    wrapper<double,2> nborCoords(subFill.nborCoords.data(),eNN,nDim);
+    wrapper<double,2> nborDOFs0(subFill.nborDOFs0.data(),eNN,numDOFs);
+    wrapper<double,2> nborDOFs(subFill.nborDOFs.data(),eNN,numDOFs);
 
     //Basis functions and derivatives
-    tensor<double,1,false>    bf(subFill.nborBFsDers(0),eNN);
-    tensor<double,2,false>   Dbf(subFill.nborBFsDers(1),eNN,pDim);
-    tensor<double,3,false>  DDbf(subFill.nborBFsDers(2),eNN,pDim,pDim);
+    wrapper<double,1>    bf(subFill.nborBFsDers(0),eNN);
+    wrapper<double,2>   Dbf(subFill.nborBFsDers(1),eNN,pDim);
+    wrapper<double,3>  DDbf(subFill.nborBFsDers(2),eNN,pDim,pDim);
 
     //output
-    tensor<double,2,false>  Bk(fillStr.Bk(0).data(),eNN,numDOFs);
-    tensor<double,4,false>  Ak(fillStr.Ak(0,0).data(),eNN,numDOFs,eNN,numDOFs);
+    wrapper<double,2>  Bk(fillStr.Bk(0).data(),eNN,numDOFs);
+    wrapper<double,4>  Ak(fillStr.Ak(0,0).data(),eNN,numDOFs,eNN,numDOFs);
 
 
     // --------------------------------------------
@@ -2229,23 +2227,23 @@ auxiliary_a[87]  =jacC;
     // --------------------------------------------
     //FIXME: this has to be loaded from some structure
     double* auxiliary_a = &fillStr.paramStr->a_aux[(subFill.loc_elemID*subFill.cubaInfo.iPts+subFill.kPt)*88];
-    tensor<double,1,false>      x(&auxiliary_a[0],3);
-    tensor<double,2,false> metric_gp(&auxiliary_a[3],2,2);
-    tensor<double,2,false> metric_gn(&auxiliary_a[7],2,2);
-    tensor<double,2,false> delWP_delGP(&auxiliary_a[11],2,2);
-    tensor<double,2,false> delWN_delGN(&auxiliary_a[15],2,2);
+    wrapper<double,1>      x(&auxiliary_a[0],3);
+    wrapper<double,2> metric_gp(&auxiliary_a[3],2,2);
+    wrapper<double,2> metric_gn(&auxiliary_a[7],2,2);
+    wrapper<double,2> delWP_delGP(&auxiliary_a[11],2,2);
+    wrapper<double,2> delWN_delGN(&auxiliary_a[15],2,2);
 
-    tensor<double,2,false> imetric_GPR(&auxiliary_a[35],2,2);
-    tensor<double,2,false>imetric_GNR(&auxiliary_a[39],2,2);
+    wrapper<double,2> imetric_GPR(&auxiliary_a[35],2,2);
+    wrapper<double,2>imetric_GNR(&auxiliary_a[39],2,2);
     tensor<double,2> metric_GPR=imetric_GPR.inv();
     tensor<double,2> metric_GNR=imetric_GNR.inv();
 
-   tensor<double,2,false>GP(&auxiliary_a[43],2,2);
-   tensor<double,2,false>GN(&auxiliary_a[47],2,2);
+   wrapper<double,2>GP(&auxiliary_a[43],2,2);
+   wrapper<double,2>GN(&auxiliary_a[47],2,2);
 
-    tensor<double,2,false>CL1(&auxiliary_a[54],2,2);
-    tensor<double,2,false>CL2(&auxiliary_a[58],2,2);
-    tensor<double,2,false>CL3(&auxiliary_a[62],2,2);
+    wrapper<double,2>CL1(&auxiliary_a[54],2,2);
+    wrapper<double,2>CL2(&auxiliary_a[58],2,2);
+    wrapper<double,2>CL3(&auxiliary_a[62],2,2);
 
     //Jacobian
     double jacR= auxiliary_a[19];
@@ -3200,15 +3198,15 @@ void LS_ED(hiperlife::FillStructure& fillStr)
     double deltat = fillStr.paramStr->dparam[2];
 
     //Coordinates and degrees of freedom
-    tensor<double,2,false> nborCoords(subFill.nborCoords.data(),eNN,nDim);
+    wrapper<double,2> nborCoords(subFill.nborCoords.data(),eNN,nDim);
 
 
     //Basis functions and derivatives
-    tensor<double,1,false>    bf(subFill.nborBFsDers(0),eNN);
+    wrapper<double,1>    bf(subFill.nborBFsDers(0),eNN);
 
     //output
-    tensor<double,2,false>  Bk1(fillStr.Bk(0).data(),eNN,numDOFs);
-    tensor<double,4,false>  Ak1(fillStr.Ak(0,0).data(),eNN,numDOFs,eNN,numDOFs);
+    wrapper<double,2>  Bk1(fillStr.Bk(0).data(),eNN,numDOFs);
+    wrapper<double,4>  Ak1(fillStr.Ak(0,0).data(),eNN,numDOFs,eNN,numDOFs);
 
 
     // --------------------------------------------
@@ -3316,18 +3314,18 @@ void LS_Rho(hiperlife::FillStructure& fillStr)
     double k_d=fillStr.getRealParameter(MembParams::k_d)*deltat;
 
     //Coordinates and degrees of freedom
-    tensor<double,2,false> nborCoords(subFill.nborCoords.data(),eNN,nDim);
-    tensor<double,2,false> nborDOFs0(subFill.nborDOFs0.data(),eNN,numDOFs);
-    tensor<double,2,false> nborDOFs(subFill.nborDOFs.data(),eNN,numDOFs);
+    wrapper<double,2> nborCoords(subFill.nborCoords.data(),eNN,nDim);
+    wrapper<double,2> nborDOFs0(subFill.nborDOFs0.data(),eNN,numDOFs);
+    wrapper<double,2> nborDOFs(subFill.nborDOFs.data(),eNN,numDOFs);
 
     //Basis functions and derivatives
-    tensor<double,1,false>    bf(subFill.nborBFsDers(0),eNN);
+    wrapper<double,1>    bf(subFill.nborBFsDers(0),eNN);
    // tensor<double,2>   Dbf(subFill.nborBFsDers(1),eNN,pDim);
    // tensor<double,3>  DDbf(subFill.nborBFsDers(2),eNN,pDim,pDim);
 
     //output
-    tensor<double,2,false>  Bk2(fillStr.Bk(0).data(),eNN,numDOFs);
-    tensor<double,4,false>  Ak2(fillStr.Ak(0,0).data(),eNN,numDOFs,eNN,numDOFs);
+    wrapper<double,2>  Bk2(fillStr.Bk(0).data(),eNN,numDOFs);
+    wrapper<double,4>  Ak2(fillStr.Ak(0,0).data(),eNN,numDOFs,eNN,numDOFs);
 
 
     // --------------------------------------------
@@ -3432,12 +3430,12 @@ void LS_node_end(hiperlife::FillStructure& fillStr)
 
 
     //Coordinates and degrees of freedom
-    tensor<double,2,false> nborCoords(subFill.nborCoords.data(),eNN,nDim);
-    tensor<double,2,false> nborDOFs0(subFill.nborDOFs0.data(),eNN,numDOFs);
-    tensor<double,2,false> nborDOFs(subFill.nborDOFs.data(),eNN,numDOFs);
+    wrapper<double,2> nborCoords(subFill.nborCoords.data(),eNN,nDim);
+    wrapper<double,2> nborDOFs0(subFill.nborDOFs0.data(),eNN,numDOFs);
+    wrapper<double,2> nborDOFs(subFill.nborDOFs.data(),eNN,numDOFs);
 
     //Basis functions and derivatives
-    tensor<double,1,false>    bf(subFill.nborBFsDers(0),eNN);
+    wrapper<double,1>    bf(subFill.nborBFsDers(0),eNN);
    // tensor<double,2>   Dbf(subFill.nborBFsDers(1),eNN,pDim);
    // tensor<double,3>  DDbf(subFill.nborBFsDers(2),eNN,pDim,pDim);
 
@@ -3473,7 +3471,7 @@ void LS_node_end(hiperlife::FillStructure& fillStr)
 
 //Rhs
 
-    tensor<double,1,false>      x(&auxiliary_a[0],3);
+    wrapper<double,1>      x(&auxiliary_a[0],3);
 
 
 double* auxiliary_c = &fillStr.paramStr->c_aux[(subFill.loc_elemID*subFill.cubaInfo.iPts+subFill.kPt)*9];

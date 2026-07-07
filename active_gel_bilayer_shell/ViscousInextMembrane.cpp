@@ -4,7 +4,6 @@
 #include <mpi.h>
 
 // Trilinos headers
-#include <Teuchos_RCP.hpp>
 #include <math.h>
 
 // hiperlife headers
@@ -33,12 +32,10 @@
 
 
 
-int main (int argc, char *argv[])
+int main (int argc, char** argv)
 {
     using namespace std;
     using namespace hiperlife;
-    using Teuchos::rcp;
-    using Teuchos::RCP;
     using namespace hiperlife::Tensor;
 
 
@@ -61,11 +58,11 @@ int main (int argc, char *argv[])
 
 
     //Cortex model parameters
-    double  k_p{0.8333},k_d{0.8333}, factor{0.333},v_inc{0.0}, vol_start{0.0};
+    double  k_p{0.8333},k_d{0.8333},v_inc{0.0}, vol_start{0.0}, factor1{0.333};
     {
         config.readInto(k_p, "k_p");
         config.readInto(k_d, "k_d");
-        config.readInto(factor, "factor");
+        config.readInto(factor1, "factor");
         config.readInto(v_inc, "v_inc");
         config.readInto(vol_start, "vol_start");
 
@@ -147,10 +144,10 @@ int main (int argc, char *argv[])
     v_target=v_target*(R);
     //Simulation time settings
     int nSave{},hl_print{1000},stretch_start{26000};
-    double deltat{}, deltatMax{}, square{0.0},totalTime{}, tSimu{}, stepFactor{},stretch_xx{0.001},pn{1.0},f0_factor{1.0},fric_fact{1},height_in{0.05},fric2{0.015}, v_rn_step{1000.0}, vol_inc{1.0},control_dt{0.0001},v_cont{0.98},out_fact{1.2},thin_shell{0.0}, case_tension{0.0};
+    double  deltatMax{}, deltat1{0.0001}, square{0.0},totalTime{}, tSimu{}, stepFactor{},stretch_xx{0.001},pn{1.0},f0_factor{1.0},fric_fact{1},height_in{0.05},fric2{0.015}, v_rn_step{1000.0}, vol_inc{1.0},control_dt{0.0001},v_cont{0.98},out_fact{1.2},thin_shell{0.0}, case_tension{0.0};
     int restart{}, totalSteps{}, nPrint{10},ConsCheck{},nstep{50} ,vnstep{500},tens_start{2},choice{100}, control_steps{400}, gap{2000}, test_jac{0},stretch_step{100};
     {
-        config.readInto(deltat, "deltat");
+        config.readInto(deltat1, "deltat");
         config.readInto(deltatMax, "deltatMax");
         config.readInto(totalTime, "totalTime");
         config.readInto(totalSteps, "totalSteps");
@@ -228,16 +225,17 @@ int main (int argc, char *argv[])
 
 
     //Set structure
-    SmartPtr<ParamStructure> paramStr = CreateParamStructure<MembParams>();
+    //
+SmartPtr<ParamStructure> paramStr = CreateParamStructure<MembParams>();
 
-paramStr->setRealParameter(MembParams::deltat, deltat);
+//paramStr->setRealParameter(MembParams::deltat, deltat);
 paramStr->setRealParameter(MembParams::fric, fric);
 
 paramStr->setRealParameter(MembParams::young, young);
 paramStr->setRealParameter(MembParams::poisson, poisson);
 paramStr->setRealParameter(MembParams::thick, thick);
 
-paramStr->setRealParameter(MembParams::force, force);
+paramStr->setRealParameter(MembParams::force, 0.0);
 paramStr->setRealParameter(MembParams::gamma, gamma);
 
 paramStr->setIntParameter(MembParams::tens_start, tens_start);
@@ -258,7 +256,7 @@ paramStr->setRealParameter(MembParams::apical, apical);
 paramStr->setRealParameter(MembParams::basal, basal);
 
 paramStr->setIntParameter(MembParams::time_target, time_target);
-paramStr->setRealParameter(MembParams::spring, spring);
+paramStr->setIntParameter(MembParams::spring, spring);
 
 paramStr->setRealParameter(MembParams::tens_factor, tens_factor);
 
@@ -269,8 +267,11 @@ paramStr->setIntParameter(MembParams::case_sphere, case_sphere);
 paramStr->setRealParameter(MembParams::height_in, height_in);
 
 paramStr->setRealParameter(MembParams::Kconf, Kconf);
+ paramStr->setIntParameter(MembParams::fric_start,vnstep + gap);
+    
+    
 paramStr->setIntParameter(MembParams::vnstep,  vnstep);
-    paramStr->setIntParameter(MembParams::gap,  gap);
+paramStr->setIntParameter(MembParams::gap,  gap);
 
 
 paramStr->setRealParameter(MembParams::f0, f0);
@@ -289,7 +290,7 @@ paramStr->setRealParameter(MembParams::a12, a12);
 paramStr->setRealParameter(MembParams::a33, a33);
 
 paramStr->setRealParameter(MembParams::kap1, kap1);
-    paramStr->setRealParameter(MembParams::crypt, crypt);
+paramStr->setRealParameter(MembParams::crypt, crypt);
 
 paramStr->setRealParameter(MembParams::gamma_minus, gamma_minus);
 paramStr->setRealParameter(MembParams::gamma_plus, gamma_plus);
@@ -299,13 +300,15 @@ paramStr->setRealParameter(MembParams::gamma_plus, gamma_plus);
 paramStr->setRealParameter(MembParams::gamma_l, gamma_l);
 
 paramStr->setRealParameter(MembParams::forward_new, forward_new);
-
 paramStr->setIntParameter(MembParams::choice, choice);
-
 paramStr->setRealParameter(MembParams::Xmax, Xmax);
-
 paramStr->setRealParameter(MembParams::k_p, k_p);
 paramStr->setRealParameter(MembParams::k_d, k_d);
+    
+    
+    paramStr->setRealParameter(MembParams::deltat,deltat1);
+    paramStr->setIntParameter(MembParams::timestep,restart);
+    paramStr->setRealParameter(MembParams::factor,factor1);
         //Output
         if (myRank == 0)
         {
@@ -369,8 +372,8 @@ paramStr->setRealParameter(MembParams::k_d, k_d);
     // Time related parameters
     string sol_prefixMesh = "sol";
     double vol_step=1;
-    RCP<DistributedMesh> posDisMesh,gloDisMesh,tensDisMesh;
-    RCP<DOFsHandler> posDHand, gloDHand,viscoDHand,EDHand, RhoDHand, xyzDHand ;
+    SmartPtr<DistributedMesh> posDisMesh,gloDisMesh,tensDisMesh;
+    SmartPtr<DOFsHandler>  posDHand, gloDHand,viscoDHand,EDHand, RhoDHand, xyzDHand ;
 
     if (restart == 0)
     {
@@ -380,11 +383,11 @@ paramStr->setRealParameter(MembParams::k_d, k_d);
         // **************************************************************//
 
         // Load mesh with MeshLoader
-        RCP <MeshLoader> mesh = rcp(new MeshLoader);
+    SmartPtr<MeshLoader> mesh =  Create<MeshLoader>();
 	if(square<0.1)
 	{
         if (subdiv>0.1)
-            {
+        {
             mesh->setMesh(ElemType::Triang, BasisFuncType::SubdivSurfs, 2);
         }
        else {
@@ -416,7 +419,7 @@ paramStr->setRealParameter(MembParams::k_d, k_d);
 if(mesh_refine<1.0)
 {
     // Distribute mesh for position
-    posDisMesh = rcp(new DistributedMesh);
+    posDisMesh = Create<DistributedMesh>();
     posDisMesh->setMesh(mesh);
     posDisMesh->setBalanceMesh(true);
     posDisMesh->Update();
@@ -427,7 +430,7 @@ else
 {
 
     // Distribute mesh for tension
-    tensDisMesh = rcp(new DistributedMesh);
+    tensDisMesh = Create<DistributedMesh>();
     tensDisMesh->setMesh(mesh);
     tensDisMesh->setBalanceMesh(true);
     tensDisMesh->Update();
@@ -435,7 +438,7 @@ else
 
 
     // Distribute mesh for positions
-    posDisMesh = rcp(new DistributedMesh);
+    posDisMesh = Create<DistributedMesh>();
     posDisMesh->setHRefinement(1);
     posDisMesh->setMeshRelation(MeshRelation::hRefin, tensDisMesh);
     posDisMesh->setBalanceMesh(true);
@@ -445,7 +448,7 @@ else
 }
 
         // Distribute mesh global constraints
-        gloDisMesh = rcp(new DistributedMesh);
+        gloDisMesh = Create<DistributedMesh>();
         gloDisMesh->setMeshRelation(MeshRelation::GlobConstr, posDisMesh);
         gloDisMesh->setBalanceMesh(false);
         gloDisMesh->Update();
@@ -457,7 +460,7 @@ else
         // **************************************************************//
 
 // CREATE VISCO DOF HAND
-        viscoDHand = rcp(new DOFsHandler(posDisMesh));
+        viscoDHand = Create<DOFsHandler>(posDisMesh);
         try
         {
             viscoDHand->setNameTag("viscoDHand");
@@ -504,7 +507,7 @@ else
         LocMongeParam::computeLocal3DBasis(posDisMesh, viscoDHand->nodeAuxF);// assign auxiliary
         viscoDHand->UpdateGhosts();
 //POSITION DOF
-        posDHand = rcp(new DOFsHandler(posDisMesh));
+        posDHand = Create<DOFsHandler>(posDisMesh);
         try
         {
             posDHand->setNameTag("posDHand");
@@ -585,9 +588,9 @@ else
             int crease = posDisMesh->nodeCrease(i, hiperlife::IndexType::Local);
            if (crease > 0)
             {
-               posDHand->setConstraint(0, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(1, i, hiperlife::IndexType::Local, 0.0);
-                        posDHand->setConstraint(2, i, hiperlife::IndexType::Local, 0.0);
+                posDHand->setConstraint(0, i, hiperlife::IndexType::Local, 0.0);
+                posDHand->setConstraint(1, i, hiperlife::IndexType::Local, 0.0);
+               posDHand->setConstraint(2, i, hiperlife::IndexType::Local, 0.0);
 
                posDHand->setConstraint(3, i, hiperlife::IndexType::Local, 0.0);
                posDHand->setConstraint(4, i, hiperlife::IndexType::Local, 0.0);
@@ -677,7 +680,7 @@ else
 
         viscoDHand->printFileLegacyVtk("checkinitialV", true);
 
-        EDHand = rcp(new DOFsHandler(posDisMesh));
+        EDHand = Create<DOFsHandler>(posDisMesh);
         try
         {
             EDHand->setNameTag("EDHand");
@@ -704,7 +707,7 @@ else
 
 //
 
-        RhoDHand = rcp(new DOFsHandler(posDisMesh));
+        RhoDHand = Create<DOFsHandler>(posDisMesh);
         try
         {
             RhoDHand->setNameTag("RhoDHand");
@@ -739,7 +742,7 @@ else
 
         //
 
-        xyzDHand = rcp(new DOFsHandler(posDisMesh));
+        xyzDHand = Create<DOFsHandler>(posDisMesh);
         try
         {
             xyzDHand->setNameTag("xyzDHand");
@@ -773,7 +776,7 @@ else
         xyzDHand->printFileLegacyVtk("checkinitialxyz", true);
 
 
-        gloDHand = rcp(new DOFsHandler(gloDisMesh));
+        gloDHand = Create<DOFsHandler>(gloDisMesh);
         try
         {
 
@@ -815,7 +818,7 @@ else
         //Cortex
         try
         {
-            posDHand = rcp(new DOFsHandler("posDHand"));
+            posDHand = Create<DOFsHandler>("posDHand");
             string fMesh = "sol_pos." + to_string(restart);
             posDHand->setFilePrefix(fMesh, OutputMode::Text);
             posDHand->setNumNodeAuxF(15);
@@ -833,7 +836,7 @@ else
 //VISCO
         try
         {
-            viscoDHand = rcp(new DOFsHandler("viscoDHand"));
+           viscoDHand = Create<DOFsHandler>("viscoDHand");
             string fMesh = "sol_visco." + to_string(restart);
             viscoDHand->setFilePrefix(fMesh, OutputMode::Text);
             viscoDHand->setNumNodeAuxF(9);
@@ -849,7 +852,7 @@ else
 //ENERGY HAND
         try
         {
-            EDHand = rcp(new DOFsHandler("EDHand"));
+            EDHand = Create<DOFsHandler>("EDHand");
             string fMesh = "sol_EN." + to_string(restart);
             EDHand->setFilePrefix(fMesh, OutputMode::Text);
             EDHand->Update();
@@ -864,7 +867,7 @@ else
 
         try
         {
-            RhoDHand = rcp(new DOFsHandler("RhoDHand"));
+            RhoDHand = Create<DOFsHandler>("RhoDHand");
             string fMesh = "sol_rho." + to_string(restart);
             RhoDHand->setFilePrefix(fMesh, OutputMode::Text);
             RhoDHand->Update();
@@ -879,7 +882,8 @@ else
 
          try
         {
-            xyzDHand = rcp(new DOFsHandler("xyzDHand"));
+            xyzDHand = Create<DOFsHandler>("xyzDHand");
+
             string fMesh = "sol_xyz." + to_string(restart);
             xyzDHand->setFilePrefix(fMesh, OutputMode::Text);
             xyzDHand->Update();
@@ -896,7 +900,8 @@ else
         //Global constraints
         try
         {
-            gloDHand = rcp(new DOFsHandler("gloDHand"));
+            gloDHand = Create<DOFsHandler>("gloDHand");
+
             string fMesh = "sol_gloCons." + to_string(restart);
             gloDHand->setFilePrefix(fMesh, OutputMode::Text);
             gloDHand->Update();
@@ -929,7 +934,7 @@ else
     {
         // Set UserStructure
         hiperProbl->setParameterStructure(paramStr);
-        hiperProbl->setConsistencyCheckDelta(1.E-8);
+        hiperProbl->setConsistencyCheckDelta(1.E-6);
         hiperProbl->setConsistencyCheckTolerance(1.E-4);
 
         // Set DOFHandler
@@ -1004,7 +1009,7 @@ xyzProbl->setParameterStructure(paramStr);
     // **************************************************************//
 
 
-    RCP<MUMPSDirectLinearSolver> linSolver = rcp(new MUMPSDirectLinearSolver());
+    SmartPtr<MUMPSDirectLinearSolver> linSolver = Create<MUMPSDirectLinearSolver>();
     linSolver->setHiPerProblem(hiperProbl);
     linSolver->setMatrixType(MUMPSDirectLinearSolver::MatrixType::General);
     linSolver->setAnalysisType(MUMPSDirectLinearSolver::AnalysisType::Parallel);
@@ -1014,12 +1019,12 @@ xyzProbl->setParameterStructure(paramStr);
     linSolver->setWorkSpaceMemoryIncrease(1000);
     linSolver->Update();
 
-    RCP<NewtonRaphsonNonlinearSolver> nonlinSolver = rcp(new NewtonRaphsonNonlinearSolver());
+    SmartPtr<NewtonRaphsonNonlinearSolver> nonlinSolver = Create<NewtonRaphsonNonlinearSolver>();
     nonlinSolver->setLinearSolver(linSolver);
     nonlinSolver->setMaxNumIterations(MAXITER_NR);
     nonlinSolver->setResTolerance(RESTOL_NR);
     nonlinSolver->setSolTolerance(SOLTOL_NR);
-    nonlinSolver->setLineSearch(true);
+    nonlinSolver->setLineSearch(false);
     nonlinSolver->setConvRelTolerance(false);
     nonlinSolver->setPrintIntermInfo(true);
     nonlinSolver->setPrintSummary(false);
@@ -1028,7 +1033,7 @@ xyzProbl->setParameterStructure(paramStr);
     nonlinSolver->setExitRelMaximum(1E4);
     nonlinSolver->Update();
 
-    RCP<MUMPSDirectLinearSolver>viscoDirSolver= rcp(new MUMPSDirectLinearSolver());
+    SmartPtr<MUMPSDirectLinearSolver>viscoDirSolver= Create<MUMPSDirectLinearSolver>();
     viscoDirSolver->setHiPerProblem(viscoProbl);
     viscoDirSolver->setMatrixType(MUMPSDirectLinearSolver::MatrixType::General);
     viscoDirSolver->setAnalysisType(MUMPSDirectLinearSolver::AnalysisType::Parallel);
@@ -1039,7 +1044,7 @@ xyzProbl->setParameterStructure(paramStr);
     viscoDirSolver->Update();
 
 
-    RCP<MUMPSDirectLinearSolver>ENDirSolver= rcp(new MUMPSDirectLinearSolver());
+    SmartPtr<MUMPSDirectLinearSolver>ENDirSolver=Create<MUMPSDirectLinearSolver>();
     ENDirSolver->setHiPerProblem(ENProbl);
     ENDirSolver->setMatrixType(MUMPSDirectLinearSolver::MatrixType::General);
     ENDirSolver->setAnalysisType(MUMPSDirectLinearSolver::AnalysisType::Parallel);
@@ -1050,7 +1055,7 @@ xyzProbl->setParameterStructure(paramStr);
     ENDirSolver->Update();
 
 
-    RCP<MUMPSDirectLinearSolver>RhoDirSolver= rcp(new MUMPSDirectLinearSolver());
+    SmartPtr<MUMPSDirectLinearSolver>RhoDirSolver= Create<MUMPSDirectLinearSolver>();
     RhoDirSolver->setHiPerProblem(RhoProbl);
     RhoDirSolver->setMatrixType(MUMPSDirectLinearSolver::MatrixType::General);
     RhoDirSolver->setAnalysisType(MUMPSDirectLinearSolver::AnalysisType::Parallel);
@@ -1063,21 +1068,10 @@ xyzProbl->setParameterStructure(paramStr);
 
 
     hiperProbl->FillLinearSystem();
-
-
-
     viscoProbl->FillLinearSystem();
-
-
-
     RhoProbl->FillLinearSystem();
-
-
     hiperProbl->FillLinearSystem();
-
     xyzProbl->FillLinearSystem();
-
-
     ENProbl->FillLinearSystem();
 
     double a0{3.141};
@@ -1127,34 +1121,35 @@ double a_res=a0-base_area;
     double strain=0.0;
     double Z_max=1.0;
     // Time loop
-    int timeStep=restart;
+   // int timestep=restart;
     int stretch_ind=0;
-    int fric_start = gap+vnstep;
 
-//print initial
+    //print initial
+    double& deltat = paramStr->getRealParameter(MembParams::deltat);
+    int& timestep = paramStr->getIntParameter(MembParams::timestep);
+    double& factor=paramStr->getRealParameter(MembParams::factor);
 
-    string solName = "sol_dis." + to_string(timeStep);
+    string solName = "sol_dis." + to_string(timestep);
     posDHand->printFileLegacyVtk(solName,true);
-    solName = "sol_visco." + to_string(timeStep);
+    solName = "sol_visco." + to_string(timestep);
     viscoDHand->printFileLegacyVtk(solName,true);
-    solName = "sol_rho." + to_string(timeStep);
+    solName = "sol_rho." + to_string(timestep);
     RhoDHand->printFileLegacyVtk(solName,true);
 
     double v0=v_target*a0;
 
     double deltatMax1=deltatMax;
-    double factor1=factor;
     //  factor=v_target;
     if (myRank == 0)
-        cout<<"input factor for volume 0.333: "<< factor<<endl;
+        cout<<"input initial factor for volume (target 0.333): "<< paramStr->getRealParameter(MembParams::factor)<<endl;
 
 
-    while ((tSimu < totalTime) and (timeStep < totalSteps))
+    while ((tSimu < totalTime) and (timestep < totalSteps))
     {
         // Print info
         if (myRank == 0)
         {
-            cout<< "TS: " << timeStep + 1  << " Time " << tSimu << " of " << totalTime << " with deltat=" << deltat <<": del_max: "<<deltatMax<< endl;
+            cout<< "TS: " << timestep + 1  << " Time " << tSimu << " of " << totalTime << " with deltat=" << deltat <<": del_max: "<<deltatMax<< endl;
             cout << "Starting Newton-Raphson iteration for membrane evolution" << endl;
         }
 
@@ -1162,34 +1157,34 @@ double a_res=a0-base_area;
 
 
         // reduce volume in decreaments
-        if(timeStep<vnstep)
+        if(timestep<vnstep)
         {
-            factor=(timeStep+1.0)/vnstep*v_target;
+            factor=(timestep+1.0)/vnstep*v_target;
             vstep=vstep+1;
             if (myRank == 0)
-                cout<< "volume increased step: "<< vstep<<" fraction: "<<(timeStep+1.0)/vnstep<<endl;
+                cout<< "volume increased step: "<< vstep<<" fraction: "<<(timestep+1.0)/vnstep<<endl;
             vol_inc=1;
         }
 
-        if(timeStep>vnstep+gap-control_steps)
+        if(timestep>vnstep+gap-control_steps)
         {
             deltat *= stepFactor;
             deltatMax=control_dt;
             if (myRank == 0)
-                cout << "time reduction step: " << timeStep-(vnstep+gap-control_steps)<<" dt: " << deltat<< " :max dt:  " << deltatMax <<endl;
+                cout << "time reduction step: " << timestep-(vnstep+gap-control_steps)<<" dt: " << deltat<< " :max dt:  " << deltatMax <<endl;
         }
 
-        if(timeStep>vnstep+gap+v_cont*v_rn_step)
+        if(timestep>vnstep+gap+v_cont*v_rn_step)
         {
             deltat /= stepFactor;
             deltatMax=deltatMax1;
 
             if (myRank == 0)
-                cout << "trelaxing pahse: " << timeStep<<" dt: " << deltat<< " :max dt:  " << deltatMax <<endl;
+                cout << "trelaxing pahse: " << timestep<<" dt: " << deltat<< " :max dt:  " << deltatMax <<endl;
         }
 
 
-        if(timeStep>vnstep+gap)
+        if(timestep>vnstep+gap)
         {
             if (v_r_step<v_cont*v_rn_step)
             {
@@ -1201,16 +1196,12 @@ double a_res=a0-base_area;
 
             }
 
-
         }
-        paramStr->setRealParameter(MembParams::factor,factor);
-        paramStr->setRealParameter(MembParams::vol_inc,vol_inc);
+       // paramStr->setRealParameter(MembParams::factor,factor);
+       // paramStr->setRealParameter(MembParams::vol_inc,vol_inc);
 
-
-
-        paramStr->setIntParameter(MembParams::timestep,timeStep);
        double gam=0.0;
-        if(timeStep>tens_start)
+        if(timestep>tens_start)
         {
             if(astep<aSteps)
             {
@@ -1222,7 +1213,7 @@ double a_res=a0-base_area;
 
         }
 
-        paramStr->setIntParameter(MembParams::gamma,gam);
+       paramStr->setRealParameter(MembParams::gamma,gam);
 
         if (deltat<0.000001)
         {
@@ -1233,7 +1224,7 @@ double a_res=a0-base_area;
 
 
 /*
-        if (timeStep > fric_start+control_fric)
+        if (timestep > fric_start+control_fric)
             {
             for (int i = 0; i< posDHand->mesh->loc_nPts();i++)
             {
@@ -1254,7 +1245,7 @@ double a_res=a0-base_area;
         } */
 
 
-   if (timeStep == fric_start+control_fric)
+   if (timestep == vnstep + gap+control_fric)
         {
           if (myRank == 0)
                 cout << "enetering spring loop to fix nodes: " << endl;
@@ -1292,9 +1283,6 @@ double a_res=a0-base_area;
         {
 
             hiperProbl->FillLinearSystem();
-
-
-
             viscoProbl->FillLinearSystem();
 
             if (myRank == 0)
@@ -1326,7 +1314,7 @@ double a_res=a0-base_area;
 
 
             tSimu += deltat;
-            timeStep += 1;
+            timestep += 1;
 
             press0= gloDHand->nodeDOFs->getValue(0,0)/deltat;
 
@@ -1412,10 +1400,10 @@ double a_res=a0-base_area;
           //  viscoProbl->UpdateGhosts();
             ENProbl->UpdateGhosts();
 
-            if (timeStep%nPrint==0)
+            if (timestep%nPrint==0)
             {
                 string solName;
-                solName = sol_prefixMesh + to_string(timeStep);
+                solName = sol_prefixMesh + to_string(timestep);
                 if (myRank == 0)
                     cout << "Printing file " <<  solName << endl;
                 // ppHand->printFileLegacyVtk(solName,true);
@@ -1465,7 +1453,7 @@ double a_res=a0-base_area;
             cout << " " << " stretch: " << (hiperProbl->globalIntegral("area")-a_res)/(hiperProbl->globalIntegral("area_n")-a_res) << endl;
 
             cout << " " << " volume fraction: " << v1/v0<< endl;
-            // cout << " " << " volume needed to be reduced by: " << pow(Vf,timeStep)<< endl;
+            // cout << " " << " volume needed to be reduced by: " << pow(Vf,timestep)<< endl;
             cout << " " << " Pressure work: " << -1*hiperProbl->globalIntegral("Epress") << endl;
 
             cout << " " << " Total strain energy: " << hiperProbl->globalIntegral("Energy") <<  " small elastic energy: " << hiperProbl->globalIntegral("Ela_small")   <<endl;
@@ -1490,13 +1478,13 @@ double a_res=a0-base_area;
 
 
         // Print solution
-        if (timeStep%nPrint==0)
+        if (timestep%nPrint==0)
         {
-            string solName = "sol_dis." + to_string(timeStep);
+            string solName = "sol_dis." + to_string(timestep);
             posDHand->printFileLegacyVtk(solName,true);
-            //solName = "sol_gloCons." + to_string(timeStep);
+            //solName = "sol_gloCons." + to_string(timestep);
             //gloDHand->printFileLegacyVtk(solName,true);
-            // solName = "sol_visco." + to_string(timeStep);
+            // solName = "sol_visco." + to_string(timestep);
             // viscoDHand->printFileLegacyVtk(solName,true);
 
         }
@@ -1504,13 +1492,13 @@ double a_res=a0-base_area;
 
 
 
-        if (timeStep % nPrint == 0)
+        if (timestep % nPrint == 0)
         {
             //In the time loop print global integrals
             //Write global integrals
             if (myRank == 0)
             {
-                gIntegFile << timeStep << " " << tSimu << " " << deltat;
+                gIntegFile << timestep << " " << tSimu << " " << deltat;
                 for (auto g:  hiperProbl->globIntegrals())
                     gIntegFile << " " << g;
                 gIntegFile << " " << press0;
@@ -1523,25 +1511,25 @@ double a_res=a0-base_area;
             }
         }
 
-        if(timeStep>4600)
+        if(timestep>4600)
         {
-            if (timeStep%(hl_print) ==0)
+            if (timestep%(hl_print) ==0)
             {
 
-                string solName = "sol_pos." + to_string(timeStep);
+                string solName = "sol_pos." + to_string(timestep);
                 posDHand->printFile(solName, OutputMode::Text, true, tSimu);
 
 
-                solName = "sol_gloCons." + to_string(timeStep);
+                solName = "sol_gloCons." + to_string(timestep);
                 gloDHand->printFile(solName, OutputMode::Text, true, tSimu);
 
-                solName = "sol_visco." + to_string(timeStep);
+                solName = "sol_visco." + to_string(timestep);
                 viscoDHand->printFile(solName, OutputMode::Text, true, tSimu);
 
-                solName = "sol_EN." + to_string(timeStep);
+                solName = "sol_EN." + to_string(timestep);
                 EDHand->printFile(solName, OutputMode::Text, true, tSimu);
 
-                solName = "sol_rho." + to_string(timeStep);
+                solName = "sol_rho." + to_string(timestep);
                 EDHand->printFile(solName, OutputMode::Text, true, tSimu);
             }
         }
@@ -1551,7 +1539,7 @@ double a_res=a0-base_area;
 
 
         // Update time-related quantities
-        paramStr->setRealParameter(MembParams::deltat,deltat);
+       // paramStr->setRealParameter(MembParams::deltat,deltat);
 
     }
 
@@ -1561,6 +1549,6 @@ double a_res=a0-base_area;
     // *****                    FINALIZE                        *****//
     // **************************************************************//
 
-    MPI_Finalize();
+    hiperlife::Finalize();
     return 0;
 }
