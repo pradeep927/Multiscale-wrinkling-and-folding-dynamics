@@ -60,13 +60,12 @@ mpirun -n 4 /home/ubuntu/shell_models_continuum/source_compiled/bin/hlactive_gel
 Here, the option {-n 4} specifies the number of processors. This value can be adjusted according to the available computational resources and the problem size.
 
 
-The solution convergence at each timestep has been printed to the file slurm-93325.out. It can be opened with any text editor or viewed directly in the terminal using the Linux command cat slurm-93325.out.
+The solution convergence at each timestep has been printed to the file slurm-94546.out for the active gel tissue bilayer shell model, and slurm-90208.out for the shell model. It can be opened with any text editor or viewed directly in the terminal using the Linux command cat slurm-94546.out.
 
 If run on a Dell XPS 13 equipped with an Intel Core i7 8th Gen processor (4 cores, 8 threads), the simulation of 10,000 timesteps for a mesh with 3,000 element nodes requires approximately 24 hours using 4 MPI processes.
 
 
-The solution at each time is printed in VTK format with the filename sol_dis.{timestep}.vtk. As an example, for the active-gel tissue bilayer model, the inflation process occurs from timestep 1 to 2000, followed by a hold period from timestep 2000 to 8000. Deflation then takes place over 4000 steps. At timestep 2000, the volume reaches 100% and the dome is fully inflated, and the volume remains constant till the end of 8000th step. Then the deflation is applied uniformly in 4000 total steps with a constant deltat such that: by timestep 10000, the volume is reduced by 50%, and by timestep 11000, it is reduced by 75%. For illustration, some representative VTK files have been stored in the folder named results. During the simulations, a data file named globalIntegrals.dat is also generated, which contains information about the area, volume, and elastic energy at each timestep.
-
+The solution at each time is printed in VTK format with the filename sol_dis.{timestep}.vtk. As an example, for the active-gel tissue bilayer model, the inflation process occurs from timestep 1 to 2000, followed by a hold period from timestep 2000 to 6000. Deflation then takes place over 4000 steps. From step 9700 onward, the tissue relaxes while remaining adhered to the substrate toward the end of deflation. At timestep 2000, the volume reaches 100% and the dome is fully inflated, and the volume remains constant till the end of 6000th step. Then the deflation is applied uniformly in 4000 total steps with a constant deltat such that: by timestep 8000, the volume is reduced by 50%, and by timestep 9000, it is reduced by 75%. For illustration, some representative VTK files have been stored in the folder named results. During the simulations, a data file named globalIntegrals.dat is also generated, which contains information about the area, volume, and elastic energy at each timestep. For the shell model, the inflation process occurs from timestep 1 to 3000, followed by a hold period from timestep 3000 to 8000. Deflation then takes place over 4000 steps. 
   
 
 STEP 4: {Postprocessing and Visualization}
