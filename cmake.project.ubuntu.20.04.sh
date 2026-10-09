@@ -13,7 +13,8 @@ LIB_DIR=/home/ubuntu/local # <-------------------------------------- Modify
 HIPERLIFE_DIR=$LIB_DIR/hiperlife/
 
 ## Set installation path
-INSTALL_PATH=/home/ubuntu/mechanics_of_epithelial_domes/source_compiled # <--------------------- Modify
+INSTALL_PATH=/home/ubuntu/Multiscale-wrinkling-and-folding-dynamics-main/source_compiled 
+# <--------------------- Modify
 
 
 
