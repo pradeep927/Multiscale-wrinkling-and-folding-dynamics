@@ -47,18 +47,107 @@ Note that /home/ubuntu/ is the home directory in our case.
 
 STEP 3: {Running Simulations}
 
-To execute a simulation, we create a dedicated folder {run_simulation} that contains the mesh files and the configuration files. Meshes are provided in VTK format (or in .txt format for the vertex model simulation) and typically correspond to epithelial footprints with prescribed geometries. 
+Each model under `run_simulation` uses four separate folders:
 
-The simulation parameters, including references to the mesh files, are specified in a configuration file named {config.cfg}. This file allows the user to set model parameters, time-stepping controls, solver tolerances, and material constants.
+| Folder | Purpose |
+| --- | --- |
+| `input_short/` | Configuration and all mesh/connectivity files for a quick test |
+| `input_full/` | Configuration and all mesh/connectivity files for the full simulation |
+| `expected_output_short/` | Reference results from a tested short simulation |
+| `expected_output_full/` | Reference results from the full simulation |
 
-A simulation is launched in parallel using MPI as:
+### Run manually with full executable paths
 
-mpirun -n 4 /home/ubuntu/shell_models_continuum/source_compiled/bin/hlactive_gel_bilayer_shell config.cfg
+You can use your usual `mpirun` command. First copy the selected inputs into a
+fresh working folder so the application cannot overwrite the reference files.
+Load your HiPerLife/MPI library environment before running these commands.
+The example below assumes the project is installed at
+`/home/ubuntu/Multiscale-wrinkling-and-folding-dynamics-main`; replace this path
+with your actual project path if different.
 
+For a short active-gel bilayer simulation:
 
+```bash
+# Go to the project and create the parent directory for generated runs.
+cd /home/ubuntu/Multiscale-wrinkling-and-folding-dynamics-main
+mkdir -p runs
 
-Here, the option {-n 4} specifies the number of processors. This value can be adjusted according to the available computational resources and the problem size.
+# Create a fresh folder, copy the configuration and mesh, and launch there.
+# The commands stop if this run folder already exists.
+mkdir runs/active_gel_short_001 &&
+cp -R run_simulation/active_gel_bilayer_shell/input_short/. runs/active_gel_short_001/ &&
+cd runs/active_gel_short_001 &&
+mpirun -n 4 \
+  /home/ubuntu/Multiscale-wrinkling-and-folding-dynamics-main/source_compiled/bin/hlactive_gel_bilayer_shell \
+  config_shell.cfg
+```
 
+New results are written to `runs/active_gel_short_001/`. For another run, use a
+new folder name, such as `active_gel_short_002`, in all three commands. For a full
+simulation, copy from `input_full/` and use a new folder such as
+`active_gel_full_001`. The continuum configuration filename is `config_shell.cfg`,
+not `config.cfg`.
+
+For a short shell-model simulation:
+
+```bash
+cd /home/ubuntu/Multiscale-wrinkling-and-folding-dynamics-main
+mkdir -p runs
+mkdir runs/shell_short_001 &&
+cp -R run_simulation/shell_model/input_short/. runs/shell_short_001/ &&
+cd runs/shell_short_001 &&
+mpirun -n 4 \
+  /home/ubuntu/Multiscale-wrinkling-and-folding-dynamics-main/source_compiled/bin/hlshell_model \
+  config_shell.cfg
+```
+
+The vertex model follows the same procedure once its input folders are prepared:
+copy the selected vertex inputs into a fresh run folder, enter that folder, and
+launch `source_compiled/bin/hlvertex_model` using its full path and `config.cfg`.
+Never launch a simulation inside an `input_*` or `expected_output_*` folder.
+
+### Optional automatic launcher
+
+The common launcher automates the same copy-and-run procedure and creates a
+unique run folder automatically. Use it from the repository root:
+
+```bash
+./run_simulation.sh active_gel_bilayer_shell short 4
+./run_simulation.sh shell_model short 4
+./run_simulation.sh vertex_model short 4
+```
+
+Replace `short` with `full` for the full simulation. The final number is the number
+of MPI processes; it defaults to 4 if omitted. Load your HiPerLife/MPI library
+environment first. The launcher uses executables installed in
+`source_compiled/bin`. For another installation, set the directory explicitly:
+
+```bash
+export HPLFEAPPS_BIN_DIR="$HOME/local/HPLFEApps/bin"
+./run_simulation.sh shell_model short 4 --dry-run
+./run_simulation.sh shell_model short 4
+```
+
+The required executable names are `hlactive_gel_bilayer_shell`, `hlshell_model`,
+and `hlvertex_model`. Set `MPIEXEC` to another MPI launcher executable if needed;
+the launcher must accept `-n NUMBER EXECUTABLE CONFIGURATION`.
+
+Each launch copies the selected inputs into a unique folder under `runs/` and
+runs the application there. New outputs and `run.log` are written in that folder;
+reference inputs and expected outputs are left intact. `launch-command.txt`
+records the command. `runs/` is excluded from version control. `--dry-run` checks
+inputs, executable paths, and launcher availability without starting a simulation
+or creating a run folder. It does not test binary compatibility or numerical results.
+
+Continuum inputs use `config_shell.cfg` and the VTK mesh named by `prefixMesh`.
+Vertex inputs use `config.cfg` and all required `vertexmesh_*.txt`, mesh, and
+connectivity files, including `neighbourcells.txt` and `faceIDsinCell.txt`.
+Prepare both vertex input folders before launching that model: the launcher does
+not copy inputs from reference output folders or invent short-run parameters.
+
+The current continuum short configurations request 50 active-gel steps and 35
+shell steps. The launcher preserves the selected configuration exactly; it does
+not alter physical parameters, time controls, or active-gel `v_target = 0.7`.
 
 The solution convergence at each timestep has been printed to the file slurm-94546.out for the active gel tissue bilayer shell model, and slurm-90208.out for the shell model. It can be opened with any text editor or viewed directly in the terminal using the Linux command cat slurm-94546.out.
 
@@ -70,4 +159,4 @@ The solution at each time is printed in VTK format with the filename sol_dis.{ti
 
 STEP 4: {Postprocessing and Visualization}
 
-Now we need to postprocess the generated output files in VTK format (e.g., {sol_dis_*.vtk}), which store the displacement and other field variables at different time steps. These files can be directly visualized and post-processed using ParaView. To streamline postprocessing, we provide ParaView state files ({*.pvsm}), stored in the folder paraview_state_file, which loads the output VTK files, applies predefined visualization settings, and enables rapid analysis of simulation results, including deformation fields, wrinkling patterns, and stress distributions.
+Now we need to postprocess the generated output files in VTK format (e.g., {sol_dis_*.vtk}), which store the displacement and other field variables at different time steps. These files can be directly visualized and post-processed using ParaView. To streamline postprocessing, we provide ParaView state files ({*.pvsm}), stored in the folder `run_simulation/post_processing`, which loads the output VTK files, applies predefined visualization settings, and enables rapid analysis of simulation results, including deformation fields, wrinkling patterns, and stress distributions.
