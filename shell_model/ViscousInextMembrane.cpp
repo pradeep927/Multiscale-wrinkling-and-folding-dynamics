@@ -71,6 +71,8 @@ int main(int argc, char** argv)
     double RESTOL_NR{5e-7}, SOLTOL_NR{5e-7};
     rd(MAXITER_NR, "MAXITER_NR"); rd(RESTOL_NR, "RESTOL_NR"); rd(SOLTOL_NR, "SOLTOL_NR");
     rd(ConsCheck, "ConsCheck");
+    int lineSearch{0};                  // 1: Newton with line search (adam_shell: off)
+    rd(lineSearch, "lineSearch");
 
     // ---- time stepping, output, restart ------------------------------------------
     double deltat0{0.0001}, deltatMax{0.0}, totalTime{0.0}, tSimu{0.0}, stepFactor{0.99};
@@ -156,7 +158,7 @@ int main(int argc, char** argv)
              << "  inflation " << vnstep << " steps, hold " << gap << ", deflation " << v_rn_step
              << " (x " << v_cont << "), late anchoring from step " << fric_start + control_fric << endl
              << "  Kconf " << Kconf << ", spring " << spring << " (kspr " << kspr << ", sp_gap " << sp_gap << ")" << endl
-             << "  consistency check " << ConsCheck << endl << endl;
+             << "  consistency check " << ConsCheck << ", Newton line search " << (lineSearch == 1 ? "ON" : "off") << endl << endl;
     }
 
     // ======================================================================
@@ -271,7 +273,10 @@ int main(int argc, char** argv)
             return 1;
         }
         posDHand->nodeDOFs0->setValue(posDHand->nodeDOFs);
-        gloDHand->nodeDOFs0->setValue(gloDHand->nodeDOFs);
+        // Newton starts every step from P = 0 (as adam_shell, see the time loop)
+        for (int i = 0; i < gloDHand->mesh->loc_nPts(); i++)
+            for (int k = 0; k < gloDHand->numDOFs(); k++)
+                gloDHand->nodeDOFs0->setValue(k, i, IndexType::Local, 0.0);
     }
     for (int i = 0; i < posDisMesh->loc_nPts(); i++)
         if (posDHand->nodeAuxF->getValue("fixed", i, IndexType::Local) > 0.5)
@@ -362,7 +367,7 @@ int main(int argc, char** argv)
     nonlinSolver->setMaxNumIterations(MAXITER_NR);
     nonlinSolver->setResTolerance(RESTOL_NR);
     nonlinSolver->setSolTolerance(SOLTOL_NR);
-    nonlinSolver->setLineSearch(false);
+    nonlinSolver->setLineSearch(lineSearch == 1);
     nonlinSolver->setConvRelTolerance(false);
     nonlinSolver->setPrintIntermInfo(true);
     nonlinSolver->setPrintSummary(false);
@@ -504,7 +509,9 @@ int main(int argc, char** argv)
             timestep += 1;
             press0 = gloDHand->nodeDOFs->getValue(0, 0)/deltat;   // P/dt of this step
             posDHand->nodeDOFs0->setValue(posDHand->nodeDOFs);
-            gloDHand->nodeDOFs0->setValue(gloDHand->nodeDOFs);
+            // gloDHand->nodeDOFs0 is NOT updated: as in adam_shell, the Newton
+            // iteration of every step starts from P = 0 (updating it changes
+            // the Newton path and the results at round-off level)
             hiperProbl->UpdateGhosts();
 
             // larger dt for the next step after an easy convergence

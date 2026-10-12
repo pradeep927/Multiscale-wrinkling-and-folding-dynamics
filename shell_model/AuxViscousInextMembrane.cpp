@@ -603,13 +603,13 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 GP_F_voigt(2)=F_22_NR;
                 tensor<double,2> GP_jac_voigt(3,3);
                 double  J_11_NR_11=1.0-dt_eta*d_delWP_delGP_n_CC(0,0,0,0);
-                double  J_11_NR_12=0.0-dt_eta*d_delWP_delGP_n_CC(0,0,0,1);
+                double  J_11_NR_12=0.0-dt_eta*(d_delWP_delGP_n_CC(0,0,0,1)+d_delWP_delGP_n_CC(0,0,1,0));
                 double  J_11_NR_22=0.0-dt_eta*d_delWP_delGP_n_CC(0,0,1,1);
                 double  J_12_NR_11=0.0-dt_eta*d_delWP_delGP_n_CC(0,1,0,0);
-                double  J_12_NR_12=1.0-dt_eta*d_delWP_delGP_n_CC(0,1,0,1);
+                double  J_12_NR_12=1.0-dt_eta*(d_delWP_delGP_n_CC(0,1,0,1)+d_delWP_delGP_n_CC(0,1,1,0));
                 double  J_12_NR_22=0.0-dt_eta*d_delWP_delGP_n_CC(0,1,1,1);
                 double J_22_NR_11=0.0-dt_eta*d_delWP_delGP_n_CC(1,1,0,0);
-                double J_22_NR_12=0.0-dt_eta*d_delWP_delGP_n_CC(1,1,0,1);
+                double J_22_NR_12=0.0-dt_eta*(d_delWP_delGP_n_CC(1,1,0,1)+d_delWP_delGP_n_CC(1,1,1,0));
                 double J_22_NR_22=1.0-dt_eta*d_delWP_delGP_n_CC(1,1,1,1);
                 GP_jac_voigt(0,0)=J_11_NR_11;
                 GP_jac_voigt(0,1)=J_11_NR_12;
@@ -634,13 +634,13 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 GN_F_voigt(2)=F_GN_22_NR;
                 tensor<double,2> GN_jac_voigt(3,3);
                 double  J_GN_11_NR_11=1.0-dt_eta_k*d_delWN_delGN_n_CC(0,0,0,0);
-                double  J_GN_11_NR_12=0.0-dt_eta_k*d_delWN_delGN_n_CC(0,0,0,1);
+                double  J_GN_11_NR_12=0.0-dt_eta_k*(d_delWN_delGN_n_CC(0,0,0,1)+d_delWN_delGN_n_CC(0,0,1,0));
                 double  J_GN_11_NR_22=0.0-dt_eta_k*d_delWN_delGN_n_CC(0,0,1,1);
                 double  J_GN_12_NR_11=0.0-dt_eta_k*d_delWN_delGN_n_CC(0,1,0,0);
-                double  J_GN_12_NR_12=1.0-dt_eta_k*d_delWN_delGN_n_CC(0,1,0,1);
+                double  J_GN_12_NR_12=1.0-dt_eta_k*(d_delWN_delGN_n_CC(0,1,0,1)+d_delWN_delGN_n_CC(0,1,1,0));
                 double  J_GN_12_NR_22=0.0-dt_eta_k*d_delWN_delGN_n_CC(0,1,1,1);
                 double J_GN_22_NR_11=0.0-dt_eta_k*d_delWN_delGN_n_CC(1,1,0,0);
-                double J_GN_22_NR_12=0.0-dt_eta_k*d_delWN_delGN_n_CC(1,1,0,1);
+                double J_GN_22_NR_12=0.0-dt_eta_k*(d_delWN_delGN_n_CC(1,1,0,1)+d_delWN_delGN_n_CC(1,1,1,0));
                 double J_GN_22_NR_22=1.0-dt_eta_k*d_delWN_delGN_n_CC(1,1,1,1);
                 GN_jac_voigt(0,0)=J_GN_11_NR_11;
                 GN_jac_voigt(0,1)=J_GN_11_NR_12;
@@ -671,10 +671,13 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 X_GN_11_NR=delX_GN(0);
                 X_GN_12_NR=delX_GN(1);
                 X_GN_22_NR=delX_GN(2);
-                double tol3=0.0000000001;
-                std::vector<double> values2 = {
-                    abs(X_11_NR/(GP_11_NR+tol3)), abs(X_12_NR/(GP_12_NR+tol3)), abs(X_22_NR/(GP_22_NR+tol3)), abs(X_GN_11_NR/(GN_11_NR+tol3)), abs(X_GN_12_NR/(GN_12_NR+tol3)), abs(X_GN_22_NR/(GN_22_NR+tol3))
-                    };
+                // update relative to the size of each tensor (shear components and the curvatures
+                // can be ~0 or negative): metric GP by its diagonal, curvature GN by max(|kbar|,|k|)
+                auto rel3 = [](double x1, double x2, double x3, double sc)
+                { sc = std::max(sc, 1.0e-12); return std::max(fabs(x1), std::max(fabs(x2), fabs(x3))) / sc; };
+                const double scP = std::max(fabs(GP_11_NR), fabs(GP_22_NR));
+                const double scN = std::max(std::max(fabs(GN_11_NR), fabs(GN_22_NR)), std::max(fabs(curva(0,0)), fabs(curva(1,1))));
+                std::vector<double> values2 = { rel3(X_11_NR, X_12_NR, X_22_NR, scP), rel3(X_GN_11_NR, X_GN_12_NR, X_GN_22_NR, scN) };
                 error2=*std::max_element(values2.begin(), values2.end());
                 GP_n(0,0)=GP_11_NR;
                 GP_n(0,1)=GP_12_NR;
@@ -684,10 +687,8 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 GN_n(0,1)=GN_12_NR;
                 GN_n(1,0)=GN_12_NR;
                 GN_n(1,1)=GN_22_NR;
-                if(nr_step>25)
-                {
-                    cout<<"error warning: "<<endl;
-                }
+                if (nr_step == 29 && (error > 0.0000001 || error2 > 0.0000001))
+                cout << "WARNING LS_ReacDif: local Newton for G, kbar not converged in 30 iterations (residual " << error << ", relative update " << error2 << ")" << endl;
                 nr_step=nr_step+1;
             }
             G11P =GP_11_NR;
