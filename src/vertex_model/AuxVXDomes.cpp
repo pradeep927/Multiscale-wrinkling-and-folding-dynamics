@@ -14,7 +14,6 @@
 #include "hl_LocMongeParam.h"
 #include "hl_StructMeshGenerator.h"
 #include "hl_BasicMeshGenerator.h"
-//#include "hl_UnstructVtkMeshGenerator.h"
 #include "hl_MeshLoader.h"
 
 #include <iostream>
@@ -987,8 +986,7 @@ void LS_K (hiperlife::FillStructure& fillStr)
     double lame1     = dparam[4] * deltat;
     double lame2     = dparam[5] * deltat;
     double eta_f     = dparam[9];
-    double decreasecoeff = dparam[12];
-    double contact_force_coefficient = dparam[13];
+    double contact_force_coefficient = dparam[12];
 
     double vdome         = dparam[10];
     double activ{};
@@ -998,19 +996,19 @@ void LS_K (hiperlife::FillStructure& fillStr)
     {
         case 'a':
             activ = dparam[6] * deltat;
+            eta_f = eta_f/2.0; // divide by 2 to emulate Pradeep's model
             facetag = 0;
 	    eta_f = eta_f/2;
             break;
         case 'b':
             activ = dparam[7] * deltat;
-	    eta_f = eta_f/2; // half on each surface
+            eta_f = eta_f/2.0; // half on each surface
             facetag = 1;
             break;
         case 'l':
         // To keep r = gamma_l/gamma_ab = mu_l / mu_ab = eta_l / eta_ab (dparam[8])
-        // and additionnally reduce the value for convergence purposes (decreasecoeff) 
-        	lame1 = dparam[8]*lame1*decreasecoeff;
-   	        lame2 = dparam[8]*lame2*decreasecoeff;
+        	lame1 = dparam[8]*lame1;
+   	        lame2 = dparam[8]*lame2;
             bVisc = dparam[8]*bVisc;
             activ = dparam[8] * deltat;
             eta_f = 0.0; // mimic shell
@@ -1050,7 +1048,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
     double  x[3] = {};
     double e1[3] = {};
     double e2[3] = {};
-    double  f[3] = {};
 
     for ( int i = 0; i < eNN; i++ )
     {

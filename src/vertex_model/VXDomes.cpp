@@ -63,7 +63,6 @@ int main(int argc, char *argv[])
     double activL = 0.5;
     double eta_f = 1e-8;
     double contact_force_coefficient = 0.01; // Contact force coefficient
-    double decrease_lateral_coefficient = 1.0; // Multiply by 1.0 by default // 0.1 to decrease lateral elasticity moduli to improve numerical convergence when inflation is fast
 
     // Buckling simulation parameters
     double tcycle = 900;
@@ -111,7 +110,6 @@ int main(int argc, char *argv[])
         config.readInto(activL, "activL");
         config.readInto(eta_f, "eta_f");
         config.readInto(contact_force_coefficient, "contact_force_coefficient");
-        config.readInto(decrease_lateral_coefficient, "decrease_lateral_coefficient");
 
         // Buckling simulation parameters
         config.readInto(tequi, "tequi");
@@ -180,7 +178,7 @@ int main(int argc, char *argv[])
 
     // Assign parameters in a user structure
     SmartPtr<ParamStructure> paramStr = Create<ParamStructure>();
-    paramStr->dparam.resize(14);
+    paramStr->dparam.resize(13);
 
     paramStr->dparam[0]  = deltat;
     paramStr->dparam[1]  = kp;
@@ -194,8 +192,7 @@ int main(int argc, char *argv[])
     paramStr->dparam[9] = eta_f;    
     paramStr->dparam[10] = 0.0; // Updated in time loop 
     paramStr->dparam[11] = ConcInit;
-    paramStr->dparam[12] = decrease_lateral_coefficient; 
-    paramStr->dparam[13] = contact_force_coefficient; 
+    paramStr->dparam[12] = contact_force_coefficient; 
 
     // Setting all paramStr vectors
     paramStr->bparam.resize(tissuemesh.nFaces,false); //used for contact potential
