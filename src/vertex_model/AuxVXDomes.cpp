@@ -14,7 +14,6 @@
 #include "hl_LocMongeParam.h"
 #include "hl_StructMeshGenerator.h"
 #include "hl_BasicMeshGenerator.h"
-//#include "hl_UnstructVtkMeshGenerator.h"
 #include "hl_MeshLoader.h"
 
 #include <iostream>
@@ -403,11 +402,6 @@ void tissueMesh::generateDOFsHandler() // Now called DOFsHandler
                     _fields->nodeDOFs->setValue(0, j, IndexType::Global, x[0]);
                     _fields->nodeDOFs->setValue(1, j, IndexType::Global, x[1]);
                     _fields->nodeDOFs->setValue(2, j, IndexType::Global, x[2]);
-
-                    // to store nodal forces
-                    _fields->nodeAuxF->setValue(0, j, IndexType::Global, 1.0);
-                    _fields->nodeAuxF->setValue(1, j, IndexType::Global, 1.0);
-                    _fields->nodeAuxF->setValue(2, j, IndexType::Global, 1.0);
                 }
 
             // Set dirichlet constraints
@@ -950,7 +944,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
     double *ue_nodes0 = subFill.nborDOFs0.data();   //Degrees of freedom of previous time-step
 
     int N_k = DOF*eNN; // N_k = 9 //Row size
-    double *fe_nodes  = subFill.nborAuxF.data();  // Auxillary data defined on the nodes
 
     //FIXME: reverse map?
     std::map<std::string,int>::const_iterator it;
@@ -996,8 +989,7 @@ void LS_K (hiperlife::FillStructure& fillStr)
     double lame1     = dparam[4] * deltat;
     double lame2     = dparam[5] * deltat;
     double eta_f     = dparam[9];
-    double decreasecoeff = dparam[12];
-    double contact_force_coefficient = dparam[13];
+    double contact_force_coefficient = dparam[12];
 
     double vdome         = dparam[10];
     double activ{};
@@ -1007,19 +999,21 @@ void LS_K (hiperlife::FillStructure& fillStr)
     {
         case 'a':
             activ = dparam[6] * deltat;
+            eta_f = eta_f/2.0; // divide by 2 to emulate Pradeep's model
             facetag = 0;
             break;
         case 'b':
             activ = dparam[7] * deltat;
+            eta_f = eta_f/2.0; // divide by 2 to emulate Pradeep's model
             facetag = 1;
             break;
         case 'l':
         // To keep r = gamma_l/gamma_ab = mu_l / mu_ab = eta_l / eta_ab (dparam[8])
-        // and additionnally reduce the value for convergence purposes (decreasecoeff) 
-        	lame1 = dparam[8]*lame1*decreasecoeff;
-   	        lame2 = dparam[8]*lame2*decreasecoeff;
+        	lame1 = dparam[8]*lame1;
+   	        lame2 = dparam[8]*lame2;
             bVisc = dparam[8]*bVisc;
             activ = dparam[8] * deltat;
+            eta_f = 0.0; // remove lateral surfaces friction
             facetag = 2;
             break;
     }
@@ -1056,7 +1050,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
     double  x[3] = {};
     double e1[3] = {};
     double e2[3] = {};
-    double  f[3] = {};
 
     for ( int i = 0; i < eNN; i++ )
     {
@@ -1065,8 +1058,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
             x[n]  +=         p_k[i] * ue_nodes[DOF*i+n];
             e1[n] += dp_k[pDim*i+0] * ue_nodes[DOF*i+n];
             e2[n] += dp_k[pDim*i+1] * ue_nodes[DOF*i+n];
-
-            f[n]  +=         p_k[i] * fe_nodes[DOF*i+n];
         }
     }
 
