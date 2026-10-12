@@ -59,13 +59,9 @@ class faceMesh
 
 
         Teuchos::RCP<hiperlife::FieldStruct> nodeDOFs = Teuchos::null;
-        Teuchos::RCP<hiperlife::FieldStruct> auxF     = Teuchos::null;
         Teuchos::RCP<hiperlife::FieldStruct> gDOFS    = Teuchos::null;
-        Teuchos::RCP<hiperlife::FieldStruct> auxV     = Teuchos::null;
 
         std::vector<double> u_nodes;
-        std::vector<double> globalU;
-        std::vector<double> globalV;
 
         void loadMesh( std::string fileName);
 

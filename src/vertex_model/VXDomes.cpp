@@ -371,7 +371,6 @@ int main(int argc, char *argv[])
                     {
                         int nNodesToConstrain = 0;
 		
-
                         for (int j = 0; j < mec->mesh->loc_nPts(); j++)
                         {
                             double zPosOfNode = tissuemesh.fields[mecID]->nodeDOFs->getValue(2, j, IndexType::Local);

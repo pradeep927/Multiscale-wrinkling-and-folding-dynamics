@@ -2,6 +2,7 @@
 #======================== Initialize ========================
 #============================================================
 cmake_minimum_required(VERSION 3.17.0)
+cmake_policy(SET CMP0057 NEW)
 
 INCLUDE(${CMAKE_SOURCE_DIR}/userConfig.cmake)
 project(${PROJECT_NAME} VERSION 5.0)

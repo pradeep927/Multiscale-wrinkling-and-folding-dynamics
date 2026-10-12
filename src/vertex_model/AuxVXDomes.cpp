@@ -304,7 +304,6 @@ void tissueMesh::generateDOFsHandler() // Now called DOFsHandler
             }
         }
         _fields->setNumDOFs(DOF);
-        _fields->setNumNodeAuxF(3);   // to store the nodal forces
         _fields->Update();
 
 		// gDOFs will depend on the global constraint
@@ -326,35 +325,7 @@ void tissueMesh::generateDOFsHandler() // Now called DOFsHandler
             int locI      = locIdx(i);
 
             meshes[locI].nodeDOFs =  _fields->nodeDOFs;
-            meshes[locI].auxF     =  _fields->nodeAuxF;
             meshes[locI].gDOFS    = _gfields->nodeDOFs;
-            meshes[locI].auxV     = _gfields->nodeAuxF;
-
-            // Read from input files to do a restart
-            if ( meshes[locI].u_nodes.size() > 0 )
-            {
-                for ( int j = 0; j < meshes[locI].nPts; j++ )
-                {
-                    for ( int n = 0; n < meshes[locI].DOF; n++ )
-                    {
-                        meshes[locI].nodeDOFs->setValue(n,j,IndexType::Local,meshes[locI].u_nodes[j*DOF+n]);
-                    }
-                }
-            }
-            if ( meshes[locI].globalU.size() > 0 )
-            {
-                for ( int n = 0; n < meshes[locI].gDOF; n++ )
-                {
-                    meshes[locI].gDOFS->setValue(n,0,IndexType::Local,meshes[locI].globalU[n]);
-                }
-            }
-            if ( meshes[locI].globalV.size() > 0 )
-            {
-                for ( int n = 0; n < meshes[locI].gAux; n++ )
-                {
-                    meshes[locI].auxV->setValue(n,0,IndexType::Local,meshes[locI].globalV[n]);
-                }
-            }
 
             int loc_nPts = meshes[locI].nPts;
 
@@ -403,11 +374,6 @@ void tissueMesh::generateDOFsHandler() // Now called DOFsHandler
                     _fields->nodeDOFs->setValue(0, j, IndexType::Global, x[0]);
                     _fields->nodeDOFs->setValue(1, j, IndexType::Global, x[1]);
                     _fields->nodeDOFs->setValue(2, j, IndexType::Global, x[2]);
-
-                    // to store nodal forces
-                    _fields->nodeAuxF->setValue(0, j, IndexType::Global, 1.0);
-                    _fields->nodeAuxF->setValue(1, j, IndexType::Global, 1.0);
-                    _fields->nodeAuxF->setValue(2, j, IndexType::Global, 1.0);
                 }
 
             // Set dirichlet constraints
@@ -467,6 +433,8 @@ void tissueMesh::saveSolution(string filename, SmartPtr<ParamStructure> paramStr
     vector<int> screases={};
     vector<double> su_nodes={};
 
+    if (myRank() == 0)
+	    cout << "Here 1 "<< endl;
 
     sx_nodes.resize(loc_nPts*meshes[0].nDim);
 
@@ -498,6 +466,9 @@ void tissueMesh::saveSolution(string filename, SmartPtr<ParamStructure> paramStr
         screases.insert(screases.end(), _idN_creases.begin(), _idN_creases.end());
     }
 
+    if (myRank() == 0)
+	    cout << "Here 2 "<< endl;
+
     SmartPtr<StructMeshGenerator> mesh = Create<StructMeshGenerator>();
     mesh->setMesh(ElemType::Triang,BasisFuncType::Linear,1);
 
@@ -519,18 +490,30 @@ void tissueMesh::saveSolution(string filename, SmartPtr<ParamStructure> paramStr
     mesh->_nVert = 1;
     mesh->_pDim  = 2;
 
+    if (myRank() == 0)
+	    cout << "Here 3 "<< endl;
+
     SmartPtr<DistributedMesh> disMesh = Create<DistributedMesh>();
+    
+    if (myRank() == 0)
+    	    cout << "Here 4 "<< endl;
 
     disMesh->setMesh(mesh);
     disMesh->setBalanceMesh(false);
     disMesh->setElementLocatorEngine(ElementLocatorEngine::None);
     disMesh->Update();
 
+      if (myRank() == 0)
+	    cout << "Here 5 "<< endl;
+
+
     // Generate dummy DOFsHandler
     SmartPtr<DOFsHandler> dofsHand = Create<DOFsHandler>(disMesh);
     dofsHand->setNumDOFs(meshes[0].DOF);
     dofsHand->setNumNodeAuxF(2); 
     dofsHand->Update();
+
+  
 
     for ( int i = 0; i < loc_nItem(); i++ )
     {
@@ -557,6 +540,9 @@ void tissueMesh::saveSolution(string filename, SmartPtr<ParamStructure> paramStr
     
     }
 
+    if (myRank() == 0)
+	    cout << "Saving solution at: " << simtime << endl;
+
     // Printing the .vtu and .vtm files
     dofsHand->printFileVtk(filename,true, simtime);
 }
@@ -566,10 +552,16 @@ SmartPtr<HiPerProblem> tissueMesh::generateHiPerProblem(SmartPtr<ParamStructure>
     if ( !updated )
         throw runtime_error("tissueMesh has not been previously updated. Can't generate HiPerProblem out of nothing!");
 
+          if (myRank() == 0)
+	    cout << "Here 1: " << nItem() << endl;
+
     SmartPtr<HiPerProblem> hiperProbl = Create<HiPerProblem>("HiperObject");
     hiperProbl->setParameterStructure(paramStr);
     hiperProbl->setDOFsHandlers(fields);
     hiperProbl->setConsistencyCheckType(ConsistencyCheckType::None);
+
+       if (myRank() == 0)
+	    cout << "Here 2" << endl;
     
     for ( int i = 0; i < nItem(); i++)
     {
@@ -950,7 +942,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
     double *ue_nodes0 = subFill.nborDOFs0.data();   //Degrees of freedom of previous time-step
 
     int N_k = DOF*eNN; // N_k = 9 //Row size
-    double *fe_nodes  = subFill.nborAuxF.data();  // Auxillary data defined on the nodes
 
     //FIXME: reverse map?
     std::map<std::string,int>::const_iterator it;
@@ -1008,9 +999,11 @@ void LS_K (hiperlife::FillStructure& fillStr)
         case 'a':
             activ = dparam[6] * deltat;
             facetag = 0;
+	    eta_f = eta_f/2;
             break;
         case 'b':
             activ = dparam[7] * deltat;
+	    eta_f = eta_f/2; // half on each surface
             facetag = 1;
             break;
         case 'l':
@@ -1020,7 +1013,8 @@ void LS_K (hiperlife::FillStructure& fillStr)
    	        lame2 = dparam[8]*lame2*decreasecoeff;
             bVisc = dparam[8]*bVisc;
             activ = dparam[8] * deltat;
-            facetag = 2;
+            eta_f = 0.0; // mimic shell
+	    facetag = 2;
             break;
     }
 
@@ -1065,8 +1059,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
             x[n]  +=         p_k[i] * ue_nodes[DOF*i+n];
             e1[n] += dp_k[pDim*i+0] * ue_nodes[DOF*i+n];
             e2[n] += dp_k[pDim*i+1] * ue_nodes[DOF*i+n];
-
-            f[n]  +=         p_k[i] * fe_nodes[DOF*i+n];
         }
     }
 
