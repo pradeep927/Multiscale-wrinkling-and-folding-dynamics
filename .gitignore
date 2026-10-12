@@ -1,3 +1,5 @@
-
 # User-generated simulation runs
 /runs/
+# Generated build and editor files
+build/
+.vscode/
