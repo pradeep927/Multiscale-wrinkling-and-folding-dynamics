@@ -1,4 +1,4 @@
-# Authors active gel shell mode
+# Cosserat active gel shell model and comparison shell models
 
 **Main Author / Corresponding author**: 
 
@@ -7,13 +7,13 @@ Pradeep K. Bal (@pradeep927) (UPC: 2019-2026, UNIGE: 2026-)
 **Co-authors / Contributors (alphabetical order)**:
 
 
-# Authors active gel vertex model
+# Active gel Vertex Model
 
 **Main Author / Corresponding author**: 
 
 Adam OUZERI (@aouzeri) (UPC: 2017-2022, GSU: 2022-2024, CQSB: 2024-) <adam.ouzeri@sorbonne-universite.fr>
 
-**Co-authors / Contributors (alphabetical order)**:
+**Contributors (alphabetical order)**:
   - Sohan KALE (UPC: 2017-19, VTECH: 2019-) 
   - Daniel SANTOS-OLIVÁN (UPC: 2017-18, EMBL: 2023-)
   - Alejandro TORRES-SÁNCHEZ (UPC: 2017-19, CRICK: 2019-20, IBEC: 2021-2022, EMBL: 2022-)

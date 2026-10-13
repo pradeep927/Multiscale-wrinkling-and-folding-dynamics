@@ -190,7 +190,7 @@ int main(int argc, char *argv[])
     paramStr->dparam[7]  = activB; 
     paramStr->dparam[8] = activL; 
     paramStr->dparam[9] = eta_f;    
-    paramStr->dparam[10] = 0.0; // Updated in time loop 
+    paramStr->dparam[10] = 0.0; // Updated in time loop (dome inflation rate variable)
     paramStr->dparam[11] = ConcInit;
     paramStr->dparam[12] = contact_force_coefficient; 
 
@@ -248,6 +248,14 @@ int main(int argc, char *argv[])
     //Set parameter
     double stepFactor = 0.90;
     bool startConstrainingMesh = false;
+
+     if (tissuemesh.myRank() == 0)
+    {
+        ofstream outfiledelray;
+        outfiledelray.open("delray.txt", std::ios::trunc);
+	    outfiledelray.close();
+    }
+
 
     //double parameters for NR
     std::vector<double> dparamNR;
@@ -349,8 +357,7 @@ int main(int argc, char *argv[])
         {
            paramStr->dparam[10] = 0.0;
         }
-		
-    
+		    
 
     // Fixing faces touching substrate during deflation
       if (simTime+ 2*deltat > tequi +  deflation_begin)
@@ -447,6 +454,15 @@ int main(int argc, char *argv[])
 
 	    if( tissuemesh.myRank() == 0  )
                 cout << "Printing outputs... " << endl;
+
+        if( tissuemesh.myRank() == 0  )
+        {
+            std::ofstream outfiledelray;
+            outfiledelray.open("delray.txt", std::ios::app); // append instead of overwrite
+ 	        outfiledelray << hiperProbl->globalIntegral("delRay") << endl;
+	        outfiledelray.close();
+        }
+
 
 
             // Update deltat    

@@ -1239,6 +1239,16 @@ void LS_K (hiperlife::FillStructure& fillStr)
     double inva20    = sqrtdetG0 * J0;
     double ener0     = lame1 * ( inva10/inva20 - 2.0 ) + lame2 * (inva20-1.0) * (inva20-1.0) ;
 
+    // Incremental Rayleighian, R*deltat
+    double delRay = 0;
+    delRay += activ*dens0*trd*J0/deltat;    // Active power
+    delRay += ener * J0 * dens0/deltat - ener0 * J0 * dens0/deltat;    // Elastic (Need to have F(X) - F(X0))
+    delRay += 0.5 * bVisc * J0 * dens0 * Math::Dot(4,dGRef,dG_GRef_cc)/deltat;    // Dissipative
+    delRay += 0.5 * J0 * eta_f * Math::Dot(3,v,v)/deltat;    // Surface friction
+    delRay -= pressure*xn*J;    // Volume constraint
+    fillStr->addToGlobalIntegral("delRay", delRay);
+
+
     // Values needed for contact
     double distsquared = fillStr.paramStr->x_aux[faceID]*fillStr.paramStr->x_aux[faceID] + fillStr.paramStr->y_aux[faceID]*fillStr.paramStr->y_aux[faceID] + fillStr.paramStr->z_aux[faceID]*fillStr.paramStr->z_aux[faceID];
     double distBetweenCellBary = sqrt(distsquared);
