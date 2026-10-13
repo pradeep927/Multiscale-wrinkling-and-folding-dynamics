@@ -870,7 +870,9 @@ void LS(hiperlife::FillStructure& fillStr)
     App(all, range(0, 2), all, 6)+=outer((jacC*product(d_normal,H,{{2,0}})+d_jacC*product(H,normal,{{0,0}})),bf)*jacR;
     App(all, range(3, 5), all, range(0, 2))+=lam*(jacC*outer(bf,d_normal).transpose({0,3,1,2})+outer(outer(bf,normal),d_jacC))*jacR;
     App(all, range(3, 5), all, 6)+=jacC*outer(outer(bf, normal),bf)*jacR;
-    App(all, 6, all, range(0, 2))+=jacC*outer(bf,(product(H,d_normal,{{0,2}})+d_jacC*product(H,normal,{{0,0}})))*jacR;
+    // d/dx of bf*(jacC*(H.n) - h0*GV)*jacR: d_jacC is NOT multiplied by jacC
+    // (was jacC*(H.dn + d_jacC*(H.n)); now consistent with App(x,LAM) and Bp(LAM))
+    App(all, 6, all, range(0, 2))+=outer(bf,(jacC*product(H,d_normal,{{0,2}})+d_jacC*product(H,normal,{{0,0}})))*jacR;
     App(all, 6, all, range(3, 5))+=jacC*outer(bf,outer(bf, normal))*jacR;
     double Evol=pressure/3.0 *(jac * xnormal - factor*jac_n*xnormal_n);
     Bp(all, range(0, 2)) += pressure / 3.0 * (d_jac * xnormal + jac * (d_normal * x) + jac * outer(bf, normal));
@@ -1332,7 +1334,7 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 delWL_delGL2_n=0.5*(lambda*log(I3L2_SR_n)-mu)/I3L2_n*delI3L2_delGL2_n+0.5*mu*delI1L2_delGL2_n;
                 delWL_delGL3_n=0.5*(lambda*log(I3L3_SR_n)-mu)/I3L3_n*delI3L3_delGL3_n+0.5*mu*delI1L3_delGL3_n;
                 d_delWP_delGP_n=(-2*lambda*log(I3_gp_SR_n)+2*mu+lambda)/(4*I3_gp_n*I3_gp_n)*outer(delI3_gp_delGP_n,delI3_gp_delGP_n)+0.5*(lambda*log(I3_gp_SR_n)-mu)/I3_gp_n*d_delI3_gp_delGP_n;
-                d_delWN_delGN_n=(-2*lambda*log(I3_gn_SR_n)+2*mu+lambda)/(4*I3_gn_n*I3_gp_n)*outer(delI3_gn_delGN_n,delI3_gn_delGN_n)+0.5*(lambda*log(I3_gn_SR_n)-mu)/I3_gn_n*d_delI3_gn_delGN_n;
+                d_delWN_delGN_n=(-2*lambda*log(I3_gn_SR_n)+2*mu+lambda)/(4*I3_gn_n*I3_gn_n)*outer(delI3_gn_delGN_n,delI3_gn_delGN_n)+0.5*(lambda*log(I3_gn_SR_n)-mu)/I3_gn_n*d_delI3_gn_delGN_n;
                 d_delWL_delGL1_n=(-2*lambda*log(I3L1_SR_n)+2*mu+lambda)/(4*I3L1_n*I3L1_n)*outer(delI3L1_delGL1_n,delI3L1_delGL1_n)+0.5*(lambda*log(I3L1_SR_n)-mu)/I3L1_n*d_delI3L1_delGL1_n;
                 d_delWL_delGL2_n=(-2*lambda*log(I3L2_SR_n)+2*mu+lambda)/(4*I3L2_n*I3L2_n)*outer(delI3L2_delGL2_n,delI3L2_delGL2_n)+0.5*(lambda*log(I3L2_SR_n)-mu)/I3L2_n*d_delI3L2_delGL2_n;
                 d_delWL_delGL3_n=(-2*lambda*log(I3L3_SR_n)+2*mu+lambda)/(4*I3L3_n*I3L3_n)*outer(delI3L3_delGL3_n,delI3L3_delGL3_n)+0.5*(lambda*log(I3L3_SR_n)-mu)/I3L3_n*d_delI3L3_delGL3_n;
@@ -1341,7 +1343,7 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 tensor<double,4> d_delWP_delGP_n_CC(pDim,pDim,pDim,pDim);
                 tensor<double,4> d_delWN_delGN_n_CC(pDim,pDim,pDim,pDim);
                 delWP_delGP_n_CC=product(imetric_GPR,product(delWP_delGP_n, imetric_GPR, {{1, 0}}), {{1, 0}});
-                delWN_delGN_n_CC=product(imetric_GPR,product(delWN_delGN_n, imetric_GPR, {{1, 0}}), {{1, 0}});
+                delWN_delGN_n_CC=product(imetric_GNR,product(delWN_delGN_n, imetric_GNR, {{1, 0}}), {{1, 0}});
                 d_delWP_delGP_n_CC=product(imetric_GPR,product(d_delWP_delGP_n, imetric_GPR, {{1, 0}}), {{1, 0}}).transpose({0,3,1,2});
                 d_delWN_delGN_n_CC=product(imetric_GNR,product(d_delWN_delGN_n, imetric_GNR, {{1, 0}}), {{1, 0}}).transpose({0,3,1,2});
                 double F_GP_11_NR{0.0};
@@ -1390,13 +1392,13 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 GP_F_voigt(2)=F_GP_22_NR;
                 tensor<double,2> GP_jac_voigt(3,3);
                 double  J_GP_11_NR_11=1.0-dt_eta*d_delWP_delGP_n_CC(0,0,0,0);
-                double  J_GP_11_NR_12=0.0-dt_eta*d_delWP_delGP_n_CC(0,0,0,1);
+                double  J_GP_11_NR_12=0.0-dt_eta*(d_delWP_delGP_n_CC(0,0,0,1)+d_delWP_delGP_n_CC(0,0,1,0));
                 double  J_GP_11_NR_22=0.0-dt_eta*d_delWP_delGP_n_CC(0,0,1,1);
                 double  J_GP_12_NR_11=0.0-dt_eta*d_delWP_delGP_n_CC(0,1,0,0);
-                double  J_GP_12_NR_12=1.0-dt_eta*d_delWP_delGP_n_CC(0,1,0,1);
+                double  J_GP_12_NR_12=1.0-dt_eta*(d_delWP_delGP_n_CC(0,1,0,1)+d_delWP_delGP_n_CC(0,1,1,0));
                 double  J_GP_12_NR_22=0.0-dt_eta*d_delWP_delGP_n_CC(0,1,1,1);
                 double J_GP_22_NR_11=0.0-dt_eta*d_delWP_delGP_n_CC(1,1,0,0);
-                double J_GP_22_NR_12=0.0-dt_eta*d_delWP_delGP_n_CC(1,1,0,1);
+                double J_GP_22_NR_12=0.0-dt_eta*(d_delWP_delGP_n_CC(1,1,0,1)+d_delWP_delGP_n_CC(1,1,1,0));
                 double J_GP_22_NR_22=1.0-dt_eta*d_delWP_delGP_n_CC(1,1,1,1);
                 GP_jac_voigt(0,0)=J_GP_11_NR_11;
                 GP_jac_voigt(0,1)=J_GP_11_NR_12;
@@ -1421,13 +1423,13 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 GN_F_voigt(2)=F_GN_22_NR;
                 tensor<double,2> GN_jac_voigt(3,3);
                 double  J_GN_11_NR_11=1.0-dt_eta*d_delWN_delGN_n_CC(0,0,0,0);
-                double  J_GN_11_NR_12=0.0-dt_eta*d_delWN_delGN_n_CC(0,0,0,1);
+                double  J_GN_11_NR_12=0.0-dt_eta*(d_delWN_delGN_n_CC(0,0,0,1)+d_delWN_delGN_n_CC(0,0,1,0));
                 double  J_GN_11_NR_22=0.0-dt_eta*d_delWN_delGN_n_CC(0,0,1,1);
                 double  J_GN_12_NR_11=0.0-dt_eta*d_delWN_delGN_n_CC(0,1,0,0);
-                double  J_GN_12_NR_12=1.0-dt_eta*d_delWN_delGN_n_CC(0,1,0,1);
+                double  J_GN_12_NR_12=1.0-dt_eta*(d_delWN_delGN_n_CC(0,1,0,1)+d_delWN_delGN_n_CC(0,1,1,0));
                 double  J_GN_12_NR_22=0.0-dt_eta*d_delWN_delGN_n_CC(0,1,1,1);
                 double J_GN_22_NR_11=0.0-dt_eta*d_delWN_delGN_n_CC(1,1,0,0);
-                double J_GN_22_NR_12=0.0-dt_eta*d_delWN_delGN_n_CC(1,1,0,1);
+                double J_GN_22_NR_12=0.0-dt_eta*(d_delWN_delGN_n_CC(1,1,0,1)+d_delWN_delGN_n_CC(1,1,1,0));
                 double J_GN_22_NR_22=1.0-dt_eta*d_delWN_delGN_n_CC(1,1,1,1);
                 GN_jac_voigt(0,0)=J_GN_11_NR_11;
                 GN_jac_voigt(0,1)=J_GN_11_NR_12;
@@ -1452,13 +1454,13 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 GL1_F_voigt(2)=F_GL1_22_NR;
                 tensor<double,2> GL1_jac_voigt(3,3);
                 double  J_GL1_11_NR_11=1.0-dt_eta*d_delWL_delGL1_n(0,0,0,0);
-                double  J_GL1_11_NR_12=0.0-dt_eta*d_delWL_delGL1_n(0,0,0,1);
+                double  J_GL1_11_NR_12=0.0-dt_eta*(d_delWL_delGL1_n(0,0,0,1)+d_delWL_delGL1_n(0,0,1,0));
                 double  J_GL1_11_NR_22=0.0-dt_eta*d_delWL_delGL1_n(0,0,1,1);
                 double  J_GL1_12_NR_11=0.0-dt_eta*d_delWL_delGL1_n(0,1,0,0);
-                double  J_GL1_12_NR_12=1.0-dt_eta*d_delWL_delGL1_n(0,1,0,1);
+                double  J_GL1_12_NR_12=1.0-dt_eta*(d_delWL_delGL1_n(0,1,0,1)+d_delWL_delGL1_n(0,1,1,0));
                 double  J_GL1_12_NR_22=0.0-dt_eta*d_delWL_delGL1_n(0,1,1,1);
                 double J_GL1_22_NR_11=0.0-dt_eta*d_delWL_delGL1_n(1,1,0,0);
-                double J_GL1_22_NR_12=0.0-dt_eta*d_delWL_delGL1_n(1,1,0,1);
+                double J_GL1_22_NR_12=0.0-dt_eta*(d_delWL_delGL1_n(1,1,0,1)+d_delWL_delGL1_n(1,1,1,0));
                 double J_GL1_22_NR_22=1.0-dt_eta*d_delWL_delGL1_n(1,1,1,1);
                 GL1_jac_voigt(0,0)=J_GL1_11_NR_11;
                 GL1_jac_voigt(0,1)=J_GL1_11_NR_12;
@@ -1483,13 +1485,13 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 GL2_F_voigt(2)=F_GL2_22_NR;
                 tensor<double,2> GL2_jac_voigt(3,3);
                 double  J_GL2_11_NR_11=1.0-dt_eta*d_delWL_delGL2_n(0,0,0,0);
-                double  J_GL2_11_NR_12=0.0-dt_eta*d_delWL_delGL2_n(0,0,0,1);
+                double  J_GL2_11_NR_12=0.0-dt_eta*(d_delWL_delGL2_n(0,0,0,1)+d_delWL_delGL2_n(0,0,1,0));
                 double  J_GL2_11_NR_22=0.0-dt_eta*d_delWL_delGL2_n(0,0,1,1);
                 double  J_GL2_12_NR_11=0.0-dt_eta*d_delWL_delGL2_n(0,1,0,0);
-                double  J_GL2_12_NR_12=1.0-dt_eta*d_delWL_delGL2_n(0,1,0,1);
+                double  J_GL2_12_NR_12=1.0-dt_eta*(d_delWL_delGL2_n(0,1,0,1)+d_delWL_delGL2_n(0,1,1,0));
                 double  J_GL2_12_NR_22=0.0-dt_eta*d_delWL_delGL2_n(0,1,1,1);
                 double J_GL2_22_NR_11=0.0-dt_eta*d_delWL_delGL2_n(1,1,0,0);
-                double J_GL2_22_NR_12=0.0-dt_eta*d_delWL_delGL2_n(1,1,0,1);
+                double J_GL2_22_NR_12=0.0-dt_eta*(d_delWL_delGL2_n(1,1,0,1)+d_delWL_delGL2_n(1,1,1,0));
                 double J_GL2_22_NR_22=1.0-dt_eta*d_delWL_delGL2_n(1,1,1,1);
                 GL2_jac_voigt(0,0)=J_GL2_11_NR_11;
                 GL2_jac_voigt(0,1)=J_GL2_11_NR_12;
@@ -1514,13 +1516,13 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 GL3_F_voigt(2)=F_GL3_22_NR;
                 tensor<double,2> GL3_jac_voigt(3,3);
                 double  J_GL3_11_NR_11=1.0-dt_eta*d_delWL_delGL3_n(0,0,0,0);
-                double  J_GL3_11_NR_12=0.0-dt_eta*d_delWL_delGL3_n(0,0,0,1);
+                double  J_GL3_11_NR_12=0.0-dt_eta*(d_delWL_delGL3_n(0,0,0,1)+d_delWL_delGL3_n(0,0,1,0));
                 double  J_GL3_11_NR_22=0.0-dt_eta*d_delWL_delGL3_n(0,0,1,1);
                 double  J_GL3_12_NR_11=0.0-dt_eta*d_delWL_delGL3_n(0,1,0,0);
-                double  J_GL3_12_NR_12=1.0-dt_eta*d_delWL_delGL3_n(0,1,0,1);
+                double  J_GL3_12_NR_12=1.0-dt_eta*(d_delWL_delGL3_n(0,1,0,1)+d_delWL_delGL3_n(0,1,1,0));
                 double  J_GL3_12_NR_22=0.0-dt_eta*d_delWL_delGL3_n(0,1,1,1);
                 double J_GL3_22_NR_11=0.0-dt_eta*d_delWL_delGL3_n(1,1,0,0);
-                double J_GL3_22_NR_12=0.0-dt_eta*d_delWL_delGL3_n(1,1,0,1);
+                double J_GL3_22_NR_12=0.0-dt_eta*(d_delWL_delGL3_n(1,1,0,1)+d_delWL_delGL3_n(1,1,1,0));
                 double J_GL3_22_NR_22=1.0-dt_eta*d_delWL_delGL3_n(1,1,1,1);
                 GL3_jac_voigt(0,0)=J_GL3_11_NR_11;
                 GL3_jac_voigt(0,1)=J_GL3_11_NR_12;
@@ -1575,11 +1577,16 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 X_GL3_11_NR=delX_GL3(0);
                 X_GL3_12_NR=delX_GL3(1);
                 X_GL3_22_NR=delX_GL3(2);
-                double tol3=0.0000000001;
+                // update relative to the size of each tensor (the shear component can be ~0 or negative)
+                auto rel3 = [](double x1, double x2, double x3, double g11, double g22)
+                { double sc = std::max(std::max(fabs(g11), fabs(g22)), 1.0e-12);
+                  return std::max(fabs(x1), std::max(fabs(x2), fabs(x3))) / sc; };
                 std::vector<double> values2 = {
-                    abs(X_GP_11_NR/(GP_11_NR+tol3)), abs(X_GP_12_NR/(GP_12_NR+tol3)), abs(X_GP_22_NR/(GP_22_NR+tol3)), abs(X_GN_11_NR/(GN_11_NR+tol3)), abs(X_GN_12_NR/(GN_12_NR+tol3)), abs(X_GN_22_NR/(GN_22_NR+tol3)),
-                    abs(X_GL1_11_NR/(GL1_11_NR+tol3)), abs(X_GL1_12_NR/(GL1_12_NR+tol3)), abs(X_GL1_22_NR/(GL1_22_NR+tol3)), abs(X_GL2_11_NR/(GL2_11_NR+tol3)), abs(X_GL2_12_NR/(GL2_12_NR+tol3)), abs(X_GL2_22_NR/(GL2_22_NR+tol3)),
-                    abs(X_GL3_11_NR/(GL3_11_NR+tol3)), abs(X_GL3_12_NR/(GL3_12_NR+tol3)), abs(X_GL3_22_NR/(GL3_22_NR+tol3))
+                    rel3(X_GP_11_NR, X_GP_12_NR, X_GP_22_NR, GP_11_NR, GP_22_NR),
+                    rel3(X_GN_11_NR, X_GN_12_NR, X_GN_22_NR, GN_11_NR, GN_22_NR),
+                    rel3(X_GL1_11_NR, X_GL1_12_NR, X_GL1_22_NR, GL1_11_NR, GL1_22_NR),
+                    rel3(X_GL2_11_NR, X_GL2_12_NR, X_GL2_22_NR, GL2_11_NR, GL2_22_NR),
+                    rel3(X_GL3_11_NR, X_GL3_12_NR, X_GL3_22_NR, GL3_11_NR, GL3_22_NR)
                     };
                 error2=*std::max_element(values2.begin(), values2.end());
                 GP_n(0,0)=GP_11_NR;
@@ -1602,10 +1609,8 @@ void LS_ReacDif(hiperlife::FillStructure& fillStr)
                 GL3_n(0,1)=GL3_12_NR;
                 GL3_n(1,0)=GL3_12_NR;
                 GL3_n(1,1)=GL3_22_NR;
-                if(nr_step>25)
-                {
-                    cout<<"error warning: "<<endl;
-                }
+                if (nr_step == 29 && (error > 0.0000001 || error2 > 0.0000001))
+                cout << "WARNING LS_ReacDif: local Newton for G not converged in 30 iterations (residual " << error << ", relative update " << error2 << ")" << endl;
                 nr_step=nr_step+1;
             }
             G11P =GP_11_NR;
