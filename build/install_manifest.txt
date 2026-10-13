@@ -1,3 +1,0 @@
-/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlvertex_model
-/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlactive_gel_bilayer_shell
-/home/ubuntu/mechanics_of_epithelial_domes/source_compiled/bin/hlshell_model
