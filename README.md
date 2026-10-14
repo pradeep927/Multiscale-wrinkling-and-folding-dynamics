@@ -1,7 +1,9 @@
 
 # Multiscale wrinkling and folding dynamics
 
-This work presents a multiscale computational framework for simulating inflating and deflating epithelial shells [[1](#References)] using a continuum active shell model and an acitve gel vertex model for epithelial sheets [[2](#References)].  
+This repository contains three applications used in the simulations of the paper “Multiscale wrinkling and folding dynamics in epithelial shells” by Chahare et al. [[1](#References)] implementing (1) the active gel vertex model [[2](#References)], (2) the continuum active gel shell model (Cosserat version of the theory) [[3](#References)], and (3) comparison shell model C. These models are described in detail in Supplementary Notes 1 and 6. We further provide input files for a short test simulation and for simulations presented in the paper. For the short test simulations, we provide the expected outputs for verification.  
+
+These applications are built on a parallel finite element library called hiperlife (https://zenodo.org/doi/10.5281/zenodo.14927572) [[4](#References)], which serves as the core numerical engine for the simulations presented in this study. This library depends on other open-source libraries. The library is openly distributed to the community and is available online at https://gitlab.com/hiperlife/hiperlife. The hiperlife is written in C++, uses the Message Passing Interface (MPI) paradigm for parallelism, and is built on top of several packages of the Trilinos Project.
 
 ## License 
 Distributed under the GNU GENERAL PUBLIC LICENSE. See [LICENSE](LICENSE) for details.
@@ -107,10 +109,12 @@ Now we need to postprocess the generated output files in VTK format (e.g., {sol_
 
 ## References
 
-[1] Nimesh Chahare, Adam Ouzeri, Thomas Wilson, Pradeep K. Bal, Tom Golde, Guillermo Vilanova, Pau Pujol-Vives, Pere Roca-Cusachs, Xavier Trepat, Marino Arroyo. Multiscale wrinkling dynamics in epithelial shells. bioRxiv 2025.06.30.662426; doi: https://doi.org/10.1101/2025.06.30.662426
+[1] Chahare N., Ouzeri A., Wilson t., Bal K. P., Golde T., Vilanova G., Özgüç Ö., Pujol-Vives P., Roca-Cusachs P., Trepat X., Arroyo M. (2025). Multiscale wrinkling dynamics in epithelial shells. bioRxiv 2025.06.30.662426; doi: https://doi.org/10.1101/2025.06.30.662426
 
 [2] Ouzeri A., Kale S., Chahare N., Torres-Sanchez A., Santos-Olivan D., Trepat X., Arroyo M. (2026), PRX Life, https://doi.org/10.1103/4mx5-t5hx
 
-[3] Santos-Oliván, D., Vilanova, G., & Torres-Sánchez, A. (2025). hiperlife. Zenodo. https://doi.org/10.5281/zenodo.14927572
+[3] Bal K. P., Ouzeri A., Arroyo M. (2026), JMPS, https://doi.org/10.1016/j.jmps.2025.106477
+
+[4] Santos-Oliván, D., Vilanova, G., & Torres-Sánchez, A. (2025). hiperlife. Zenodo. https://doi.org/10.5281/zenodo.14927572
 
 

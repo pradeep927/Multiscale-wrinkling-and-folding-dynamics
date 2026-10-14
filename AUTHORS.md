@@ -1,4 +1,4 @@
-# Cosserat active gel shell model and comparison shell models
+# Cosserat active gel shell model and comparison shell model C
 
 **Main Author / Corresponding author**: 
 
