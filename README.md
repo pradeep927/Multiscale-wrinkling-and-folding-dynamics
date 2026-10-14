@@ -6,6 +6,25 @@ This work presents a multiscale computational framework for simulating inflating
 ## License 
 Distributed under the GNU GENERAL PUBLIC LICENSE. See [LICENSE](LICENSE) for details.
 
+## Code Organization and Project Setup
+
+The folder is organized as follows :
+```bash
+.                        # <--- top-level (or root) directory of the project (called agvm)   
+├── build                # <--- Temporary build system files (CMake, object files, etc.) : created at installation
+├── post-processing      # <--- Folder containing the post-processing file used in Paraview (.pvsm)
+├── simulation           # <--- Folder containing the meshes to run the simulations
+├── src                  # <--- Folder containing the source codes
+├── AUTHORS.md           # <--- List of project authors and contributors  
+├── CMakeLists.txt       # <--- Top-level configuration file.
+├── INSTALL.md           # <--- Instructions on how to install and build the project 
+├── .gitignore           # <--- Contains files to be ignored by git 
+├── LICENSE              # <--- Software license
+├── README.md            # <--- Project overview and usage instruction
+└── userConfig.cmake     # <--- User's configuration file
+```
+
+
 
 ## Hiperlife [[3](#References)]
 
