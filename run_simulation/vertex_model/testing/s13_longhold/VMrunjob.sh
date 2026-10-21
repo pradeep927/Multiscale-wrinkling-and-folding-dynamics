@@ -17,4 +17,4 @@ echo $SLURM_NODELIST
 ## Remove openMP
 export OMP_NUM_THREADS=1
 
-mpirun -n $SLURM_NTASKS hlVertexModelDomes VMconfig.cfg 
+mpirun -n $SLURM_NTASKS hlvertex_model config.cfg 
