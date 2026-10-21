@@ -66,8 +66,8 @@ set(APPS_LIBRARIES CACHE INTERNAL "APPS_LIBRARIES")
 set(APPS_INSTALL_DIR ${CMAKE_CURRENT_LIST_DIR}/bin/)
 #Add (or modify) applications that do not depend on vtk and gmsh here:
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/src/vertex_model)
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/active_gel_bilayer_shell)
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/shell_model)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/src/active_gel_bilayer_shell)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/src/shell_model)
 #add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/shell_model1)
 #Add applications that depend on vtk and/or gmsh here: viscous_inext
 #if(VTK_FOUND AND GMSH_LIB)

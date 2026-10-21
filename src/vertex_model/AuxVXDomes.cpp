@@ -1246,7 +1246,7 @@ void LS_K (hiperlife::FillStructure& fillStr)
     delRay += 0.5 * bVisc * J0 * dens0 * Math::Dot(4,dGRef,dG_GRef_cc)/deltat;    // Dissipative
     delRay += 0.5 * J0 * eta_f * Math::Dot(3,v,v)/deltat;    // Surface friction
     delRay -= pressure*xn*J;    // Volume constraint
-    fillStr->addToGlobalIntegral("delRay", delRay);
+    fillStr.addToGlobalIntegral("delRay", delRay);
 
 
     // Values needed for contact
