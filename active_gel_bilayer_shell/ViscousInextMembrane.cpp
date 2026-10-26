@@ -83,6 +83,7 @@ int main (int argc, char** argv)
     // time stepping and numerics
     double deltat1{0.0001}, deltatMax{}, totalTime{}, tSimu{}, stepFactor{}, forward_new{0.0};
     int totalSteps{}, nPrint{10}, ConsCheck{}, MAXITER_NR{};
+    int reuse_energy_factorization{1}, assembly_diagnostics_only{1};
     double gPts{}, SOLTOL_NR{}, RESTOL_NR{};
     {
         config.readInto(R, "R");
@@ -133,6 +134,12 @@ int main (int argc, char** argv)
         config.readInto(ConsCheck, "ConsCheck");
         config.readInto(gPts, "gPts");
         config.readInto(MAXITER_NR, "MAXITER_NR");
+        // efficiency switches (both 1 by default; 0 restores the original paths for validation)
+        //   reuse_energy_factorization: the output projection (EDHand) has the constant reference mass matrix,
+        //                               factorised once and reused (MUMPS static matrix)
+        //   assembly_diagnostics_only : post-convergence refreshes evaluate only values (integrals, Gauss-point state)
+        config.readInto(reuse_energy_factorization, "reuse_energy_factorization");
+        config.readInto(assembly_diagnostics_only, "assembly_diagnostics_only");
         config.readInto(SOLTOL_NR, "SOLTOL_NR");
         config.readInto(RESTOL_NR, "RESTOL_NR");
     }
@@ -461,6 +468,8 @@ int main (int argc, char** argv)
     posDHand->printFileLegacyVtk("sol_dis." + to_string(timestep), true);
 
     double v_r_step = 0.0;
+    bool energyMatrixStatic = false;
+    g_assemblyGuards = (assembly_diagnostics_only == 1);
     double press0 = 0.0;
     const double deltatMax1 = deltatMax;
 
@@ -547,6 +556,11 @@ int main (int argc, char** argv)
             {
                 // nodal output fields
                 ENDirSolver->solve();
+                if (reuse_energy_factorization == 1 and !energyMatrixStatic)
+                {
+                    ENDirSolver->setStaticMatrix(true);   // later solves reuse this factorisation
+                    energyMatrixStatic = true;
+                }
                 ENProbl->UpdateSolution();
                 for (int i = 0; i < posDHand->mesh->loc_nPts(); i++)
                 {
@@ -557,12 +571,12 @@ int main (int argc, char** argv)
                     // nx,ny,nz,height
                     for (int k = 0; k < 4; k++)
                         posDHand->nodeAuxF->setValue(3+k, i, IndexType::Local, EDHand->nodeDOFs->getValue(k,i,IndexType::Local));
-                    // rho_api, rho_bas, rho_lat1..3 (NB: rho_lat3 shows rho_lat2, as in the original code)
+                    // rho_api, rho_bas, rho_lat1..3 (DOF indices 0..4)
                     posDHand->nodeAuxF->setValue("rho_api",  i, IndexType::Local, RhoDHand->nodeDOFs->getValue(0,i,IndexType::Local));
                     posDHand->nodeAuxF->setValue("rho_bas",  i, IndexType::Local, RhoDHand->nodeDOFs->getValue(1,i,IndexType::Local));
                     posDHand->nodeAuxF->setValue("rho_lat1", i, IndexType::Local, RhoDHand->nodeDOFs->getValue(2,i,IndexType::Local));
                     posDHand->nodeAuxF->setValue("rho_lat2", i, IndexType::Local, RhoDHand->nodeDOFs->getValue(3,i,IndexType::Local));
-                    posDHand->nodeAuxF->setValue("rho_lat3", i, IndexType::Local, RhoDHand->nodeDOFs->getValue(3,i,IndexType::Local));
+                    posDHand->nodeAuxF->setValue("rho_lat3", i, IndexType::Local, RhoDHand->nodeDOFs->getValue(4,i,IndexType::Local));
                     // EA,EB,EL,DA,DB,DL,PA,PB,PL,jacC
                     for (int k = 4; k < 14; k++)
                         posDHand->nodeAuxF->setValue(11+k, i, IndexType::Local, EDHand->nodeDOFs->getValue(k,i,IndexType::Local));

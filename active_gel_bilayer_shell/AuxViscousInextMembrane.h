@@ -44,6 +44,10 @@
 #include "hl_DOFsHandler.h"
 #include "hl_HiPerProblem.h"
 #include "hl_Math.h"
+
+// 1 (default): LS skips derivatives and element arrays when only the integrals / Gauss-point state are
+// requested (FillGlobalIntegrals); 0: always the full evaluation (validation). Config key assembly_diagnostics_only.
+extern bool g_assemblyGuards;
 #include "hl_Array.h"
 
 using namespace std;
