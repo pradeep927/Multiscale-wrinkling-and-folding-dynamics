@@ -101,7 +101,7 @@ If ran on a Dell XPS 13 equipped with an Intel Core i7 8th Gen processor (4 core
 
 The solution at each time is printed in VTK format with the filename sol_dis.{timestep}.vtk. As an example, for the active-gel tissue bilayer model, the inflation process occurs from timestep 1 to 2000, followed by a hold period from timestep 2000 to 8000. Deflation then takes place over 4000 steps. At timestep 2000, the volume reaches 100% and the dome is fully inflated, and the volume remains constant till the end of 8000th step. Then the deflation is applied uniformly in 4000 total steps with a constant deltat such that: by timestep 10000, the volume is reduced by 50%, and by timestep 11000, it is reduced by 75%. For illustration, some representative VTK files have been stored in the folder named results. During the simulations, a data file named globalIntegrals.dat is also generated, which contains information about the area, volume, and elastic energy at each timestep.
 
-  
+Note: This representative simulation of the `active_gel_bilayer_shell` model uses a coarser mesh than that used for the results presented in the paper. The coarser mesh reproduces the same results while reducing computational time.
 
 ## STEP 4: Postprocessing and Visualization
 
