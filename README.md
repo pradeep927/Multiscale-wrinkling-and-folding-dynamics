@@ -87,7 +87,7 @@ The simulation parameters, including references to the mesh files, are specified
 
 A simulation is launched in parallel using MPI as:
 
-mpirun -n 4 /home/ubuntu/shell_models_continuum/source_compiled/bin/hlactive_gel_bilayer_shell config.cfg
+mpirun -n 4 /home/ubuntu/shell_models_continuum/source_compiled/bin/hlactive_gel_bilayer_shell config_shell.cfg
 
 
 
