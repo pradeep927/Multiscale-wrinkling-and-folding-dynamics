@@ -1,3 +1,4 @@
+#include "AdmissibleMUMPS.h"
 /*
     *******************************************************************************
     Copyright (c) 2017-2025
@@ -31,6 +32,7 @@
 
 #include "hl_DOFsHandler.h"
 #include "AuxVXDomes.h"
+#include "LoadStep.h"
 
 #include <random>
 #include <hl_Timer.h>
@@ -49,43 +51,44 @@ int main(int argc, char *argv[])
     // ---------------------------------------------------------------------------
 
     // Initializing set of parameters
-    int    gPts = 3;
-    double deltat = 0.001;
-    int nCells = 0;
-    double kp = 1.0;
-    double kd = 1.0;
-    double ConcInit = 0.03;
-    double bvisc = 0.5;
-    double lame1 = 1.0;
-    double lame2 = 1.0;
-    double activA = 1.0;
-    double activB = 1.0;
-    double activL = 0.5;
-    double eta_f = 1e-8;
-    double contact_force_coefficient = 0.01; // Contact force coefficient
-    double decrease_coeff = 1.0; // coefficient serving to decrease excess lateral faces buckling upon fast inflation
+    int    gPts;
+    double deltat;
+    int nCells;
+    double kp;
+    double kd;
+    double ConcInit;
+    double bvisc;
+    double lame1;
+    double lame2;
+    double activA;
+    double activB;
+    double activL;
+    double eta_f;
+    double contact_force_coefficient; // Contact force coefficient
+    double decrease_lateral_coefficient; // Multiply by 1.0 by default // 0.1 to decrease lateral elasticity moduli to improve numerical convergence when inflation is fast
 
     // Buckling simulation parameters
-    double tcycle = 900;
-    double tequi = 1.0;
-    double inflation_begin      = 0.0;
-    double inflation_duration   = 10.0;
-    double inflation_mag        = 1.0;
-    double deflation_begin      = 15.0;
-    double deflation_duration   = 0.3;
-    double deflation_mag        = 0.50000;
-    double totalTime = 30.0;
-    double deltat_max = 1.0;
+    double tcycle;
+    double tequi;
+    double inflation_begin;
+    double inflation_duration;
+    double deflation_duration;
+    double deflation_begin;
+    double totalTime;
+    double deltat_max;
+    double deflation_mag;
+    double inflation_mag;
 
-    int    MAXITER = 10;
-    int    nIterChange = 5;
+    int    MAXITER;
+    int    nIterChange;
 
-    double SOLTOL = 1e-8;
-    double RESTOL = 1e-8;
+    double SOLTOL;
+    double RESTOL;
+    int    nResSteps;
 
     // dome volume increase dynamics
-    double domeInflrate = 1506.844;
-    double domeDeflrate = -50228.1;
+    double domeInflrate;
+    double domeDeflrate;
 
     // Model parameters and solver options are read from a configuration file
     if (argc > 1)
@@ -110,8 +113,8 @@ int main(int argc, char *argv[])
         config.readInto(activB, "activB");
         config.readInto(activL, "activL");
         config.readInto(eta_f, "eta_f");
-        config.readInto(decrease_coeff, "decrease_coeff")
         config.readInto(contact_force_coefficient, "contact_force_coefficient");
+        config.readInto(decrease_lateral_coefficient, "decrease_lateral_coefficient");
 
         // Buckling simulation parameters
         config.readInto(tequi, "tequi");
@@ -129,6 +132,7 @@ int main(int argc, char *argv[])
         config.readInto(MAXITER, "MAXITER");
         config.readInto(SOLTOL, "SOLTOL");
         config.readInto(RESTOL, "RESTOL");
+        config.readInto(nResSteps, "nResSteps");
         config.readInto(nIterChange, "nIterChange");
 
         // Dome inflation parameters
@@ -158,6 +162,13 @@ int main(int argc, char *argv[])
     if( myRank == 0)
 	cout << "Loading mesh..." << endl;
     tissuemesh.loadMesh("vertexmesh");
+    tissuemesh.setNumberCells(nCells);
+
+    if( myRank == 0)
+	cout << "Reading neighbouring cells and facesIDs in cells..." << endl;
+    tissuemesh.readNeighbouringCells("neighbourcells.txt");
+    tissuemesh.readfaceIDsinCells("faceIDsinCell.txt");
+
 
     if( myRank == 0)
 	cout << "Updating tissue mesh..." << endl;
@@ -173,7 +184,7 @@ int main(int argc, char *argv[])
 
     // Assign parameters in a user structure
     SmartPtr<ParamStructure> paramStr = Create<ParamStructure>();
-    paramStr->dparam.resize(13);
+    paramStr->dparam.resize(14);
 
     paramStr->dparam[0]  = deltat;
     paramStr->dparam[1]  = kp;
@@ -185,10 +196,21 @@ int main(int argc, char *argv[])
     paramStr->dparam[7]  = activB; 
     paramStr->dparam[8] = activL; 
     paramStr->dparam[9] = eta_f;    
-    paramStr->dparam[10] = 0.0; // Updated in time loop (dome inflation rate variable)
+    paramStr->dparam[10] = 0.0; // Updated in time loop 
     paramStr->dparam[11] = ConcInit;
-    paramStr->dparam[12] = decrease_coeff;
-     
+    paramStr->dparam[12] = decrease_lateral_coefficient; 
+    paramStr->dparam[13] = contact_force_coefficient; 
+
+    // Setting all paramStr vectors
+    paramStr->bparam.resize(tissuemesh.nFaces,false); //used for contact potential
+    paramStr->i_aux.resize(tissuemesh.nFaces,0); // storing number of points in each cell for each face
+    tissuemesh.setNPointsInCell(paramStr);
+
+    paramStr->x_aux.resize(tissuemesh.nFaces,0.0); // x-coordinate difference with contacting cell barycenter
+    paramStr->y_aux.resize(tissuemesh.nFaces,0.0); // y-coordinate difference with contacting cell barycenter
+    paramStr->z_aux.resize(tissuemesh.nFaces,0.0); // z-coordinate difference with contacting cell barycenter
+
+    
     //Set-up for faces touching the substrate
     vector <int > newlocMeshIDsToFix(tissuemesh.nItem(), 0);
     paramStr->j_aux.resize(tissuemesh.nFaces, 0);
@@ -234,14 +256,6 @@ int main(int argc, char *argv[])
     double stepFactor = 0.90;
     bool startConstrainingMesh = false;
 
-     if (tissuemesh.myRank() == 0)
-    {
-        ofstream outfiledelray;
-        outfiledelray.open("delray.txt", std::ios::trunc);
-	    outfiledelray.close();
-    }
-
-
     //double parameters for NR
     std::vector<double> dparamNR;
     dparamNR.resize(4);
@@ -273,7 +287,7 @@ int main(int argc, char *argv[])
     // Newton-raphson iterator
     SmartPtr<NewtonRaphsonNonlinearSolver>  nonlinSolver = Create<NewtonRaphsonNonlinearSolver>();
 
-    SmartPtr<MUMPSDirectLinearSolver> linSolver = Create<MUMPSDirectLinearSolver>();
+    SmartPtr<AdmissibleMUMPS> linSolver = Create<AdmissibleMUMPS>();
     if( tissuemesh.myRank() == 0 )
         cout << "Using Mumps direct solver..." << endl;
     linSolver->setHiPerProblem(hiperProbl);
@@ -308,29 +322,26 @@ int main(int argc, char *argv[])
         
         //////////////////////////////////////// Ad hoc modification ////////////////////////////////////////
 
-        // Start dome inflation after tequi
-        if (simTime + deltat > tequi + inflation_begin && simTime + deltat < tequi + inflation_begin + inflation_duration )
-        {
-            paramStr->dparam[10] = domeInflrate;
+        
+	// (Re)-setting all faces to false
+        replace(paramStr->bparam.begin(), paramStr->bparam.end(), true, false); 
+        fill(begin(paramStr->x_aux), begin( paramStr->x_aux) + tissuemesh.nFaces, 0.0);
+        fill(begin(paramStr->y_aux), begin( paramStr->y_aux) + tissuemesh.nFaces, 0.0);
+        fill(begin(paramStr->z_aux), begin( paramStr->z_aux) + tissuemesh.nFaces, 0.0);
 
-        }
-        else if(simTime + deltat  > tequi + deflation_begin)        {
-            if(simTime + deltat < tequi + deflation_begin + deflation_duration)
-                paramStr->dparam[10] = domeDeflrate;
-            else
-                paramStr->dparam[10] = 0.0;
+        // updating centroid distances
+        tissuemesh.updateFacesCentroids(paramStr);
+        tissuemesh.calculateDistanceBetweenCellCentroids(paramStr, hiperProbl);
+		
 
-            if(resetDeltat)
-            {
-                resetDeltat = false;
-                deltat = 0.05; // resetting deltat to capture fast deflation
-            }    
-        }
-        else
-        {
-           paramStr->dparam[10] = 0.0;
-        }
-		    
+        const auto loadStep = vertex_loading::prepare(
+            simTime, deltat, tequi + inflation_begin, tequi + inflation_end,
+            tequi + deflation_begin, tequi + deflation_end,
+            domeInflrate, domeDeflrate, resetDeltat);
+        deltat = loadStep.dt;
+        // Publish the actual attempted timestep before any Newton assembly.
+        paramStr->dparam[0] = deltat;
+        paramStr->dparam[10] = loadStep.rate;
 
     // Fixing faces touching substrate during deflation
       if (simTime+ 2*deltat > tequi +  deflation_begin)
@@ -348,6 +359,7 @@ int main(int argc, char *argv[])
                     {
                         int nNodesToConstrain = 0;
 		
+
                         for (int j = 0; j < mec->mesh->loc_nPts(); j++)
                         {
                             double zPosOfNode = tissuemesh.fields[mecID]->nodeDOFs->getValue(2, j, IndexType::Local);
@@ -393,7 +405,8 @@ int main(int argc, char *argv[])
      
 
         hiperProbl->UpdateGhosts();
-        hiperProbl->FillLinearSystem();
+        // Newton's first linear solve assembles the current system. LS_K has no
+        // state-update side effects, so a separate preparatory fill is redundant.
         timerstep.end("Prep");
 
 		// Update simulation status
@@ -407,6 +420,18 @@ int main(int argc, char *argv[])
         // Non-linear solver
         timerstep.start("Solver");
         bool ierr = nonlinSolver->solve();
+        if (ierr) {
+            // Newton applies its final correction after its convergence check.
+            vertex_admissibility::invalid = false;
+            hiperProbl->FillLinearSystem();
+            ierr = vertex_admissibility::validEverywhere();
+            double finalResidual = 0.0;
+            hiperProbl->linProbl->GetRHS()->Norm2(&finalResidual);
+            ierr = ierr && std::isfinite(finalResidual);
+            if (!ierr && tissuemesh.myRank() == 0)
+                std::cerr << "Newton rejected: invalid final state" << std::endl;
+        }
+        if (!ierr) hiperProbl->linProbl->GetLHS()->PutScalar(0.0);
         timerstep.end("Solver");
 
     
@@ -414,7 +439,7 @@ int main(int argc, char *argv[])
         {
 
 		// Update simulation time
-            simTime += deltat;
+            simTime = loadStep.end;
 
 	     // Increment the loadstep value
             loadVal = loadVal + loadIncr;
@@ -427,15 +452,6 @@ int main(int argc, char *argv[])
 
 	    if( tissuemesh.myRank() == 0  )
                 cout << "Printing outputs... " << endl;
-
-        if( tissuemesh.myRank() == 0  )
-        {
-            std::ofstream outfiledelray;
-            outfiledelray.open("delray.txt", std::ios::app); // append instead of overwrite
- 	        outfiledelray << hiperProbl->globalIntegral("delRay") << endl;
-	        outfiledelray.close();
-        }
-
 
 
             // Update deltat    
@@ -494,7 +510,7 @@ int main(int argc, char *argv[])
         timerstep.printTesting(prefix);
         if( tissuemesh.myRank() == 0 )
         {
-            cout << "Simulation time (min) : " << timer.getAccumulatedTime("total")/60.0 << endl;
+            cout << "Simulation time (min) : " << timer.printAccumTime("total")/60.0 << endl;
             cout << "-------------"<< endl;
             cout << endl;
         }
@@ -507,7 +523,7 @@ int main(int argc, char *argv[])
     if( tissuemesh.myRank() == 0 )
     {
         cout << "-----------------------------------------------------------------"    << endl;
-        cout << "Total simulation time (min) : " << timer.getAccumulatedTime("total")/60.0 << endl;
+        cout << "Total simulation time (min) : " << timer.printAccumTime("total")/60.0 << endl;
         cout << endl;
     }
 

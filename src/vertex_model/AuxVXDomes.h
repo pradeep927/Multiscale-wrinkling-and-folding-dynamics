@@ -59,9 +59,13 @@ class faceMesh
 
 
         Teuchos::RCP<hiperlife::FieldStruct> nodeDOFs = Teuchos::null;
+        Teuchos::RCP<hiperlife::FieldStruct> auxF     = Teuchos::null;
         Teuchos::RCP<hiperlife::FieldStruct> gDOFS    = Teuchos::null;
+        Teuchos::RCP<hiperlife::FieldStruct> auxV     = Teuchos::null;
 
         std::vector<double> u_nodes;
+        std::vector<double> globalU;
+        std::vector<double> globalV;
 
         void loadMesh( std::string fileName);
 
@@ -83,6 +87,12 @@ class tissueMesh: public hiperlife::DistributedData
         std::vector<vector<int >> NeighboursCells = {};
 
 		void loadMesh( std::string fileName);
+        void readNeighbouringCells(const string fileName);
+        void readfaceIDsinCells(const string fileName);
+        void calculateDistanceBetweenCellCentroids(Teuchos::RCP<hiperlife::ParamStructure> paramStr,  Teuchos::RCP<hiperlife::HiPerProblem> hiperProbl);
+        void setNumberCells(const int numberCells);
+	    void setNPointsInCell(Teuchos::RCP<hiperlife::ParamStructure> paramStr);
+        void updateFacesCentroids(Teuchos::RCP<hiperlife::ParamStructure> paramStr);
 
     faceMesh* operator [] (int i)
         {
