@@ -64,7 +64,6 @@ int main(int argc, char *argv[])
     double activB;
     double activL;
     double eta_f;
-    double contact_force_coefficient; // Contact force coefficient
     double decrease_lateral_coefficient; // Multiply by 1.0 by default // 0.1 to decrease lateral elasticity moduli to improve numerical convergence when inflation is fast
 
     // Buckling simulation parameters
@@ -113,7 +112,6 @@ int main(int argc, char *argv[])
         config.readInto(activB, "activB");
         config.readInto(activL, "activL");
         config.readInto(eta_f, "eta_f");
-        config.readInto(contact_force_coefficient, "contact_force_coefficient");
         config.readInto(decrease_lateral_coefficient, "decrease_lateral_coefficient");
 
         // Buckling simulation parameters
@@ -158,17 +156,9 @@ int main(int argc, char *argv[])
         cout << "Generating tissuemesh..." << endl;
     tissueMesh tissuemesh;
 
-
     if( myRank == 0)
 	cout << "Loading mesh..." << endl;
     tissuemesh.loadMesh("vertexmesh");
-    tissuemesh.setNumberCells(nCells);
-
-    if( myRank == 0)
-	cout << "Reading neighbouring cells and facesIDs in cells..." << endl;
-    tissuemesh.readNeighbouringCells("neighbourcells.txt");
-    tissuemesh.readfaceIDsinCells("faceIDsinCell.txt");
-
 
     if( myRank == 0)
 	cout << "Updating tissue mesh..." << endl;
@@ -184,7 +174,7 @@ int main(int argc, char *argv[])
 
     // Assign parameters in a user structure
     SmartPtr<ParamStructure> paramStr = Create<ParamStructure>();
-    paramStr->dparam.resize(14);
+    paramStr->dparam.resize(13);
 
     paramStr->dparam[0]  = deltat;
     paramStr->dparam[1]  = kp;
@@ -199,16 +189,6 @@ int main(int argc, char *argv[])
     paramStr->dparam[10] = 0.0; // Updated in time loop 
     paramStr->dparam[11] = ConcInit;
     paramStr->dparam[12] = decrease_lateral_coefficient; 
-    paramStr->dparam[13] = contact_force_coefficient; 
-
-    // Setting all paramStr vectors
-    paramStr->bparam.resize(tissuemesh.nFaces,false); //used for contact potential
-    paramStr->i_aux.resize(tissuemesh.nFaces,0); // storing number of points in each cell for each face
-    tissuemesh.setNPointsInCell(paramStr);
-
-    paramStr->x_aux.resize(tissuemesh.nFaces,0.0); // x-coordinate difference with contacting cell barycenter
-    paramStr->y_aux.resize(tissuemesh.nFaces,0.0); // y-coordinate difference with contacting cell barycenter
-    paramStr->z_aux.resize(tissuemesh.nFaces,0.0); // z-coordinate difference with contacting cell barycenter
 
     
     //Set-up for faces touching the substrate
@@ -321,18 +301,6 @@ int main(int argc, char *argv[])
         timerstep.start("Prep");
         
         //////////////////////////////////////// Ad hoc modification ////////////////////////////////////////
-
-        
-	// (Re)-setting all faces to false
-        replace(paramStr->bparam.begin(), paramStr->bparam.end(), true, false); 
-        fill(begin(paramStr->x_aux), begin( paramStr->x_aux) + tissuemesh.nFaces, 0.0);
-        fill(begin(paramStr->y_aux), begin( paramStr->y_aux) + tissuemesh.nFaces, 0.0);
-        fill(begin(paramStr->z_aux), begin( paramStr->z_aux) + tissuemesh.nFaces, 0.0);
-
-        // updating centroid distances
-        tissuemesh.updateFacesCentroids(paramStr);
-        tissuemesh.calculateDistanceBetweenCellCentroids(paramStr, hiperProbl);
-		
 
         const auto loadStep = vertex_loading::prepare(
             simTime, deltat, tequi + inflation_begin, tequi + inflation_end,

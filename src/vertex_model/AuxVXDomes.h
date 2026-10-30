@@ -80,19 +80,8 @@ class tissueMesh: public hiperlife::DistributedData
         int nCells                   = 0;
         int nFaces                   = 0;
         std::vector<faceMesh> meshes = {};
-        std::vector< int> nPointsinFace = {};
-
-        // FIXME: parallelise
-        std::vector<vector<int >> facesInCell = {};
-        std::vector<vector<int >> NeighboursCells = {};
 
 		void loadMesh( std::string fileName);
-        void readNeighbouringCells(const string fileName);
-        void readfaceIDsinCells(const string fileName);
-        void calculateDistanceBetweenCellCentroids(Teuchos::RCP<hiperlife::ParamStructure> paramStr,  Teuchos::RCP<hiperlife::HiPerProblem> hiperProbl);
-        void setNumberCells(const int numberCells);
-	    void setNPointsInCell(Teuchos::RCP<hiperlife::ParamStructure> paramStr);
-        void updateFacesCentroids(Teuchos::RCP<hiperlife::ParamStructure> paramStr);
 
     faceMesh* operator [] (int i)
         {
