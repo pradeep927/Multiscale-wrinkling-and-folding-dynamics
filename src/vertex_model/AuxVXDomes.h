@@ -83,12 +83,6 @@ class tissueMesh: public hiperlife::DistributedData
         std::vector<vector<int >> NeighboursCells = {};
 
 		void loadMesh( std::string fileName);
-        void readNeighbouringCells(const string fileName);
-        void readfaceIDsinCells(const string fileName);
-        void calculateDistanceBetweenCellCentroids(Teuchos::RCP<hiperlife::ParamStructure> paramStr,  Teuchos::RCP<hiperlife::HiPerProblem> hiperProbl);
-        void setNumberCells(const int numberCells);
-	    void setNPointsInCell(Teuchos::RCP<hiperlife::ParamStructure> paramStr);
-        void updateFacesCentroids(Teuchos::RCP<hiperlife::ParamStructure> paramStr);
 
     faceMesh* operator [] (int i)
         {

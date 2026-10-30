@@ -63,6 +63,7 @@ int main(int argc, char *argv[])
     double activL = 0.5;
     double eta_f = 1e-8;
     double contact_force_coefficient = 0.01; // Contact force coefficient
+    double decrease_coeff = 1.0; // coefficient serving to decrease excess lateral faces buckling upon fast inflation
 
     // Buckling simulation parameters
     double tcycle = 900;
@@ -109,6 +110,7 @@ int main(int argc, char *argv[])
         config.readInto(activB, "activB");
         config.readInto(activL, "activL");
         config.readInto(eta_f, "eta_f");
+        config.readInto(decrease_coeff, "decrease_coeff")
         config.readInto(contact_force_coefficient, "contact_force_coefficient");
 
         // Buckling simulation parameters
@@ -156,13 +158,6 @@ int main(int argc, char *argv[])
     if( myRank == 0)
 	cout << "Loading mesh..." << endl;
     tissuemesh.loadMesh("vertexmesh");
-    tissuemesh.setNumberCells(nCells);
-
-    if( myRank == 0)
-	cout << "Reading neighbouring cells and facesIDs in cells..." << endl;
-    tissuemesh.readNeighbouringCells("neighbourcells.txt");
-    tissuemesh.readfaceIDsinCells("faceIDsinCell.txt");
-
 
     if( myRank == 0)
 	cout << "Updating tissue mesh..." << endl;
@@ -192,18 +187,8 @@ int main(int argc, char *argv[])
     paramStr->dparam[9] = eta_f;    
     paramStr->dparam[10] = 0.0; // Updated in time loop (dome inflation rate variable)
     paramStr->dparam[11] = ConcInit;
-    paramStr->dparam[12] = contact_force_coefficient; 
-
-    // Setting all paramStr vectors
-    paramStr->bparam.resize(tissuemesh.nFaces,false); //used for contact potential
-    paramStr->i_aux.resize(tissuemesh.nFaces,0); // storing number of points in each cell for each face
-    tissuemesh.setNPointsInCell(paramStr);
-
-    paramStr->x_aux.resize(tissuemesh.nFaces,0.0); // x-coordinate difference with contacting cell barycenter
-    paramStr->y_aux.resize(tissuemesh.nFaces,0.0); // y-coordinate difference with contacting cell barycenter
-    paramStr->z_aux.resize(tissuemesh.nFaces,0.0); // z-coordinate difference with contacting cell barycenter
-
-    
+    paramStr->dparam[12] = decrease_coeff;
+     
     //Set-up for faces touching the substrate
     vector <int > newlocMeshIDsToFix(tissuemesh.nItem(), 0);
     paramStr->j_aux.resize(tissuemesh.nFaces, 0);
@@ -322,18 +307,6 @@ int main(int argc, char *argv[])
         timerstep.start("Prep");
         
         //////////////////////////////////////// Ad hoc modification ////////////////////////////////////////
-
-        
-	// (Re)-setting all faces to false
-        replace(paramStr->bparam.begin(), paramStr->bparam.end(), true, false); 
-        fill(begin(paramStr->x_aux), begin( paramStr->x_aux) + tissuemesh.nFaces, 0.0);
-        fill(begin(paramStr->y_aux), begin( paramStr->y_aux) + tissuemesh.nFaces, 0.0);
-        fill(begin(paramStr->z_aux), begin( paramStr->z_aux) + tissuemesh.nFaces, 0.0);
-
-        // updating centroid distances
-        tissuemesh.updateFacesCentroids(paramStr);
-        tissuemesh.calculateDistanceBetweenCellCentroids(paramStr, hiperProbl);
-		
 
         // Start dome inflation after tequi
         if (simTime + deltat > tequi + inflation_begin && simTime + deltat < tequi + inflation_begin + inflation_duration )

@@ -5,10 +5,22 @@ byte_order="LittleEndian" header_type="UInt64">
 <DataSet index="1" name="1" file="solution0.1.vtu"></DataSet>
 <DataSet index="2" name="2" file="solution0.2.vtu"></DataSet>
 <DataSet index="3" name="3" file="solution0.3.vtu"></DataSet>
+<DataSet index="4" name="4" file="solution0.4.vtu"></DataSet>
+<DataSet index="5" name="5" file="solution0.5.vtu"></DataSet>
+<DataSet index="6" name="6" file="solution0.6.vtu"></DataSet>
+<DataSet index="7" name="7" file="solution0.7.vtu"></DataSet>
+<DataSet index="8" name="8" file="solution0.8.vtu"></DataSet>
+<DataSet index="9" name="9" file="solution0.9.vtu"></DataSet>
+<DataSet index="10" name="10" file="solution0.10.vtu"></DataSet>
+<DataSet index="11" name="11" file="solution0.11.vtu"></DataSet>
+<DataSet index="12" name="12" file="solution0.12.vtu"></DataSet>
+<DataSet index="13" name="13" file="solution0.13.vtu"></DataSet>
+<DataSet index="14" name="14" file="solution0.14.vtu"></DataSet>
+<DataSet index="15" name="15" file="solution0.15.vtu"></DataSet>
 </vtkMultiBlockDataSet>
 <FieldData>
-<DataArray type="Float64" Name="time" NumberOfTuples="1" format="ascii" RangeMin="0" RangeMax="0">
-0
+<DataArray type="Float64" Name="time" NumberOfTuples="1" format="ascii" RangeMin="0.001" RangeMax="0.001">
+0.001
 </DataArray>
 </FieldData>
 </VTKFile>

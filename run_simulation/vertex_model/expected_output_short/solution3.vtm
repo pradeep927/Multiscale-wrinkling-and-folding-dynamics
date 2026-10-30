@@ -1,0 +1,26 @@
+<VTKFile type="vtkMultiBlockDataSet" version="1.0"
+byte_order="LittleEndian" header_type="UInt64">
+<vtkMultiBlockDataSet>
+<DataSet index="0" name="0" file="solution3.0.vtu"></DataSet>
+<DataSet index="1" name="1" file="solution3.1.vtu"></DataSet>
+<DataSet index="2" name="2" file="solution3.2.vtu"></DataSet>
+<DataSet index="3" name="3" file="solution3.3.vtu"></DataSet>
+<DataSet index="4" name="4" file="solution3.4.vtu"></DataSet>
+<DataSet index="5" name="5" file="solution3.5.vtu"></DataSet>
+<DataSet index="6" name="6" file="solution3.6.vtu"></DataSet>
+<DataSet index="7" name="7" file="solution3.7.vtu"></DataSet>
+<DataSet index="8" name="8" file="solution3.8.vtu"></DataSet>
+<DataSet index="9" name="9" file="solution3.9.vtu"></DataSet>
+<DataSet index="10" name="10" file="solution3.10.vtu"></DataSet>
+<DataSet index="11" name="11" file="solution3.11.vtu"></DataSet>
+<DataSet index="12" name="12" file="solution3.12.vtu"></DataSet>
+<DataSet index="13" name="13" file="solution3.13.vtu"></DataSet>
+<DataSet index="14" name="14" file="solution3.14.vtu"></DataSet>
+<DataSet index="15" name="15" file="solution3.15.vtu"></DataSet>
+</vtkMultiBlockDataSet>
+<FieldData>
+<DataArray type="Float64" Name="time" NumberOfTuples="1" format="ascii" RangeMin="0.00471742" RangeMax="0.00471742">
+0.00471742
+</DataArray>
+</FieldData>
+</VTKFile>

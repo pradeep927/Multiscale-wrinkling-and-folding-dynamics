@@ -640,290 +640,6 @@ SmartPtr<HiPerProblem> tissueMesh::generateHiPerProblem(SmartPtr<ParamStructure>
 }
 
 
-void tissueMesh::setNumberCells(const int numberCells)
-{
-    if(numberCells < 1)
-        throw runtime_error("There are only " + to_string(numberCells) + " cells in the tissue.");
-
-    nCells = numberCells;
-    NeighboursCells.resize(nCells);
-    facesInCell.resize(nCells);
-}
-
-//FIXME: parallelise ?
-void tissueMesh::readNeighbouringCells(const string fileName)
-{
-    ifstream infile(fileName);
-    if(!infile.is_open())
-        throw runtime_error("readNeighbouringCellsfromFile: The input file (" + fileName + ") does not exist.");
-
-    string line;
-
-    // Getting the neighbor cellIDs
-    for(int i = 0; i < nCells; i++)
-    {
-        getline(infile, line);
-
-        std::istringstream iss(line);
-        vector<string> tokens{istream_iterator<string>{iss},
-                              istream_iterator<string>{}};
-        for ( auto t: tokens)
-            NeighboursCells[i].push_back(stoi(t));
-
-    }
-
-}
-
-void tissueMesh::readfaceIDsinCells(const string fileName)
-{
-    ifstream infile(fileName);
-    if(!infile.is_open())
-        throw runtime_error("readfaceIDsingCells: The input file (" + fileName + ") does not exist.");
-
-    string line;
-
-    // Getting the faceIDs in cellIDs
-    for(int c = 0; c < nCells; c++)
-    {
-        getline(infile, line);
-
-        std::istringstream iss(line);
-        vector<string> tokens{istream_iterator<string>{iss},
-                              istream_iterator<string>{}};
-        for ( auto t: tokens)
-            facesInCell[c].push_back(stoi(t));
-
-    }
-}
-
-void tissueMesh::setNPointsInCell(SmartPtr<ParamStructure> paramStr)
-{
- // Assumes all lateralfaces have same number of points
-
-	vector <int> nPointsinCell(nCells,0);
-	vector <int> nPointsinCellAtFace(nFaces,0);
-	for(int c = 0; c < nCells; c++) {
-        	int nFacesinCell = facesInCell[c].size();
-		bool countedLateralFace = false;
-		int nVertEdgepoints = 0;
-		int nHorEdgepoints = 0;
-        	for (int m = 0; m < nFacesinCell; m++) {
-            		int globfaceID = facesInCell[c][m];
-            		
-			if (isItemInPart(globfaceID)) {
-	
-                		int locI = locIdx(globfaceID );
-				int loc_nPts = meshes[locI].nPts;
-				int faceType = meshes[locI].faceType;
-				if(faceType < 2)
-					{nPointsinCell[c] += loc_nPts;}
-				else if (!countedLateralFace)
-				{
-					countedLateralFace = true;
-					double xlocation0 = meshes[locI].x_nodes[loc_nPts*0 + 0];
-					double ylocation0 = meshes[locI].x_nodes[loc_nPts*1 + 0];
-					double zlocation0 = meshes[locI].x_nodes[loc_nPts*2 + 0];
-
-					for(int i = 0; i < loc_nPts; i++)
-					{
-						if(abs(meshes[locI].x_nodes[loc_nPts*0 + i] - xlocation0) < 1e-10 and abs(meshes[locI].x_nodes[loc_nPts*1 + i] - ylocation0) < 1e-10)
-							{nVertEdgepoints += 1;}
-						
-						if(abs(meshes[locI].x_nodes[loc_nPts*2 + i] - zlocation0) < 1e-10)
-							{nHorEdgepoints += 1;}
-	
-					}
-				}
-            						}
-        						}
-		nPointsinCell[c] += (nFacesinCell - 2)*(nVertEdgepoints - 2)*(nHorEdgepoints - 1);
-                                      
-    					}
-
-	for(int c = 0; c < nCells; c++) 
-		for(int f = 0; f < facesInCell[c].size(); f++)
-			nPointsinCellAtFace[facesInCell[c][f]] = nPointsinCell[c];
-
-// Sharing the information with all the partition
-    MPI_Allreduce(nPointsinCellAtFace.data(), paramStr->i_aux.data(), nItem(), MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-
-}
-
-void tissueMesh::updateFacesCentroids(SmartPtr<ParamStructure> paramStr)
-{
-
-    int loc_nFaces = loc_nItem();
-
-    for (int locI = 0; locI < loc_nFaces; locI++) {
-        //            cout << "Face: " << face << " is in partition: " << myRank() << endl;
-
-        // Resetting to 0 for new calculations
-            meshes[locI].centroidPositionInFaceMesh[0] = 0;
-            meshes[locI].centroidPositionInFaceMesh[1] = 0;
-            meshes[locI].centroidPositionInFaceMesh[2] = 0;
-            double nPoints =  meshes[locI].nPts;
-
-            for (int p = 0; p < nPoints; p++) {
-            meshes[locI].centroidPositionInFaceMesh[0] += meshes[locI].nodeDOFs->getValue(0, p, IndexType::Local)/nPoints;
-            meshes[locI].centroidPositionInFaceMesh[1] += meshes[locI].nodeDOFs->getValue(1, p, IndexType::Local)/nPoints;
-            meshes[locI].centroidPositionInFaceMesh[2] += meshes[locI].nodeDOFs->getValue(2, p, IndexType::Local)/nPoints;
-
-        }
-    }
-}
-
-
-void tissueMesh::calculateDistanceBetweenCellCentroids(SmartPtr<ParamStructure> paramStr, SmartPtr<HiPerProblem> hiperProbl)
-{
-
-    vector<double > centroidPositionInCell(3*nCells, 0.0);
-    vector<double>  CentroidOfCells(nCells*3);
-
-    //Calculating centroid position of each cell
-    for(int c = 0; c < nCells; c++) {
-        int nFacesinCell = facesInCell[c].size();
-
-        for (int m = 0; m < nFacesinCell; m++) {
-            int face = facesInCell[c][m];
-            if (isItemInPart(face)) {
-
-                int locI = locIdx(face);
-		double nPoints =  meshes[locI].nPts;
-
-                centroidPositionInCell[3*c + 0] += meshes[locI].centroidPositionInFaceMesh[0]/ nFacesinCell;
-                centroidPositionInCell[3*c + 1] += meshes[locI].centroidPositionInFaceMesh[1]/ nFacesinCell;
-                centroidPositionInCell[3*c + 2] += meshes[locI].centroidPositionInFaceMesh[2]/ nFacesinCell;
-            }
-        }
-    }
-
-    // Sharing the centroidPositioninCell with all the partitions
-    MPI_Allreduce(centroidPositionInCell.data(),CentroidOfCells.data(), nCells*3, MPI_DOUBLE, MPI_SUM, _comm);
-
-
-    // Calculating distances between cell centroids
-    for(int c1 = 0; c1 < nCells; c1++) {
-        for (int c2 = c1 + 1; c2 < nCells; c2++) {
-            double x2 = (CentroidOfCells[3 * c1 + 0] - CentroidOfCells[3 * c2 + 0]) *
-                        (CentroidOfCells[3 * c1 + 0] - CentroidOfCells[3 * c2 + 0]);
-            double y2 = (CentroidOfCells[3 * c1 + 1] - CentroidOfCells[3 * c2 + 1]) *
-                        (CentroidOfCells[3 * c1 + 1] - CentroidOfCells[3 * c2 + 1]);
-            double z2 = (CentroidOfCells[3 * c1 + 2] - CentroidOfCells[3 * c2 + 2]) *
-                        (CentroidOfCells[3 * c1 + 2] - CentroidOfCells[3 * c2 + 2]);
-            double distCells = sqrt(x2 + y2 + z2);
-
-
-            // Once two cells have been in contact, we check which faces have touched (the ones where the distance between their centroids is the smallest).
-            // Then we apply linear constraints on theses two faces to simulate sticking between cells.
-            double distCellsThreshold = 1.8;
-            if (find(NeighboursCells[c1].begin(), NeighboursCells[c1].end(), c2) == NeighboursCells[c1].end())  // if not a neighbour
-                if (distCells >= distCellsThreshold) {
-                        // DO NOTHING. SETTING TO FALSE IS DONE IN THE MAIN LOOP
-                    } else {
-
-
-                        // retrieving the centroids of each face in cell1 and cell2
-                        vector<double> posList1(facesInCell[c1].size() * 3);
-                        vector<double> posList2(facesInCell[c2].size() * 3);
-
-                        for (int f = 0; f < facesInCell[c1].size(); f++) {
-                            int face = facesInCell[c1][f];
-                            if (isItemInPart(face)) {
-                                int locI = locIdx(face);
-                                posList1[3 * f + 0] = meshes[locI].centroidPositionInFaceMesh[0];
-                                posList1[3 * f + 1] = meshes[locI].centroidPositionInFaceMesh[1];
-                                posList1[3 * f + 2] = meshes[locI].centroidPositionInFaceMesh[2];
-                            }
-
-
-                        }
-
-                        for (int f = 0; f < facesInCell[c2].size(); f++) {
-                            int face = facesInCell[c2][f];
-                            if (isItemInPart(face)) {
-                                int locI = locIdx(face);
-                                posList2[3 * f + 0] = meshes[locI].centroidPositionInFaceMesh[0];
-                                posList2[3 * f + 1] = meshes[locI].centroidPositionInFaceMesh[1];
-                                posList2[3 * f + 2] = meshes[locI].centroidPositionInFaceMesh[2];
-                            }
-                        }
-
-                        vector<double> CentroidsOfFacesinC1(facesInCell[c1].size() * 3);
-                        vector<double> CentroidsOfFacesinC2(facesInCell[c2].size() * 3);
-
-                        // Sharing with all the partitions
-                        MPI_Allreduce(posList1.data(), CentroidsOfFacesinC1.data(), facesInCell[c1].size() * 3,
-                                      MPI_DOUBLE, MPI_SUM, _comm);
-                        MPI_Allreduce(posList2.data(), CentroidsOfFacesinC2.data(), facesInCell[c2].size() * 3,
-                                      MPI_DOUBLE, MPI_SUM, _comm);
-
-                        // Calculating all the distances between each face of a cell with the barycenter of the other cell and taking the closest.
-			            int face1ID = -1;
-                        int face2ID = -1;
-                        int locface1ID = -1;
-                        int locface2ID = -1;
-			            int faceNumberinC1 = -1;
-			            int faceNumberinC2 = -1;
-                        double mindistbetweenFaceIandFaceII = 1000.0; // high value for comparison
-
-
-                    double nPointsinCell1 = 0;
-                    double nPointsinCell2 = 0;
-
-                    // comparing distance of faces in cell 1 and faces in cell 2
-                    for (int faceI = 0; faceI < facesInCell[c1].size(); faceI++) {
-                        nPointsinCell1 = nPointsinCell1 + nPointsinFace[facesInCell[c1][faceI]]; //!Adam : counts duplicates
-
-                        for (int faceII = 0; faceII < facesInCell[c2].size(); faceII++) {
-                            if(faceI == 0)
-                                nPointsinCell2 = nPointsinCell2 + nPointsinFace[facesInCell[c2][faceII]];
-
-                            double x2 = (CentroidsOfFacesinC1[3 * faceI + 0] - CentroidsOfFacesinC2[3 * faceII + 0]) *
-                                        (CentroidsOfFacesinC1[3 * faceI + 0] - CentroidsOfFacesinC2[3 * faceII + 0]);
-                            double y2 = (CentroidsOfFacesinC1[3 * faceI + 1] - CentroidsOfFacesinC2[3 * faceII + 1]) *
-                                        (CentroidsOfFacesinC1[3 * faceI + 1] - CentroidsOfFacesinC2[3 * faceII + 1]);
-                            double z2 = (CentroidsOfFacesinC1[3 * faceI + 2] - CentroidsOfFacesinC2[3 * faceII + 2]) *
-                                        (CentroidsOfFacesinC1[3 * faceI + 2] - CentroidsOfFacesinC2[3 * faceII + 2]);
-                            double distbetweenFaceIandFaceII = sqrt(x2 + y2 + z2);
-
-                            if (distbetweenFaceIandFaceII < mindistbetweenFaceIandFaceII - 1e-6) {
-                                face1ID = facesInCell[c1][faceI];
-                                face2ID = facesInCell[c2][faceII];
-                                locface1ID = faceI;
-                                locface2ID = faceII;
-                                mindistbetweenFaceIandFaceII = distbetweenFaceIandFaceII;
-                            }
-                        }
-                    }
-
-                    if (abs(mindistbetweenFaceIandFaceII) < 1.0){
-
-                        for (int faceI = 0; faceI < facesInCell[c1].size(); faceI++) {
-                            int globFace1ID = facesInCell[c1][faceI];
-                            paramStr->bparam[globFace1ID] = true;
-                            paramStr->x_aux[globFace1ID] = (CentroidOfCells[3 * c2 + 0] - CentroidOfCells[3 * c1 + 0]); // / distCells / distCells / distCells / nPointsinCell1;
-                            paramStr->y_aux[globFace1ID] = (CentroidOfCells[3 * c2 + 1] - CentroidOfCells[3 * c1 + 1]); // / distCells / distCells / distCells / nPointsinCell1;
-                            paramStr->z_aux[globFace1ID] = (CentroidOfCells[3 * c2 + 2] - CentroidOfCells[3 * c1 + 2]); // / distCells / distCells / distCells / nPointsinCell1;
-                        }
-
-                        for (int faceII = 0; faceII < facesInCell[c2].size(); faceII++) {
-                            int globFace2ID = facesInCell[c2][faceII];
-                            paramStr->bparam[globFace2ID] = true;
-                            paramStr->x_aux[globFace2ID] = (CentroidOfCells[3 * c1 + 0] - CentroidOfCells[3 * c2 + 0]);// / distCells / distCells / distCells / nPointsinCell2;
-                            paramStr->y_aux[globFace2ID] = (CentroidOfCells[3 * c1 + 1] - CentroidOfCells[3 * c2 + 1]);// / distCells / distCells / distCells / nPointsinCell2;
-                            paramStr->z_aux[globFace2ID] = (CentroidOfCells[3 * c1 + 2] - CentroidOfCells[3 * c2 + 2]);// / distCells / distCells / distCells / nPointsinCell2;
-                        }
-
-                   }
-
-                }
-        }
-
-    }
-
-}
-
-
 void LS_K (hiperlife::FillStructure& fillStr)
 {
     //------------------------------------------------------------------
@@ -986,7 +702,7 @@ void LS_K (hiperlife::FillStructure& fillStr)
     double lame1     = dparam[4] * deltat;
     double lame2     = dparam[5] * deltat;
     double eta_f     = dparam[9];
-    double contact_force_coefficient = dparam[12];
+    double decrease_coeff = dparam[12];
 
     double vdome         = dparam[10];
     double activ{};
@@ -998,7 +714,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
             activ = dparam[6] * deltat;
             eta_f = eta_f/2.0; // divide by 2 to emulate Pradeep's model
             facetag = 0;
-	    eta_f = eta_f/2;
             break;
         case 'b':
             activ = dparam[7] * deltat;
@@ -1007,8 +722,8 @@ void LS_K (hiperlife::FillStructure& fillStr)
             break;
         case 'l':
         // To keep r = gamma_l/gamma_ab = mu_l / mu_ab = eta_l / eta_ab (dparam[8])
-        	lame1 = dparam[8]*lame1;
-   	        lame2 = dparam[8]*lame2;
+        	lame1 = dparam[8]*lame1*decrease_coeff;
+   	        lame2 = dparam[8]*lame2*decrease_coeff;
             bVisc = dparam[8]*bVisc;
             activ = dparam[8] * deltat;
             eta_f = 0.0; // mimic shell
@@ -1248,16 +963,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
     delRay -= pressure*xn*J;    // Volume constraint
     fillStr.addToGlobalIntegral("delRay", delRay);
 
-
-    // Values needed for contact
-    double distsquared = fillStr.paramStr->x_aux[faceID]*fillStr.paramStr->x_aux[faceID] + fillStr.paramStr->y_aux[faceID]*fillStr.paramStr->y_aux[faceID] + fillStr.paramStr->z_aux[faceID]*fillStr.paramStr->z_aux[faceID];
-    double distBetweenCellBary = sqrt(distsquared);
-
-    int nPointsinCell = fillStr.paramStr->i_aux[faceID];
-    double K = contact_force_coefficient * deltat;
-    int distPow = -3;
-    double offset = 0.8;
-    double CoordDiffToOtherCellBary[] = {fillStr.paramStr->x_aux[faceID], fillStr.paramStr->y_aux[faceID], fillStr.paramStr->z_aux[faceID]};
     double domeScalingfactor = 1.0 / 3.0;
 
    
@@ -1317,16 +1022,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
             Math::AXPY(&rhs_k[DOF * i], nDim, -deltat * lumpressure * J * p_k[i] * domeScalingfactor, normal);
             Math::AXPY(&rhs_k[DOF * i], nDim, -deltat * lumpressure * J * domeScalingfactor, xdxI_normal);
             Math::AXPY(&rhs_k[DOF * i], nDim, -deltat * lumpressure * xn * domeScalingfactor, dxI_J);
-        }
-		
-		 // [6] contact : potential = K/d
-	    if (fillStr.paramStr->bparam[faceID] && subFill.kPt == 0)// && subFill.elemID == 0 && subFill.kPt== 0) //subFill.kPt== 0
-        {
-
-            rhs_k[DOF * i + 0] += K * CoordDiffToOtherCellBary[0] * pow(distBetweenCellBary - offset,distPow + 1) / distBetweenCellBary * p_k[i] / nPointsinCell  / subFill.wk_sample;
-            rhs_k[DOF * i + 1] += K * CoordDiffToOtherCellBary[1] * pow(distBetweenCellBary - offset,distPow + 1) / distBetweenCellBary * p_k[i] / nPointsinCell  / subFill.wk_sample;
-            rhs_k[DOF * i + 2] += K * CoordDiffToOtherCellBary[2] * pow(distBetweenCellBary - offset,distPow + 1) / distBetweenCellBary * p_k[i] / nPointsinCell  / subFill.wk_sample;
-
         }
 
 	    
@@ -1432,26 +1127,6 @@ void LS_K (hiperlife::FillStructure& fillStr)
                 }
             }
 
-        /// [6] contact : potential = K/d
-        if (fillStr.paramStr->bparam[faceID] && subFill.kPt == 0)
-        {
-		    for (int n = 0; n < nDim; n++) {
-                        for (int m = 0; m < nDim; m++) {
-
-			Kmat_IJ[DOF * n + m] += K * CoordDiffToOtherCellBary[n] * pow(distBetweenCellBary - offset,distPow + 1) * p_k[i] / nPointsinCell / 
-                pow(distBetweenCellBary,distPow) / nPointsinCell * p_k[j] * CoordDiffToOtherCellBary[m]  / subFill.wk_sample;
-            
-            Kmat_IJ[DOF * n + m] += K / distBetweenCellBary / nPointsinCell * CoordDiffToOtherCellBary[n] * p_k[i] * 
-                2 /  pow(distBetweenCellBary - offset,distPow) / distBetweenCellBary * p_k[j] /  nPointsinCell * CoordDiffToOtherCellBary[m] / subFill.wk_sample;
-
-							}
-
-            Kmat_IJ[DOF * n + n] -= K * pow(distBetweenCellBary - offset,distPow + 1) / distBetweenCellBary * p_k[i] / nPointsinCell *
-                p_k[j] / nPointsinCell / subFill.wk_sample;
-
-					}
-
-        }
  
             // FILL term of K_e[i,j]
             for (int n = 0; n < DOF; n++)

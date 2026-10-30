@@ -1,7 +1,7 @@
 
 # Multiscale wrinkling and folding dynamics
 
-This repository contains three applications used in the simulations of the paper “Multiscale wrinkling and folding dynamics in epithelial shells” by Chahare et al. [[1](#References)] implementing (1) the active gel vertex model [[2](#References)], (2) the continuum active gel shell model (Cosserat version of the theory) [[3](#References)], and (3) comparison shell model C. These models are described in detail in Supplementary Notes 1 and 6. We further provide input files for a short test simulation and for simulations presented in the paper. For the short test simulations, we provide the expected outputs for verification.  
+This repository contains three applications used in the simulations of the paper “Multiscale wrinkling and folding dynamics in epithelial shells” by Chahare et al. [[1](#References)] implementing (1) the active gel vertex model [[2](#References)], (2) the continuum active gel shell model (Cosserat version of the theory) [[3](#References)], and (3) comparison shell model C. These models are described in detail in Supplementary Notes 1 and 6. We further provide input files for a short test simulation and for simulations presented in the paper. For the short test simulations, we provide the expected outputs.  
 
 These applications are built on a parallel finite element library called hiperlife (https://zenodo.org/doi/10.5281/zenodo.14927572) [[4](#References)], which serves as the core numerical engine for the simulations presented in this study. This library depends on other open-source libraries. The library is openly distributed to the community and is available online at https://gitlab.com/hiperlife/hiperlife. The hiperlife is written in C++, uses the Message Passing Interface (MPI) paradigm for parallelism, and is built on top of several packages of the Trilinos Project.
 
@@ -15,7 +15,7 @@ The folder is organized as follows :
 .                        # <--- top-level (or root) directory of the project (called agvm)   
 ├── build                # <--- Temporary build system files (CMake, object files, etc.) : created at installation
 ├── post-processing      # <--- Folder containing the post-processing file used in Paraview (.pvsm)
-├── simulation           # <--- Folder containing the meshes to run the simulations
+├── run_simulation       # <--- Folder containing the meshes to run the simulations and simulation results
 ├── src                  # <--- Folder containing the source codes
 ├── AUTHORS.md           # <--- List of project authors and contributors  
 ├── CMakeLists.txt       # <--- Top-level configuration file.
